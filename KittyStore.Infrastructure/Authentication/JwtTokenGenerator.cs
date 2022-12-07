@@ -4,6 +4,7 @@ using System.Text;
 using KittyStore.Application.Common.Interfaces.Authentication;
 using KittyStore.Application.Common.Interfaces.Services;
 using KittyStore.Domain.UserAggregate;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace KittyStore.Infrastructure.Authentication;
@@ -13,9 +14,9 @@ public class JwtTokenGenerator : IJwtTokenGenerator
     private readonly JwtSettings _jwtSettings;
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public JwtTokenGenerator(JwtSettings jwtSettings, IDateTimeProvider dateTimeProvider)
+    public JwtTokenGenerator(IOptions<JwtSettings> jwtSettings, IDateTimeProvider dateTimeProvider)
     {
-        _jwtSettings = jwtSettings;
+        _jwtSettings = jwtSettings.Value;
         _dateTimeProvider = dateTimeProvider;
     }
 

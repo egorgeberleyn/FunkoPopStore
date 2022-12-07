@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\KittyStore.Application\KittyStore.Application.csproj" />
-      <ProjectReference Include="..\KittyStore.Domain\KittyStore.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>

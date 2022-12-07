@@ -4,6 +4,7 @@ using KittyStore.Application.Common.Behaviors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace KittyStore.Application;
 
 public static class DependencyInjection

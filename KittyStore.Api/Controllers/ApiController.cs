@@ -10,7 +10,7 @@ namespace KittyStore.Api.Controllers;
 [Authorize]
 public class ApiController : ControllerBase
 {
-    public IActionResult Problem(List<Error> errors)
+    protected IActionResult Problem(List<Error> errors)
     {
         if (errors.Count == 0)
             return Problem();

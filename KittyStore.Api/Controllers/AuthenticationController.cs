@@ -1,5 +1,5 @@
-﻿using KittyStore.Application.Authentication.Commands.Register;
-using KittyStore.Application.Authentication.Common;
+﻿using System.Diagnostics.CodeAnalysis;
+using KittyStore.Application.Authentication.Commands.Register;
 using KittyStore.Application.Authentication.Queries.Login;
 using KittyStore.Contracts.Authentication;
 using MapsterMapper;
@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KittyStore.Api.Controllers;
 
+[Route("auth")]
 [AllowAnonymous]
+[SuppressMessage("ReSharper", "ConvertClosureToMethodGroup")]
 public class AuthenticationController : ApiController
 {
     private readonly ISender _mediator;
@@ -28,7 +30,7 @@ public class AuthenticationController : ApiController
         var registerResult = await _mediator.Send(command);
 
         return registerResult.Match(
-            authResult => Ok(_mapper.Map<AuthResult>(authResult)),
+            authResult => Ok(_mapper.Map<AuthenticationResponse>(authResult)),
             errors => Problem(errors));
     }
 
@@ -39,7 +41,7 @@ public class AuthenticationController : ApiController
         var loginResult = await _mediator.Send(command);
 
         return loginResult.Match(
-            authResult => Ok(_mapper.Map<AuthResult>(authResult)),
+            authResult => Ok(_mapper.Map<AuthenticationResponse>(authResult)),
             errors => Problem(errors));
     }
 }

@@ -2,6 +2,6 @@
 
 namespace KittyStore.Application.Authentication.Common;
 
-public record AuthResult(
+public record AuthenticationResult(
     User User,
     string Token);
