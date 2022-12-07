@@ -14,4 +14,11 @@
       <Folder Include="Controllers" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\KittyStore.Application\KittyStore.Application.csproj" />
+      <ProjectReference Include="..\KittyStore.Contracts\KittyStore.Contracts.csproj" />
+      <ProjectReference Include="..\KittyStore.Domain\KittyStore.Domain.csproj" />
+      <ProjectReference Include="..\KittyStore.Infrastructure\KittyStore.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

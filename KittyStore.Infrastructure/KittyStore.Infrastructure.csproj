@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\KittyStore.Application\KittyStore.Application.csproj" />
+      <ProjectReference Include="..\KittyStore.Domain\KittyStore.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
