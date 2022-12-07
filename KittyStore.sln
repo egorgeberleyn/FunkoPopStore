@@ -10,6 +10,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KittyStore.Contracts", "Kit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KittyStore.Infrastructure", "KittyStore.Infrastructure\KittyStore.Infrastructure.csproj", "{AEBBC5D7-A2A1-4061-9171-7A82498C531A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Requests", "Requests", "{165B5782-B59A-47DE-A077-6E659B236980}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{5EFFE09C-0DDC-4118-B8E0-7BAFAC4576F0}"
+	ProjectSection(SolutionItems) = preProject
+		Requests\Authentication\Login.http = Requests\Authentication\Login.http
+		Requests\Authentication\Register.http = Requests\Authentication\Register.http
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KittyStore.Tests", "KittyStore.Tests\KittyStore.Tests.csproj", "{B3289C34-ECAF-425A-9FD4-E4189EBB318B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +46,12 @@ Global
 		{AEBBC5D7-A2A1-4061-9171-7A82498C531A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEBBC5D7-A2A1-4061-9171-7A82498C531A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEBBC5D7-A2A1-4061-9171-7A82498C531A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3289C34-ECAF-425A-9FD4-E4189EBB318B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3289C34-ECAF-425A-9FD4-E4189EBB318B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3289C34-ECAF-425A-9FD4-E4189EBB318B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3289C34-ECAF-425A-9FD4-E4189EBB318B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5EFFE09C-0DDC-4118-B8E0-7BAFAC4576F0} = {165B5782-B59A-47DE-A077-6E659B236980}
 	EndGlobalSection
 EndGlobal
