@@ -15,9 +15,9 @@ public class GetCatQueryHandler : IRequestHandler<GetCatQuery, ErrorOr<Cat>>
         _catRepository = catRepository;
     }
 
-    public async Task<ErrorOr<Cat>> Handle(GetCatQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Cat>> Handle(GetCatQuery query, CancellationToken cancellationToken)
     {
-        var cat = await _catRepository.GetCatByIdAsync(request.Id);
+        var cat = await _catRepository.GetCatByIdAsync(query.Id);
 
         if (cat is null)
             return Errors.Cat.NotFound;

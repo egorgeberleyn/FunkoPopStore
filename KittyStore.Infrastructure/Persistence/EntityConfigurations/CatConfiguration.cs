@@ -12,9 +12,9 @@ public class CatConfiguration : IEntityTypeConfiguration<Cat>
         //Test set of cats
         
         Cat.Create("Boob", 5, "black", "britain", 70),
-        Cat.Create("Gail", 5, "white", "maine coon", 50),
-        Cat.Create("Neegus", 5, "ginger", "egypt", 20),
-        Cat.Create("Sunny", 5, "gray", "german", 88),
+        Cat.Create("Gail", 11, "white", "maine coon", 50),
+        Cat.Create("Neegus", 3, "ginger", "egypt", 20),
+        Cat.Create("Sunny", 6, "gray", "german", 88),
     };
 
 

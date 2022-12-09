@@ -8,7 +8,6 @@ public class ErrorsController : ControllerBase
     [Route("/error")]
     protected IActionResult Error()
     {
-        var exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
         return Problem();
     }
 }

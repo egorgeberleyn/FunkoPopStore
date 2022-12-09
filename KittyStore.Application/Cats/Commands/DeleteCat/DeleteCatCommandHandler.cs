@@ -14,11 +14,9 @@ public class DeleteCatCommandHandler : IRequestHandler<DeleteCatCommand, ErrorOr
         _catRepository = catRepository;
     }
     
-    public async Task<ErrorOr<Unit>> Handle(DeleteCatCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Unit>> Handle(DeleteCatCommand command, CancellationToken cancellationToken)
     {
-        var cat = await _catRepository.GetCatByIdAsync(request.Id);
-
-        if (cat is null)
+        if (await _catRepository.GetCatByIdAsync(command.Id) is not {} cat)
             return Errors.Cat.NotFound;
         
         await _catRepository.DeleteCatAsync(cat);

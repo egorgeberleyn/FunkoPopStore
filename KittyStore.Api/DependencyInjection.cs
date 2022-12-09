@@ -10,6 +10,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
+        services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -21,6 +22,7 @@ public static class DependencyInjection
             });
             
             options.OperationFilter<SecurityRequirementsOperationFilter>();
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kitty Store API", Version = "v1" });   
         });
         services.AddMappings();
         services.AddControllers();

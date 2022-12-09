@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KittyStore.Api.Controllers;
 
-[Microsoft.AspNetCore.Components.Route("/admin")]
+[Route("/admin")]
 [Authorize(Roles = "Admin")]
 public class AdminController : ApiController
 {
@@ -23,7 +23,7 @@ public class AdminController : ApiController
         _mapper = mapper;
     }
 
-    [HttpPost("/createCat")]
+    [HttpPost("createCat")]
     public async Task<IActionResult> CreateCat(CreateCatRequest request)
     {
         var command = _mapper.Map<CreateCatCommand>(request);
@@ -34,7 +34,7 @@ public class AdminController : ApiController
             errors => Problem(errors));
     }
     
-    [HttpPut("/updateCat")]
+    [HttpPut("updateCat")]
     public async Task<IActionResult> UpdateCat(UpdateCatRequest request)
     {
         var command = _mapper.Map<UpdateCatCommand>(request);
@@ -45,7 +45,7 @@ public class AdminController : ApiController
             errors => Problem(errors));
     }
     
-    [HttpDelete("/deleteCat")]
+    [HttpDelete("deleteCat/{id:guid}")]
     public async Task<IActionResult> DeleteCat(Guid id)
     {
         var catId = new CatId(id);

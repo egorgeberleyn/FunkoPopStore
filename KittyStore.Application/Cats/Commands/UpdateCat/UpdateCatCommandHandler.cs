@@ -15,14 +15,12 @@ public class UpdateCatCommandHandler : IRequestHandler<UpdateCatCommand, ErrorOr
         _catRepository = catRepository;
     }
 
-    public async Task<ErrorOr<Cat>> Handle(UpdateCatCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Cat>> Handle(UpdateCatCommand command, CancellationToken cancellationToken)
     {
-        var cat = await _catRepository.GetCatByIdAsync(request.Id);
-
-        if (cat is null)
+        if (await _catRepository.GetCatByIdAsync(command.Id) is not {} cat)
             return Errors.Cat.NotFound;
 
-        var updateCat = Cat.Update(cat, request.Name, request.Age, request.Color, request.Breed, request.Price);
+        var updateCat = Cat.Update(cat, command.Name, command.Age, command.Color, command.Breed, command.Price);
         await _catRepository.UpdateCatAsync(updateCat);
 
         return cat;

@@ -3,7 +3,7 @@ using KittyStore.Domain.CatAggregate;
 
 namespace KittyStore.Application.Cats.Commands.CreateCat;
 
-public class CreateCatCommandValidator : AbstractValidator<Cat>
+public class CreateCatCommandValidator : AbstractValidator<CreateCatCommand>
 {
     public CreateCatCommandValidator()
     {

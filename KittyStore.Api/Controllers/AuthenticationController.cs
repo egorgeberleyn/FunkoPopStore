@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using KittyStore.Application.Authentication.Commands.Register;
+﻿using KittyStore.Application.Authentication.Commands.Register;
 using KittyStore.Application.Authentication.Queries.Login;
 using KittyStore.Contracts.Authentication;
 using MapsterMapper;
@@ -11,7 +10,6 @@ namespace KittyStore.Api.Controllers;
 
 [Route("/auth")]
 [AllowAnonymous]
-[SuppressMessage("ReSharper", "ConvertClosureToMethodGroup")]
 public class AuthenticationController : ApiController
 {
     private readonly ISender _mediator;
@@ -23,7 +21,7 @@ public class AuthenticationController : ApiController
         _mapper = mapper;
     }
 
-    [HttpPost("/register")]
+    [HttpPost("register")]
     public async Task<IActionResult> Register([FromForm]RegisterRequest request)
     {
         var command = _mapper.Map<RegisterCommand>(request);
@@ -34,7 +32,7 @@ public class AuthenticationController : ApiController
             errors => Problem(errors));
     }
 
-    [HttpPost("/login")]
+    [HttpPost("login")]
     public async Task<IActionResult> Login([FromForm]LoginRequest request)
     {
         var command = _mapper.Map<LoginQuery>(request);

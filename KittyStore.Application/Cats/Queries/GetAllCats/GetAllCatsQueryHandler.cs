@@ -14,7 +14,7 @@ public class GetAllCatsQueryHandler : IRequestHandler<GetAllCatsQuery, ErrorOr<L
         _catRepository = catRepository;
     }
 
-    public async Task<ErrorOr<List<Cat>>> Handle(GetAllCatsQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<List<Cat>>> Handle(GetAllCatsQuery query, CancellationToken cancellationToken)
     {
         return await _catRepository.GetAllCatsAsync();
     }

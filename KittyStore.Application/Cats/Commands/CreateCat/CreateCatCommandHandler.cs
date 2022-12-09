@@ -14,10 +14,10 @@ public class CreateCatCommandHandler : IRequestHandler<CreateCatCommand, ErrorOr
         _catRepository = catRepository;
     }
 
-    public async Task<ErrorOr<Cat>> Handle(CreateCatCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Cat>> Handle(CreateCatCommand command, CancellationToken cancellationToken)
     {
-        var cat = Cat.Create(request.Name, request.Age, request.Color, 
-            request.Breed, request.Price);
+        var cat = Cat.Create(command.Name, command.Age, command.Color, 
+            command.Breed, command.Price);
 
         await _catRepository.CreateCatAsync(cat);
 
