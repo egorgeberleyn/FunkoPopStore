@@ -1,6 +1,7 @@
-﻿namespace KittyStore.Application.Cats.Queries.GetAllCats;
+﻿using KittyStore.Domain.CatAggregate;
+using MediatR;
+using ErrorOr;
 
-public class GetAllCatsQuery
-{
-    
-}
+namespace KittyStore.Application.Cats.Queries.GetAllCats;
+
+public record GetAllCatsQuery() : IRequest<ErrorOr<List<Cat>>>;

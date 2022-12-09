@@ -1,6 +1,13 @@
-﻿namespace KittyStore.Domain.Common.Errors;
+﻿using ErrorOr;
 
-public class Errors_Cat
+namespace KittyStore.Domain.Common.Errors;
+
+public partial class Errors
 {
-    
+    public static class Cat
+    {
+        public static Error NotFound => Error.NotFound(
+            code: "Cat.NotFound",
+            description: "Cat not found in database.");
+    }
 }

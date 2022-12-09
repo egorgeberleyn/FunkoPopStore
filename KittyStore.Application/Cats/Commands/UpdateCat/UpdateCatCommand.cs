@@ -1,3 +1,14 @@
-﻿namespace KittyStore.Application.Cats.Commands.UpdateCat;
+﻿using KittyStore.Domain.CatAggregate;
+using MediatR;
+using ErrorOr;
+using KittyStore.Domain.CatAggregate.ValueObjects;
 
-public record UpdateCatCommand();
+namespace KittyStore.Application.Cats.Commands.UpdateCat;
+
+public record UpdateCatCommand(
+    CatId Id,
+    string Name,
+    int Age,
+    string Color,
+    string Breed,
+    decimal Price) : IRequest<ErrorOr<Cat>>;

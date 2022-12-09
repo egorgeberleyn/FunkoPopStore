@@ -23,7 +23,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
     public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
         //Validate email
-        if (_userRepository.GetUserByEmailAsync(command.Email) is not null)
+        if (await _userRepository.GetUserByEmailAsync(command.Email) is not null)
             return Errors.User.DuplicateEmail;
 
         //Create user and add to db
