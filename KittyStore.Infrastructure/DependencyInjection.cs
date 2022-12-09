@@ -4,8 +4,10 @@ using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Application.Common.Interfaces.Services;
 using KittyStore.Infrastructure.Authentication;
 using KittyStore.Infrastructure.Persistence;
+using KittyStore.Infrastructure.Persistence.Repositories;
 using KittyStore.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -18,13 +20,26 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, 
         ConfigurationManager configuration)
     {
-        services.AddAuth(configuration);
-        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-        services.AddScoped<IUserRepository, UserRepository>();
+        services
+            .AddAuth(configuration)
+            .AddPersistence(configuration);
         
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         return services;
     }
 
+    private static IServiceCollection AddPersistence(this IServiceCollection services, 
+        ConfigurationManager configuration)
+    {
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ICatRepository, CatRepository>();
+
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("DbConnection")));
+        
+        return services;
+    }
+    
     private static IServiceCollection AddAuth(this IServiceCollection services,
         ConfigurationManager configuration)
     {

@@ -6,7 +6,7 @@ public class UserId : ValueObject
 {
     public Guid Value { get;}
 
-    private UserId(Guid value)
+    public UserId(Guid value)
     {
         Value = value;
     }

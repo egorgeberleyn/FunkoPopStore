@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KittyStore.Api.Controllers;
 
-[Route("auth")]
+[Route("/auth")]
 [AllowAnonymous]
 [SuppressMessage("ReSharper", "ConvertClosureToMethodGroup")]
 public class AuthenticationController : ApiController
@@ -23,8 +23,8 @@ public class AuthenticationController : ApiController
         _mapper = mapper;
     }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequest request)
+    [HttpPost("/register")]
+    public async Task<IActionResult> Register([FromForm]RegisterRequest request)
     {
         var command = _mapper.Map<RegisterCommand>(request);
         var registerResult = await _mediator.Send(command);
@@ -34,8 +34,8 @@ public class AuthenticationController : ApiController
             errors => Problem(errors));
     }
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequest request)
+    [HttpPost("/login")]
+    public async Task<IActionResult> Login([FromForm]LoginRequest request)
     {
         var command = _mapper.Map<LoginQuery>(request);
         var loginResult = await _mediator.Send(command);

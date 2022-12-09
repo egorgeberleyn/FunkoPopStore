@@ -5,6 +5,7 @@ using KittyStore.Application.Common.Interfaces.Authentication;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.UserAggregate;
+using KittyStore.Domain.UserAggregate.Enums;
 
 namespace KittyStore.Application.Authentication.Commands.Register;
 
@@ -22,12 +23,13 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
     public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
         //Validate email
-        if (_userRepository.GetUserByEmail(command.Email) is not null)
+        if (_userRepository.GetUserByEmailAsync(command.Email) is not null)
             return Errors.User.DuplicateEmail;
 
         //Create user and add to db
-        var user = User.Create(command.FirstName, command.LastName, command.Email, command.Password);
-        _userRepository.Add(user);
+        var user = User.Create(command.FirstName, command.LastName, command.Email, 
+            command.Password, 0, Role.Customer);
+        await _userRepository.AddUserAsync(user);
         
         //Jwt token generate
         var token = _jwtTokenGenerator.GenerateToken(user);

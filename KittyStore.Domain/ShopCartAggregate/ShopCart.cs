@@ -1,8 +1,8 @@
 ﻿using KittyStore.Domain.CatAggregate.ValueObjects;
 using KittyStore.Domain.Common.Models;
-using KittyStore.Domain.CustomerAggregate.ValueObjects;
 using KittyStore.Domain.ShopCartAggregate.Entities;
 using KittyStore.Domain.ShopCartAggregate.ValueObjects;
+using KittyStore.Domain.UserAggregate.ValueObjects;
 
 namespace KittyStore.Domain.ShopCartAggregate;
 
@@ -11,18 +11,18 @@ public sealed class ShopCart : AggregateRoot<ShopCartId>
     private readonly List<ShopCartItem> _items = new();
     
     
-    public CustomerId CustomerId { get; }
+    public UserId UserId { get; }
 
     public IReadOnlyList<ShopCartItem> ShopCartItems => _items.AsReadOnly();
 
     public int TotalItems => _items.Count;
 
-    public ShopCart(ShopCartId id, CustomerId customerId) : base(id)
+    public ShopCart(ShopCartId id, UserId customerId) : base(id)
     {
-        CustomerId = customerId;
+        UserId = customerId;
     }
 
-    public ShopCart Create(CustomerId customerId) => 
+    public ShopCart Create(UserId customerId) => 
         new (ShopCartId.CreateUnique(), customerId);
     
     public void AddItem(ShopCartItemId shopCartItemId, decimal unitPrice, CatId catId)

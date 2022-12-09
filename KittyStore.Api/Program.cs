@@ -1,6 +1,7 @@
 using KittyStore.Api;
 using KittyStore.Application;
 using KittyStore.Infrastructure;
+using KittyStore.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -12,14 +13,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
-    if (app.Environment.IsDevelopment())
+    app.UseSwagger();
+    app.UseSwaggerUI(config =>
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
-
-    app.UseExceptionHandler("/error");
+        config.RoutePrefix = string.Empty;
+        config.SwaggerEndpoint("swagger/v1/swagger.json", "Kitty Store API");
+    });
     
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
+    
+    app.UseExceptionHandler("/error");
+
     app.UseHttpsRedirection();
     app.UseAuthentication();
     app.UseAuthorization();

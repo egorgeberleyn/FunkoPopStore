@@ -1,7 +1,7 @@
 ﻿using KittyStore.Domain.Common.Models;
-using KittyStore.Domain.CustomerAggregate.ValueObjects;
 using KittyStore.Domain.OrderAggregate.Entities;
 using KittyStore.Domain.OrderAggregate.ValueObjects;
+using KittyStore.Domain.UserAggregate.ValueObjects;
 
 namespace KittyStore.Domain.OrderAggregate;
 
@@ -11,7 +11,7 @@ public sealed class Order : AggregateRoot<OrderId>
     
     public Address Address { get; }
     
-    public CustomerId CustomerId { get; }
+    public UserId UserId { get; }
     
     public DateTime Created { get; }
 
@@ -19,14 +19,14 @@ public sealed class Order : AggregateRoot<OrderId>
 
     public IReadOnlyList<OrderItem> OrderItems => _items.AsReadOnly();
 
-    private Order(OrderId id, Address address, CustomerId customerId, DateTime created) : base(id)
+    private Order(OrderId id, Address address, UserId customerId, DateTime created) : base(id)
     {
         Address = address;
-        CustomerId = customerId;
+        UserId = customerId;
         Created = created;
     }
 
-    public static Order Create(OrderId id, Address address, CustomerId customerId, DateTime created) =>
+    public static Order Create(OrderId id, Address address, UserId customerId, DateTime created) =>
         new(OrderId.CreateUnique(), address, customerId, DateTime.UtcNow);
 
     public decimal CalculateTotalPrice() => _items.Sum(ord => ord.Price);
