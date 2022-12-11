@@ -5,4 +5,5 @@ public record CreateCatRequest(
     int Age,
     string Color,
     string Breed,
-    decimal Price);
+    decimal Price,
+    string Gender);

@@ -22,7 +22,7 @@ public class AdminController : ApiController
         _mediator = mediator;
         _mapper = mapper;
     }
-
+    
     [HttpPost("createCat")]
     public async Task<IActionResult> CreateCat(CreateCatRequest request)
     {

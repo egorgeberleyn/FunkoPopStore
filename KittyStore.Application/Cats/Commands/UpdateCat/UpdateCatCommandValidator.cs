@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using KittyStore.Domain.CatAggregate;
+using KittyStore.Domain.CatAggregate.Enums;
 
 namespace KittyStore.Application.Cats.Commands.UpdateCat;
 
@@ -12,5 +12,7 @@ public class UpdateCatCommandValidator : AbstractValidator<UpdateCatCommand>
         RuleFor(c => c.Color).NotEmpty();
         RuleFor(c => c.Name).NotEmpty();
         RuleFor(c => c.Price).NotEmpty().GreaterThan(0);
+        RuleFor(c => c.Gender).NotEmpty()
+            .IsEnumName(typeof(CatGender), caseSensitive: false);
     }
 }

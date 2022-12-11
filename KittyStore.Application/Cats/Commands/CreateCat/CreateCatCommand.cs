@@ -9,4 +9,5 @@ public record CreateCatCommand(
     int Age,
     string Color,
     string Breed,
+    string Gender,
     decimal Price) : IRequest<ErrorOr<Cat>>;

@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using System.Security.Cryptography;
+using System.Text;
+using MediatR;
 using ErrorOr;
 using KittyStore.Application.Authentication.Common;
 using KittyStore.Application.Common.Interfaces.Authentication;
@@ -24,7 +26,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
         if (await _userRepository.GetUserByEmailAsync(query.Email) is not { } user)
             return Errors.Authentication.InvalidCredentials;
 
-        if (user.Password != query.Password)
+        if (!VerifyPasswordHash(query.Password, user.PasswordHash, user.PasswordSalt))
             return new[] { Errors.Authentication.InvalidCredentials };
 
         //Generate token
@@ -33,5 +35,12 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
         return new AuthenticationResult(
             user, 
             token);
+    }
+
+    private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+    {
+        using var hmac = new HMACSHA512(passwordSalt);
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        return computedHash.SequenceEqual(passwordHash);
     }
 }

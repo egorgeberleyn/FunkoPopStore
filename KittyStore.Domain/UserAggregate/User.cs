@@ -12,7 +12,9 @@ public sealed class User : AggregateRoot<UserId>
 
     public string Email { get; }
 
-    public string Password { get; }
+    public byte[] PasswordHash { get; }
+    
+    public byte[] PasswordSalt { get; }
     
     public decimal Balance { get; private set; }
 
@@ -22,22 +24,23 @@ public sealed class User : AggregateRoot<UserId>
     
     public DateTime UpdatedDateTime { get; }
 
-    private User(UserId id, string firstName, string lastName, string email, string password, decimal balance,
-        Role role, DateTime createdDateTime, DateTime updatedDateTime) : base(id)
+    private User(UserId id, string firstName, string lastName, string email, byte[] passwordHash, byte[] passwordSalt, 
+        decimal balance, Role role, DateTime createdDateTime, DateTime updatedDateTime) : base(id)
     {
         FirstName = firstName;
         LastName = lastName;
         Email = email;
-        Password = password;
+        PasswordHash = passwordHash;
+        PasswordSalt = passwordSalt;
         CreatedDateTime = createdDateTime;
         UpdatedDateTime = updatedDateTime;
         Balance = balance;
         Role = role;
     }
     
-    public static User Create(string firstName, string lastName, string email, string password, decimal balance,
-        Role role) =>
-        new(UserId.CreateUnique(), firstName, lastName, email, password, balance, role,
+    public static User Create(string firstName, string lastName, string email, byte[] passwordHash, byte[] passwordSalt, 
+        decimal balance, Role role) =>
+        new(UserId.CreateUnique(), firstName, lastName, email, passwordHash, passwordSalt, balance, role,
             DateTime.UtcNow, DateTime.UtcNow);
 
     public void AddBalance(decimal balance) => Balance += balance;
