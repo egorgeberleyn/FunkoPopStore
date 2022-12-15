@@ -6,23 +6,23 @@ namespace KittyStore.Domain.UserAggregate;
 
 public sealed class User : AggregateRoot<UserId>
 {
-    public string FirstName { get; }
+    public string FirstName { get; private set; }
 
-    public string LastName { get; }
+    public string LastName { get; private set;}
 
-    public string Email { get; }
+    public string Email { get; private set;}
 
-    public byte[] PasswordHash { get; }
+    public byte[] PasswordHash { get; private set;}
     
-    public byte[] PasswordSalt { get; }
+    public byte[] PasswordSalt { get; private set;}
     
     public decimal Balance { get; private set; }
 
-    public Role Role { get; }
+    public Role Role { get; private set; }
 
-    public DateTime CreatedDateTime { get; }
+    public DateTime CreatedDateTime { get; private set;}
     
-    public DateTime UpdatedDateTime { get; }
+    public DateTime UpdatedDateTime { get; private set;}
 
     private User(UserId id, string firstName, string lastName, string email, byte[] passwordHash, byte[] passwordSalt, 
         decimal balance, Role role, DateTime createdDateTime, DateTime updatedDateTime) : base(id)
@@ -43,5 +43,17 @@ public sealed class User : AggregateRoot<UserId>
         new(UserId.CreateUnique(), firstName, lastName, email, passwordHash, passwordSalt, balance, role,
             DateTime.UtcNow, DateTime.UtcNow);
 
+    public User Update(string firstName, string lastName, string email,
+        decimal balance)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        Balance = balance;
+        UpdatedDateTime = DateTime.UtcNow;
+
+        return this;
+    }
+    
     public void AddBalance(decimal balance) => Balance += balance;
 }

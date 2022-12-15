@@ -10,6 +10,8 @@ public class CatMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
+        //config.NewConfig<List<Cat>, List<CatResponse>>();
+        
         config.NewConfig<CreateCatRequest, CreateCatCommand>();
         
         config.NewConfig<UpdateCatRequest, UpdateCatCommand>()

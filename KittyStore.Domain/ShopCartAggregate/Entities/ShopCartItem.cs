@@ -6,12 +6,12 @@ namespace KittyStore.Domain.ShopCartAggregate.Entities;
 
 public sealed class ShopCartItem : Entity<ShopCartItemId>
 {
-    public decimal Price { get; }
+    public decimal Price { get; private set;}
     
-    public CatId CatId { get; }
+    public CatId CatId { get; private set;}
     
-    public ShopCartId ShopCartId { get; }
-    
+    public ShopCartId ShopCartId { get; private set;}
+
     public ShopCartItem(ShopCartItemId id, decimal price, CatId catId, ShopCartId shopCartId) : base(id)
     {
         Price = price;

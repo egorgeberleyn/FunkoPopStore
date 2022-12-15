@@ -21,7 +21,7 @@ public class UpdateCatCommandHandler : IRequestHandler<UpdateCatCommand, ErrorOr
         if (await _catRepository.GetCatByIdAsync(command.Id) is not {} cat)
             return Errors.Cat.NotFound;
 
-        var updateCat = Cat.Update(cat, command.Name, command.Age, command.Color, command.Breed, 
+        var updateCat = cat.Update(command.Name, command.Age, command.Color, command.Breed, 
             command.Price, (CatGender)Enum.Parse(typeof(CatGender) ,command.Gender, true));
         await _catRepository.UpdateCatAsync(updateCat);
 

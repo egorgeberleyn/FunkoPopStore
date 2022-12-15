@@ -9,11 +9,11 @@ public sealed class Order : AggregateRoot<OrderId>
 {
     private readonly List<OrderItem> _items = new();
     
-    public Address Address { get; }
+    public Address Address { get; private set;}
     
-    public UserId UserId { get; }
+    public UserId UserId { get; private set;}
     
-    public DateTime Created { get; }
+    public DateTime Created { get; private set;}
 
     public decimal TotalPrice => CalculateTotalPrice();
 

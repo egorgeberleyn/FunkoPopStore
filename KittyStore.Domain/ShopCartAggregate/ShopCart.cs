@@ -1,4 +1,6 @@
-﻿using KittyStore.Domain.CatAggregate.ValueObjects;
+﻿using System.Text.Json.Serialization;
+using KittyStore.Domain.CatAggregate.ValueObjects;
+using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.Common.Models;
 using KittyStore.Domain.ShopCartAggregate.Entities;
 using KittyStore.Domain.ShopCartAggregate.ValueObjects;
@@ -10,25 +12,42 @@ public sealed class ShopCart : AggregateRoot<ShopCartId>
 {
     private readonly List<ShopCartItem> _items = new();
     
-    
-    public UserId UserId { get; }
+    public UserId UserId { get; private set; }
 
     public IReadOnlyList<ShopCartItem> ShopCartItems => _items.AsReadOnly();
 
-    public int TotalItems => _items.Count;
-
-    public ShopCart(ShopCartId id, UserId customerId) : base(id)
+    public int ItemQuantity
     {
-        UserId = customerId;
+        get => _items.Count;
+        init { if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value)); }
     }
 
-    public ShopCart Create(UserId customerId) => 
-        new (ShopCartId.CreateUnique(), customerId);
-    
-    public void AddItem(ShopCartItemId shopCartItemId, decimal unitPrice, CatId catId)
+    public ShopCart(ShopCartId id, UserId userId) : base(id)
     {
-        if (ShopCartItems.Any(i => i.Id.Value == shopCartItemId.Value)) return; //do it exception 
+        UserId = userId;
+    }
+
+    [JsonConstructor]
+    public ShopCart(ShopCartId id, UserId userId, int itemQuantity, List<ShopCartItem> shopCartItems) : base(id)
+    {
+        UserId = userId;
+        ItemQuantity = itemQuantity;
+        _items = shopCartItems;
+    }
+    
+    public static ShopCart Create(UserId userId) => 
+        new (ShopCartId.CreateUnique(), userId);
+    
+    public void AddItem(decimal unitPrice, CatId catId)
+    {
+        if (_items.Any(i => i.CatId.Value == catId.Value)) return; //do it exception 
         _items.Add(ShopCartItem.Create(unitPrice, catId, Id));
+    }
+
+    public void RemoveItem(ShopCartItemId shopCartItemId)
+    {
+        var shopItem = _items.FirstOrDefault(item => item.Id == shopCartItemId);
+        if (shopItem is not null) _items.Remove(shopItem);
     }
 
     public void ClearShopCart() => _items.Clear();

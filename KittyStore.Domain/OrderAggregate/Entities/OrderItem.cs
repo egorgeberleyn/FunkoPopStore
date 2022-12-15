@@ -6,9 +6,9 @@ namespace KittyStore.Domain.OrderAggregate.Entities;
 
 public sealed class OrderItem : Entity<OrderItemId>
 {
-    public decimal Price { get; }
+    public decimal Price { get; private set;}
     
-    public CatId CatId { get; }
+    public CatId CatId { get; private set;}
     
     public OrderItem(OrderItemId id, decimal price, CatId catId) : base(id)
     {

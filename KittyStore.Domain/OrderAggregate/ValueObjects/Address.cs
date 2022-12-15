@@ -4,10 +4,10 @@ namespace KittyStore.Domain.OrderAggregate.ValueObjects;
 
 public class Address : ValueObject
 {
-    public string Country { get; }
-    public string City { get;}
-    public string Street { get; }
-    public string HouseNumber { get; }
+    public string Country { get; private set;}
+    public string City { get; private set;}
+    public string Street { get; private set;}
+    public string HouseNumber { get; private set;}
 
     private Address(string country, string city, string street, string houseNumber)
     {

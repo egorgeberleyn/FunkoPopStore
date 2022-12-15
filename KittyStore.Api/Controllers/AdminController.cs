@@ -1,8 +1,12 @@
 ﻿using KittyStore.Application.Cats.Commands.CreateCat;
 using KittyStore.Application.Cats.Commands.DeleteCat;
 using KittyStore.Application.Cats.Commands.UpdateCat;
+using KittyStore.Application.Users.DeleteUser;
+using KittyStore.Application.Users.UpdateUser;
 using KittyStore.Contracts.Cats;
+using KittyStore.Contracts.Users;
 using KittyStore.Domain.CatAggregate.ValueObjects;
+using KittyStore.Domain.UserAggregate.ValueObjects;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -23,35 +27,57 @@ public class AdminController : ApiController
         _mapper = mapper;
     }
     
-    [HttpPost("createCat")]
+    [HttpPost("cats")]
     public async Task<IActionResult> CreateCat(CreateCatRequest request)
     {
         var command = _mapper.Map<CreateCatCommand>(request);
-        var createResult = await _mediator.Send(command);
+        var createdResult = await _mediator.Send(command);
         
-        return createResult.Match(
-            result => Ok(_mapper.Map<CatResponse>(result)),
+        return createdResult.Match(
+            cat => Ok(_mapper.Map<CatResponse>(cat)),
             errors => Problem(errors));
     }
     
-    [HttpPut("updateCat")]
+    [HttpPut("cats")]
     public async Task<IActionResult> UpdateCat(UpdateCatRequest request)
     {
         var command = _mapper.Map<UpdateCatCommand>(request);
-        var updateResult = await _mediator.Send(command);
+        var updatedResult = await _mediator.Send(command);
         
-        return updateResult.Match(
-            result => Ok(_mapper.Map<CatResponse>(result)),
+        return updatedResult.Match(
+            cat => Ok(_mapper.Map<CatResponse>(cat)),
             errors => Problem(errors));
     }
     
-    [HttpDelete("deleteCat/{id:guid}")]
+    [HttpDelete("cats/{id:guid}")]
     public async Task<IActionResult> DeleteCat(Guid id)
     {
         var catId = new CatId(id);
-        var deleteResult = await _mediator.Send(new DeleteCatCommand(catId));
+        var deletedResult = await _mediator.Send(new DeleteCatCommand(catId));
         
-        return deleteResult.Match(
+        return deletedResult.Match(
+            _ => Ok(),
+            errors => Problem(errors));
+    }
+
+    [HttpPut("users")]
+    public async Task<IActionResult> UpdateUser(UpdateUserRequest request)
+    {
+        var command = _mapper.Map<UpdateUserCommand>(request);
+        var updatedResult = await _mediator.Send(command);
+
+        return updatedResult.Match(
+            user => Ok(_mapper.Map<UserResponse>(user)),
+            errors => Problem(errors));
+    }
+    
+    [HttpDelete("users/{id:guid}")]
+    public async Task<IActionResult> DeleteUser(Guid id)
+    {
+        var userId = new UserId(id);
+        var deletedResult = await _mediator.Send(new DeleteUserCommand(userId));
+        
+        return deletedResult.Match(
             _ => Ok(),
             errors => Problem(errors));
     }

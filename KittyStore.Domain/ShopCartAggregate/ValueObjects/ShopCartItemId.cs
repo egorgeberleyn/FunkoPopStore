@@ -4,9 +4,9 @@ namespace KittyStore.Domain.ShopCartAggregate.ValueObjects;
 
 public class ShopCartItemId : ValueObject
 {
-    public Guid Value { get;}
+    public Guid Value { get; private set; }
 
-    private ShopCartItemId(Guid value)
+    public ShopCartItemId(Guid value)
     {
         Value = value;
     }

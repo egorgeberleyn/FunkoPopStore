@@ -1,8 +1,10 @@
 ﻿using System.Text;
 using KittyStore.Application.Common.Interfaces.Authentication;
+using KittyStore.Application.Common.Interfaces.Cache;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Application.Common.Interfaces.Services;
 using KittyStore.Infrastructure.Authentication;
+using KittyStore.Infrastructure.Cache;
 using KittyStore.Infrastructure.Persistence;
 using KittyStore.Infrastructure.Persistence.Repositories;
 using KittyStore.Infrastructure.Services;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 
 namespace KittyStore.Infrastructure;
 
@@ -22,14 +25,15 @@ public static class DependencyInjection
     {
         services
             .AddAuth(configuration)
-            .AddPersistence(configuration);
+            .AddPersistence(configuration)
+            .AddCache(configuration);
         
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         return services;
     }
 
     private static IServiceCollection AddPersistence(this IServiceCollection services, 
-        ConfigurationManager configuration)
+        IConfiguration configuration)
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICatRepository, CatRepository>();
@@ -41,7 +45,7 @@ public static class DependencyInjection
     }
     
     private static IServiceCollection AddAuth(this IServiceCollection services,
-        ConfigurationManager configuration)
+        IConfiguration configuration)
     {
         var jwtSettings = new JwtSettings();
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
@@ -62,6 +66,16 @@ public static class DependencyInjection
                     Encoding.UTF8.GetBytes(jwtSettings.Secret))
             });
 
+        return services;
+    }
+
+    private static IServiceCollection AddCache(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddSingleton<IConnectionMultiplexer>
+            (ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")));
+        services.AddScoped<ICacheService, CacheService>();
+        
         return services;
     }
 }

@@ -31,15 +31,15 @@ public sealed class Cat : AggregateRoot<CatId>
     public static Cat Create(string name, int age, string color, string breed, decimal price, CatGender gender) =>
         new(CatId.CreateUnique(), name, age, color, breed, price, gender);
 
-    public static Cat Update(Cat cat, string name, int age, string color, string breed, decimal price, CatGender gender)
+    public Cat Update(string name, int age, string color, string breed, decimal price, CatGender gender)
     {
-        cat.Name = name;
-        cat.Age = age;
-        cat.Breed = breed;
-        cat.Color = color;
-        cat.Price = price;
-        cat.Gender = gender;
+        Name = name;
+        Age = age;
+        Breed = breed;
+        Color = color;
+        Price = price;
+        Gender = gender;
 
-        return cat;
+        return this;
     }
 }
