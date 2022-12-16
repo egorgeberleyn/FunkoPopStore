@@ -24,14 +24,14 @@ public class GetShopCartQueryHandler : IRequestHandler<GetShopCartQuery, ErrorOr
 
     public async Task<ErrorOr<ShopCart>> Handle(GetShopCartQuery query, CancellationToken cancellationToken)
     {
-        var cart = await _cacheService.GetDataAsync<ShopCartDto>("shopCart");
-        if (cart is not null) return _mapper.Map<ShopCart>(cart);
-
         if (await _userRepository.GetUserByIdAsync(query.UserId) is not { } user)
             return Errors.User.NotFound;
         
+        var cart = await _cacheService.GetDataAsync<ShopCartDto>(user.Id.Value.ToString()!);
+        if (cart is not null) return _mapper.Map<ShopCart>(cart);
+        
         var newCart = ShopCart.Create(user.Id);
-        await _cacheService.SetDataAsync("shopCart", _mapper.Map<ShopCartDto>(newCart), 
+        await _cacheService.SetDataAsync(user.Id.Value.ToString()!, _mapper.Map<ShopCartDto>(newCart), 
             DateTimeOffset.Now.AddDays(10));
             
         return newCart;

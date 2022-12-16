@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using KittyStore.Domain.UserAggregate;
 using KittyStore.Domain.UserAggregate.Enums;
 using KittyStore.Domain.UserAggregate.ValueObjects;
@@ -21,15 +22,19 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 value => new UserId(value))
             .IsRequired();
 
-        builder.Property(c => c.FirstName).IsRequired();
-        builder.Property(c => c.LastName).IsRequired();
-        builder.Property(c => c.Email).IsRequired();
-        builder.Property(c => c.PasswordHash).IsRequired();
-        builder.Property(c => c.PasswordSalt).IsRequired();
-        builder.Property(c => c.Role).IsRequired();
-        builder.Property(c => c.Balance).IsRequired();
-        builder.Property(c => c.CreatedDateTime).IsRequired();
-        builder.Property(c => c.UpdatedDateTime).IsRequired();
+        builder.Property(e => e.Balance)
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, null as JsonSerializerOptions),
+                v => JsonSerializer.Deserialize<Balance>(v, null as JsonSerializerOptions)!);
+
+        builder.Property(u => u.FirstName).IsRequired();
+        builder.Property(u => u.LastName).IsRequired();
+        builder.Property(u => u.Email).IsRequired();
+        builder.Property(u => u.PasswordHash).IsRequired();
+        builder.Property(u => u.PasswordSalt).IsRequired();
+        builder.Property(u => u.Role).IsRequired();
+        builder.Property(u => u.CreatedDateTime).IsRequired();
+        builder.Property(u => u.UpdatedDateTime).IsRequired();
 
         builder.HasData(CreateTestCats());
     }
@@ -43,10 +48,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         var cats = new List<User>()
         {
             User.Create("Jorge", "Admin", "admin123@gmail.com", adminPasswordHash, adminPasswordSalt,
-                1000, Role.Admin), // Admin (password = secret123)
+                Balance.Create(Currency.Dollar, 1000), Role.Admin), // Admin (password = secret123)
 
             User.Create("Don", "Test Customer", "1v2goog@gmail.com", passwordHash, passwordSalt,
-                500, Role.Customer), // Test customer (password = simple)
+                Balance.Create(Currency.Dollar, 500), Role.Customer), // Test customer (password = simple)
         };
         
         void CreateTestPasswordHash(string password, out byte[] hash, out byte[] salt)

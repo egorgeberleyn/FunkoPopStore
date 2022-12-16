@@ -16,8 +16,8 @@ public sealed class User : AggregateRoot<UserId>
     
     public byte[] PasswordSalt { get; private set;}
     
-    public decimal Balance { get; private set; }
-
+    public Balance Balance { get; private set; }
+    
     public Role Role { get; private set; }
 
     public DateTime CreatedDateTime { get; private set;}
@@ -25,7 +25,7 @@ public sealed class User : AggregateRoot<UserId>
     public DateTime UpdatedDateTime { get; private set;}
 
     private User(UserId id, string firstName, string lastName, string email, byte[] passwordHash, byte[] passwordSalt, 
-        decimal balance, Role role, DateTime createdDateTime, DateTime updatedDateTime) : base(id)
+        Balance balance, Role role, DateTime createdDateTime, DateTime updatedDateTime) : base(id)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -39,12 +39,12 @@ public sealed class User : AggregateRoot<UserId>
     }
     
     public static User Create(string firstName, string lastName, string email, byte[] passwordHash, byte[] passwordSalt, 
-        decimal balance, Role role) =>
+        Balance balance, Role role) =>
         new(UserId.CreateUnique(), firstName, lastName, email, passwordHash, passwordSalt, balance, role,
             DateTime.UtcNow, DateTime.UtcNow);
 
     public User Update(string firstName, string lastName, string email,
-        decimal balance)
+        Balance balance)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -54,6 +54,4 @@ public sealed class User : AggregateRoot<UserId>
 
         return this;
     }
-    
-    public void AddBalance(decimal balance) => Balance += balance;
 }

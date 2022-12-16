@@ -1,6 +1,5 @@
 ﻿using KittyStore.Application.ShopCarts.Commands.AddItem;
 using KittyStore.Application.ShopCarts.Commands.RemoveItem;
-using KittyStore.Application.ShopCarts.Queries;
 using KittyStore.Application.ShopCarts.Queries.GetShopCart;
 using KittyStore.Contracts.ShopCart;
 using KittyStore.Domain.ShopCartAggregate.ValueObjects;
@@ -13,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace KittyStore.Api.Controllers;
 
 [Route("/shopCart")]
-[AllowAnonymous]
 public class ShopCartController : ApiController
 {
     private readonly ISender _mediator;
@@ -25,11 +23,11 @@ public class ShopCartController : ApiController
         _mapper = mapper;
     }
 
-    [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetShopCart(Guid id)
+    [HttpGet("")]
+    public async Task<IActionResult> GetShopCart(Guid userId)
     {
-        var userId = new UserId(id);
-        var result = await _mediator.Send(new GetShopCartQuery(userId));
+        var result = await _mediator.Send(
+            new GetShopCartQuery(new UserId(userId)));
 
         return result.Match(
             cart => Ok(_mapper.Map<ShopCartResponse>(cart)),
@@ -50,10 +48,11 @@ public class ShopCartController : ApiController
     }
     
     [HttpDelete("items/{id:guid}")]
-    public async Task<IActionResult> RemoveItem(Guid id)
+    public async Task<IActionResult> RemoveItem(Guid id, Guid userId)
     {
         var itemId = new ShopCartItemId(id);
-        var result = await _mediator.Send(new RemoveItemCommand(itemId));
+        var result = await _mediator.Send(
+            new RemoveItemCommand(itemId, new UserId(userId)));
 
         return result.Match(
             cart => Ok(_mapper.Map<ShopCartResponse>(cart)),

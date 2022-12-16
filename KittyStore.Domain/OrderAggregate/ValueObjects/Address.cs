@@ -1,4 +1,5 @@
-﻿using KittyStore.Domain.Common.Models;
+﻿using System.Text.Json.Serialization;
+using KittyStore.Domain.Common.Models;
 
 namespace KittyStore.Domain.OrderAggregate.ValueObjects;
 
@@ -9,7 +10,8 @@ public class Address : ValueObject
     public string Street { get; private set;}
     public string HouseNumber { get; private set;}
 
-    private Address(string country, string city, string street, string houseNumber)
+    [JsonConstructor]
+    public Address(string country, string city, string street, string houseNumber)
     {
         Country = country;
         City = city;
@@ -19,6 +21,9 @@ public class Address : ValueObject
 
     public static Address Create(string country, string city, string street, string houseNumber) => 
         new(country, city,  street, houseNumber);
+    
+    public override string ToString()
+        => $"{HouseNumber} {Street}, {City}, {Country}";
     
     protected override IEnumerable<object> GetEqualityComponents()
     {

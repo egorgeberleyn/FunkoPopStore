@@ -4,11 +4,13 @@ using KittyStore.Contracts.Cats;
 using KittyStore.Domain.CatAggregate.ValueObjects;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KittyStore.Api.Controllers;
 
 [Route("/cats")]
+[AllowAnonymous]
 public class CatsController : ApiController
 {
     private readonly ISender _mediator;

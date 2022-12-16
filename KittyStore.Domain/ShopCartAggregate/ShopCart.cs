@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using KittyStore.Domain.CatAggregate.ValueObjects;
-using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.Common.Models;
 using KittyStore.Domain.ShopCartAggregate.Entities;
 using KittyStore.Domain.ShopCartAggregate.ValueObjects;
@@ -14,7 +13,7 @@ public sealed class ShopCart : AggregateRoot<ShopCartId>
     
     public UserId UserId { get; private set; }
 
-    public IReadOnlyList<ShopCartItem> ShopCartItems => _items.AsReadOnly();
+    public IReadOnlyList<ShopCartItem> ShopCartItems => _items;
 
     public int ItemQuantity
     {
@@ -38,17 +37,12 @@ public sealed class ShopCart : AggregateRoot<ShopCartId>
     public static ShopCart Create(UserId userId) => 
         new (ShopCartId.CreateUnique(), userId);
     
-    public void AddItem(decimal unitPrice, CatId catId)
-    {
-        if (_items.Any(i => i.CatId.Value == catId.Value)) return; //do it exception 
+    public void AddItem(decimal unitPrice, CatId catId) =>
         _items.Add(ShopCartItem.Create(unitPrice, catId, Id));
-    }
-
+    
     public void RemoveItem(ShopCartItemId shopCartItemId)
     {
         var shopItem = _items.FirstOrDefault(item => item.Id == shopCartItemId);
         if (shopItem is not null) _items.Remove(shopItem);
     }
-
-    public void ClearShopCart() => _items.Clear();
 }

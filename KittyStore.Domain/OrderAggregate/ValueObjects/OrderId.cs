@@ -4,9 +4,9 @@ namespace KittyStore.Domain.OrderAggregate.ValueObjects;
 
 public class OrderId : ValueObject
 {
-    public Guid Value { get; private set;}
+    public Guid Value { get;}
 
-    private OrderId(Guid value)
+    public OrderId(Guid value)
     {
         Value = value;
     }

@@ -9,25 +9,31 @@ public sealed class Order : AggregateRoot<OrderId>
 {
     private readonly List<OrderItem> _items = new();
     
-    public Address Address { get; private set;}
+    public Address Address { get; private set; }
     
     public UserId UserId { get; private set;}
     
     public DateTime Created { get; private set;}
 
-    public decimal TotalPrice => CalculateTotalPrice();
+    public decimal TotalPrice { get; private set; }
 
-    public IReadOnlyList<OrderItem> OrderItems => _items.AsReadOnly();
+    public IReadOnlyList<OrderItem> OrderItems => _items;
 
-    private Order(OrderId id, Address address, UserId customerId, DateTime created) : base(id)
+    private Order(OrderId id, Address address, UserId userId, DateTime created) : base(id)
     {
         Address = address;
-        UserId = customerId;
+        UserId = userId;
         Created = created;
     }
 
-    public static Order Create(OrderId id, Address address, UserId customerId, DateTime created) =>
-        new(OrderId.CreateUnique(), address, customerId, DateTime.UtcNow);
+    public static Order Create(Address address, UserId userId) =>
+        new(OrderId.CreateUnique(), address, userId, DateTime.UtcNow);
 
-    public decimal CalculateTotalPrice() => _items.Sum(ord => ord.Price);
+    public void AddItems(List<OrderItem> items) => _items.AddRange(items);
+
+    public decimal CalculateTotalPrice()
+    {
+        TotalPrice = _items.Sum(ord => ord.Price);
+        return TotalPrice;
+    }
 }

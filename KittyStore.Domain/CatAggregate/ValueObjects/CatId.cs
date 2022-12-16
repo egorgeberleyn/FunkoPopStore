@@ -4,7 +4,7 @@ namespace KittyStore.Domain.CatAggregate.ValueObjects;
 
 public class CatId : ValueObject
 {
-    public Guid Value { get; private set;}
+    public Guid Value { get; }
 
     public CatId(Guid value)
     {

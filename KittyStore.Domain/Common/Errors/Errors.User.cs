@@ -13,5 +13,9 @@ public static partial class Errors
         public static Error NotFound => Error.NotFound(
             code: "User.NotFound",
             description: "Not found user in database.");
+        
+        public static Error NotEnoughBalance => Error.Validation(
+            code: "User.NotEnoughBalance",
+            description: "Not enough balance on account.");
     }
 }

@@ -8,15 +8,15 @@ public sealed class Cat : AggregateRoot<CatId>
 {
     public string Name { get; private set; }
     
-    public int Age { get; private set;}
+    public int Age { get; private set; }
     
     public CatGender Gender { get; private set; }
     
-    public string Color { get; private set;}
+    public string Color { get; private set; }
     
-    public string Breed { get; private set;}
+    public string Breed { get; private set; }
     
-    public decimal Price { get; private set;}
+    public decimal Price { get; private set; }
     
     private Cat(CatId id, string name, int age, string color, string breed, decimal price, CatGender gender) : base(id)
     {

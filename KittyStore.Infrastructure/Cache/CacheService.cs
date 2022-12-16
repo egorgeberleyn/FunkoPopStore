@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using KittyStore.Application.Common.Interfaces.Cache;
+using KittyStore.Infrastructure.Exceptions;
 using StackExchange.Redis;
 
 namespace KittyStore.Infrastructure.Cache;
@@ -16,18 +17,18 @@ public class CacheService: ICacheService {
     public async Task<T> GetDataAsync<T> (string key)
     {
         var value = await _redisDatabase.StringGetAsync(key);
-        return (!value.IsNull) 
+        return ((!value.IsNull)
             ? JsonSerializer.Deserialize<T>(value)
-            : default;
+            : default);
     }
     
-    public async Task SetDataAsync<T> (string key, T value, DateTimeOffset expirationTime) 
+    public async Task SetDataAsync<T> (string? key, T value, DateTimeOffset expirationTime) 
     {
         var expiryTime = expirationTime.DateTime.Subtract(DateTime.Now);
         var isSuccess = await _redisDatabase.StringSetAsync(key, 
             JsonSerializer.Serialize(value), expiryTime);
         if(!isSuccess) 
-            throw new Exception(); //do custom exception
+            throw new StringSetException("string installation error");
     }
     
     public async Task<bool> RemoveDataAsync(string key) 

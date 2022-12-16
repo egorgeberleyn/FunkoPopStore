@@ -8,6 +8,7 @@ using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.UserAggregate;
 using KittyStore.Domain.UserAggregate.Enums;
+using KittyStore.Domain.UserAggregate.ValueObjects;
 
 namespace KittyStore.Application.Authentication.Commands.Register;
 
@@ -31,7 +32,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
         //Create user and add to db
         CreatePasswordHash(command.Password, out byte[] passwordHash, out byte[] passwordSalt);
         var user = User.Create(command.FirstName, command.LastName, command.Email, 
-            passwordHash, passwordSalt, 0, Role.Customer);
+            passwordHash, passwordSalt, Balance.Create(Currency.Dollar, 0), Role.Customer);
         await _userRepository.AddUserAsync(user);
         
         //Jwt token generate

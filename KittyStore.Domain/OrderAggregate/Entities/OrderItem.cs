@@ -6,16 +6,21 @@ namespace KittyStore.Domain.OrderAggregate.Entities;
 
 public sealed class OrderItem : Entity<OrderItemId>
 {
+    public OrderId OrderId { get; set; }
+    
     public decimal Price { get; private set;}
     
     public CatId CatId { get; private set;}
-    
-    public OrderItem(OrderItemId id, decimal price, CatId catId) : base(id)
+
+    public Order? Order { get; set; }
+
+    private OrderItem(OrderItemId id, OrderId orderId, decimal price, CatId catId) : base(id)
     {
+        OrderId = orderId;
         Price = price;
         CatId = catId;
     }
 
-    public static OrderItem Create(OrderItemId id, decimal price, CatId catId) =>
-        new(OrderItemId.CreateUnique(), price, catId);
+    public static OrderItem Create(decimal price, OrderId orderId, CatId catId) =>
+        new(OrderItemId.CreateUnique(), orderId, price, catId);
 }

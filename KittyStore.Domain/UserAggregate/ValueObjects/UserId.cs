@@ -4,7 +4,7 @@ namespace KittyStore.Domain.UserAggregate.ValueObjects;
 
 public class UserId : ValueObject
 {
-    public Guid Value { get; private set;}
+    public Guid Value { get;}
 
     public UserId(Guid value)
     {
