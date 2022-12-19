@@ -9,6 +9,6 @@ admin panel, unit-tests
 CQRS, Repository,Mediator
 
 #### Admin Credentials
-Email: ***admin123@gmail.com***
+Email: ***admin123@gmail.com***<br>
 Password: ***secret123***
 
