@@ -3,7 +3,7 @@ using KittyStore.Domain.CatAggregate;
 using KittyStore.Tests.Common;
 using Shouldly;
 
-namespace KittyStore.Tests.Cats.Queries;
+namespace KittyStore.Tests.CatsTests.Queries;
 
 public class GetCatQueryHandlerTests : TestCommandBase
 {

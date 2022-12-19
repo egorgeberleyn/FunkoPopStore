@@ -1,6 +1,7 @@
-﻿namespace KittyStore.Contracts.ShopCart;
-
-public record AddShopCartItemRequest(
-    Guid UserId,
-    decimal Price,
-    Guid CatId);
+﻿namespace KittyStore.Contracts.ShopCart
+{
+    public record AddShopCartItemRequest(
+        Guid UserId,
+        decimal Price,
+        Guid CatId);
+}

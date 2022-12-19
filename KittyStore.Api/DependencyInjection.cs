@@ -1,32 +1,38 @@
-﻿using KittyStore.Api.Common.Errors;
+﻿using System.Reflection;
+using KittyStore.Api.Common.Errors;
 using KittyStore.Api.Common.Mapping;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace KittyStore.Api;
-
-public static class DependencyInjection
+namespace KittyStore.Api
 {
-    public static IServiceCollection AddPresentation(this IServiceCollection services)
+    public static class DependencyInjection
     {
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(options =>
+        public static IServiceCollection AddPresentation(this IServiceCollection services)
         {
-            options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(options =>
             {
-                Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
-                In = ParameterLocation.Header,
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey
-            });
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
             
-            options.OperationFilter<SecurityRequirementsOperationFilter>();
-            options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kitty Store API", Version = "v1" });   
-        });
-        services.AddMappings();
-        services.AddControllers();
-        services.AddSingleton<ProblemDetailsFactory, KittyStoreProblemDetailsFactory>();
-        return services;
+                options.OperationFilter<SecurityRequirementsOperationFilter>();
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kitty Store API", Version = "v1" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+            });
+            services.AddMappings();
+            services.AddControllers();
+            services.AddSingleton<ProblemDetailsFactory, KittyStoreProblemDetailsFactory>();
+            return services;
+        }
     }
 }

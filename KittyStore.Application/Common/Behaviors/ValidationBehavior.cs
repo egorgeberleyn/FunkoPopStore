@@ -2,36 +2,37 @@
 using FluentValidation;
 using MediatR;
 
-namespace KittyStore.Application.Common.Behaviors;
-
-public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
-    where TResponse : IErrorOr
+namespace KittyStore.Application.Common.Behaviors
 {
-    private readonly IValidator<TRequest>? _validator;
-
-    public ValidationBehavior(IValidator<TRequest>? validator = null)
+    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : IRequest<TResponse>
+        where TResponse : IErrorOr
     {
-        _validator = validator;
-    }
+        private readonly IValidator<TRequest>? _validator;
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, 
-        CancellationToken cancellationToken)
-    {
-        if (_validator is null)
-            return await next();
+        public ValidationBehavior(IValidator<TRequest>? validator = null)
+        {
+            _validator = validator;
+        }
 
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, 
+            CancellationToken cancellationToken)
+        {
+            if (_validator is null)
+                return await next();
 
-        if (validationResult.IsValid)
-            return await next();
+            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
-        var errors = validationResult.Errors
-            .ConvertAll(validFailure => Error.Validation(
-                validFailure.PropertyName, validFailure.ErrorMessage));
+            if (validationResult.IsValid)
+                return await next();
 
-        //in this example we will anyway get an error list, so conversion and
-        //the use of the dynamic keyword is justified
-        return (dynamic)errors;
+            var errors = validationResult.Errors
+                .ConvertAll(validFailure => Error.Validation(
+                    validFailure.PropertyName, validFailure.ErrorMessage));
+
+            //in this example we will anyway get an error list, so conversion and
+            //the use of the dynamic keyword is justified
+            return (dynamic)errors;
+        }
     }
 }

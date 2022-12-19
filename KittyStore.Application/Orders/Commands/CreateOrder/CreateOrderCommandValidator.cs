@@ -2,9 +2,9 @@
 
 namespace KittyStore.Application.Orders.Commands.CreateOrder;
 
-public class CreateOrderValidator : AbstractValidator<CreateOrderCommand>
+public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
 {
-    public CreateOrderValidator()
+    public CreateOrderCommandValidator()
     {
         RuleFor(ord => ord.AddressCommand.Country).MinimumLength(2)
             .Must(c => c.All(char.IsLetter));

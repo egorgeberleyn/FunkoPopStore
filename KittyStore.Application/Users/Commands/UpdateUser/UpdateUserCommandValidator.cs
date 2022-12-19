@@ -1,15 +1,19 @@
 ﻿using FluentValidation;
+using KittyStore.Domain.UserAggregate.Enums;
 
-namespace KittyStore.Application.Users.UpdateUser;
-
-public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
+namespace KittyStore.Application.Users.Commands.UpdateUser
 {
-    public UpdateUserCommandValidator()
+    public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
     {
-        RuleFor(user => user.FirstName).NotEmpty();
-        RuleFor(user => user.LastName).NotEmpty()
-            .Must((user, lastName) => lastName != user.FirstName);
-        RuleFor(user => user.Email).NotEmpty().EmailAddress();
-        RuleFor(user => user.Balance).NotEmpty().GreaterThanOrEqualTo(0);
+        public UpdateUserCommandValidator()
+        {
+            RuleFor(user => user.FirstName).NotEmpty();
+            RuleFor(user => user.LastName).NotEmpty()
+                .Must((user, lastName) => lastName != user.FirstName);
+            RuleFor(user => user.Email).NotEmpty().EmailAddress();
+            RuleFor(user => user.Balance.Amount).NotEmpty().GreaterThanOrEqualTo(0);
+            RuleFor(user => user.Balance.Currency)
+                .IsEnumName(typeof(Currency), caseSensitive: false);
+        }
     }
 }

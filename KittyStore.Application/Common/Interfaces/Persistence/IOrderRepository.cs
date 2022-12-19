@@ -1,11 +1,12 @@
 ﻿using KittyStore.Domain.OrderAggregate;
 using KittyStore.Domain.UserAggregate.ValueObjects;
 
-namespace KittyStore.Application.Common.Interfaces.Persistence;
-
-public interface IOrderRepository
+namespace KittyStore.Application.Common.Interfaces.Persistence
 {
-    Task<List<Order>> GetUserOrdersAsync(UserId id);
+    public interface IOrderRepository
+    {
+        Task<List<Order>> GetUserOrdersAsync(UserId id);
 
-    Task CreateOrderAsync(Order newOrder);
+        Task CreateOrderAsync(Order newOrder);
+    }
 }

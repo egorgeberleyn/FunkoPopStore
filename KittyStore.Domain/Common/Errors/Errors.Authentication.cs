@@ -1,13 +1,14 @@
 ﻿using ErrorOr;
 
-namespace KittyStore.Domain.Common.Errors;
-
-public static partial class Errors
+namespace KittyStore.Domain.Common.Errors
 {
-    public static class Authentication
+    public static partial class Errors
     {
-        public static Error InvalidCredentials => Error.Validation(
-            code: "Auth.InvalidCred",
-            description: "Invalid credentials");
+        public static class Authentication
+        {
+            public static Error InvalidCredentials => Error.Validation(
+                code: "Auth.InvalidCred",
+                description: "Invalid credentials");
+        }
     }
 }

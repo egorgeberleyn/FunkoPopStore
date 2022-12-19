@@ -1,6 +1,7 @@
-﻿namespace KittyStore.Application.Common.Interfaces.Services;
-
-public interface IDateTimeProvider
+﻿namespace KittyStore.Application.Common.Interfaces.Services
 {
-    DateTime UtcNow { get; }
+    public interface IDateTimeProvider
+    {
+        DateTime UtcNow { get; }
+    }
 }

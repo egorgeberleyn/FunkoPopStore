@@ -7,39 +7,40 @@ using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Application.ShopCarts.Common;
 using KittyStore.Domain.Common.Errors;
 
-namespace KittyStore.Application.ShopCarts.Commands.RemoveItem;
-
-public class RemoveItemCommandHandler : IRequestHandler<RemoveItemCommand, ErrorOr<ShopCart>>
+namespace KittyStore.Application.ShopCarts.Commands.RemoveItem
 {
-    private readonly ICacheService _cacheService;
-    private readonly IMapper _mapper;
-    private readonly IUserRepository _userRepository;
-
-    public RemoveItemCommandHandler(ICacheService cacheService, IMapper mapper, IUserRepository userRepository)
+    public class RemoveItemCommandHandler : IRequestHandler<RemoveItemCommand, ErrorOr<ShopCart>>
     {
-        _cacheService = cacheService;
-        _mapper = mapper;
-        _userRepository = userRepository;
-    }
+        private readonly ICacheService _cacheService;
+        private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
 
-    public async Task<ErrorOr<ShopCart>> Handle(RemoveItemCommand command, CancellationToken cancellationToken)
-    {
-        if (await _userRepository.GetUserByIdAsync(command.UserId) is not { } user)
-            return Errors.User.NotFound;
-        
-        var cart = _mapper.Map<ShopCart>(
-            await _cacheService.GetDataAsync<ShopCartDto>(user.Id.Value.ToString()!));
+        public RemoveItemCommandHandler(ICacheService cacheService, IMapper mapper, IUserRepository userRepository)
+        {
+            _cacheService = cacheService;
+            _mapper = mapper;
+            _userRepository = userRepository;
+        }
 
-        if (cart is null || cart.ShopCartItems.Count == 0)
-            return Errors.ShopCart.ShopCartEmpty;
+        public async Task<ErrorOr<ShopCart>> Handle(RemoveItemCommand command, CancellationToken cancellationToken)
+        {
+            if (await _userRepository.GetUserByIdAsync(command.UserId) is not { } user)
+                return Errors.User.NotFound;
         
-        if(cart.ShopCartItems.FirstOrDefault(item => item.Id == command.Id) is null)
-            return Errors.ShopCart.NotFoundItem;
+            var cart = _mapper.Map<ShopCart>(
+                await _cacheService.GetDataAsync<ShopCartDto>(user.Id.ToString()));
+
+            if (cart is null || cart.ShopCartItems.Count == 0)
+                return Errors.ShopCart.ShopCartEmpty;
+        
+            if(cart.ShopCartItems.FirstOrDefault(item => item.Id == command.Id) is null)
+                return Errors.ShopCart.NotFoundItem;
             
-        cart.RemoveItem(command.Id);
-        await _cacheService.SetDataAsync(user.Id.Value.ToString()!, _mapper.Map<ShopCartDto>(cart),
-            DateTimeOffset.Now.AddDays(10));
+            cart.RemoveItem(command.Id);
+            await _cacheService.SetDataAsync(user.Id.ToString(), _mapper.Map<ShopCartDto>(cart),
+                DateTimeOffset.Now.AddDays(10));
         
-        return cart;
+            return cart;
+        }
     }
 }

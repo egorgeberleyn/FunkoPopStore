@@ -3,7 +3,7 @@ using KittyStore.Domain.CatAggregate;
 using KittyStore.Tests.Common;
 using Shouldly;
 
-namespace KittyStore.Tests.Cats.Queries;
+namespace KittyStore.Tests.CatsTests.Queries;
 
 public class GetCatsQueryHandlerTests : TestCommandBase
 {
@@ -19,6 +19,6 @@ public class GetCatsQueryHandlerTests : TestCommandBase
         
         //Assert
         result.Value.ShouldBeOfType<List<Cat>>();
-        result.Value.Count.ShouldBe(7);
+        result.Value.Count.ShouldBe(7); //4 in entityConfig and 3 in testData
     }
 }

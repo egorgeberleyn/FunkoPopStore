@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace KittyStore.Api.Controllers;
-
-public class ErrorsController : ControllerBase
+namespace KittyStore.Api.Controllers
 {
-    [Route("/error")]
-    protected IActionResult Error()
+    public class ErrorsController : ControllerBase
     {
-        return Problem();
+        [Route("/error")]
+        protected IActionResult Error()
+        {
+            return Problem();
+        }
     }
 }

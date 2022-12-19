@@ -1,8 +1,9 @@
 ﻿using KittyStore.Domain.UserAggregate;
 
-namespace KittyStore.Application.Common.Interfaces.Authentication;
-
-public interface IJwtTokenGenerator
+namespace KittyStore.Application.Common.Interfaces.Authentication
 {
-    string GenerateToken(User user);
+    public interface IJwtTokenGenerator
+    {
+        string GenerateToken(User user);
+    }
 }

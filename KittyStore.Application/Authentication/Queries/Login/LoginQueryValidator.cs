@@ -1,12 +1,13 @@
 ﻿using FluentValidation;
 
-namespace KittyStore.Application.Authentication.Queries.Login;
-
-public class LoginQueryValidator : AbstractValidator<LoginQuery>
+namespace KittyStore.Application.Authentication.Queries.Login
 {
-    public LoginQueryValidator()
+    public class LoginQueryValidator : AbstractValidator<LoginQuery>
     {
-        RuleFor(x => x.Email).NotEmpty().EmailAddress();
-        RuleFor(x => x.Password).NotEmpty().MinimumLength(6);
+        public LoginQueryValidator()
+        {
+            RuleFor(x => x.Email).NotEmpty().EmailAddress();
+            RuleFor(x => x.Password).NotEmpty().MinimumLength(6);
+        }
     }
 }

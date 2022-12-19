@@ -1,6 +1,8 @@
-﻿namespace KittyStore.Application.Users.Queries.GetUserById;
+﻿using ErrorOr;
+using KittyStore.Domain.UserAggregate;
+using KittyStore.Domain.UserAggregate.ValueObjects;
+using MediatR;
 
-public class GetUserByIdQuery
-{
-    
-}
+namespace KittyStore.Application.Users.Queries.GetUserById;
+
+public record GetUserByIdQuery(UserId Id) : IRequest<ErrorOr<User>>;

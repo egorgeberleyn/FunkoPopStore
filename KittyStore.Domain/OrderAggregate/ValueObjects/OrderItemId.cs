@@ -1,20 +1,23 @@
 ﻿using KittyStore.Domain.Common.Models;
 
-namespace KittyStore.Domain.OrderAggregate.ValueObjects;
-
-public class OrderItemId : ValueObject
+namespace KittyStore.Domain.OrderAggregate.ValueObjects
 {
-    public Guid Value { get; }
-
-    public OrderItemId(Guid value)
+    public class OrderItemId : ValueObject
     {
-        Value = value;
-    }
+        public Guid Value { get; }
 
-    public static OrderItemId CreateUnique() => new(Guid.NewGuid());
+        public OrderItemId(Guid value)
+        {
+            Value = value;
+        }
+
+        public static OrderItemId CreateUnique() => new(Guid.NewGuid());
     
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Value;
+        }
+    
+        public override string ToString() => Value.ToString();
     }
 }

@@ -1,7 +1,8 @@
-﻿namespace KittyStore.Domain.UserAggregate.Enums;
-
-public enum Currency
+﻿namespace KittyStore.Domain.UserAggregate.Enums
 {
-    Dollar = 0,
-    Euro = 1,
+    public enum Currency
+    {
+        Dollar = 0,
+        Euro = 1,
+    }
 }

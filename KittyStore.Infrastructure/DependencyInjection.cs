@@ -16,67 +16,68 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 
-namespace KittyStore.Infrastructure;
-
-public static class DependencyInjection
+namespace KittyStore.Infrastructure
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, 
-        ConfigurationManager configuration)
+    public static class DependencyInjection
     {
-        services
-            .AddAuth(configuration)
-            .AddPersistence(configuration)
-            .AddCache(configuration);
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, 
+            ConfigurationManager configuration)
+        {
+            services
+                .AddAuth(configuration)
+                .AddPersistence(configuration)
+                .AddCache(configuration);
         
-        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-        return services;
-    }
+            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+            return services;
+        }
 
-    private static IServiceCollection AddPersistence(this IServiceCollection services, 
-        IConfiguration configuration)
-    {
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<ICatRepository, CatRepository>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
+        private static IServiceCollection AddPersistence(this IServiceCollection services, 
+            IConfiguration configuration)
+        {
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICatRepository, CatRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DbConnection")));
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("DbConnection")));
         
-        return services;
-    }
+            return services;
+        }
     
-    private static IServiceCollection AddAuth(this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        var jwtSettings = new JwtSettings();
-        configuration.Bind(JwtSettings.SectionName, jwtSettings);
+        private static IServiceCollection AddAuth(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            var jwtSettings = new JwtSettings();
+            configuration.Bind(JwtSettings.SectionName, jwtSettings);
         
-        services.AddSingleton(Options.Create(jwtSettings));
-        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddSingleton(Options.Create(jwtSettings));
+            services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
-        services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings.Issuer,
-                ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(jwtSettings.Secret))
-            });
+            services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(jwtSettings.Secret))
+                });
 
-        return services;
-    }
+            return services;
+        }
 
-    private static IServiceCollection AddCache(this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        services.AddSingleton<IConnectionMultiplexer>
-            (ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")));
-        services.AddScoped<ICacheService, CacheService>();
+        private static IServiceCollection AddCache(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddSingleton<IConnectionMultiplexer>
+                (ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")));
+            services.AddScoped<ICacheService, CacheService>();
         
-        return services;
+            return services;
+        }
     }
 }

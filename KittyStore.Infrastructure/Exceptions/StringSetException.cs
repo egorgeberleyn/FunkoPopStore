@@ -1,9 +1,10 @@
-﻿namespace KittyStore.Infrastructure.Exceptions;
-
-public class StringSetException : Exception
+﻿namespace KittyStore.Infrastructure.Exceptions
 {
-    public StringSetException() {}
+    public class StringSetException : Exception
+    {
+        public StringSetException() {}
     
-    public StringSetException(string errorMessage) : base(errorMessage) {}
+        public StringSetException(string errorMessage) : base(errorMessage) {}
     
+    }
 }

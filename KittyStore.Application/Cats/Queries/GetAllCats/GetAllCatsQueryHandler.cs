@@ -3,19 +3,20 @@ using ErrorOr;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.CatAggregate;
 
-namespace KittyStore.Application.Cats.Queries.GetAllCats;
-
-public class GetAllCatsQueryHandler : IRequestHandler<GetAllCatsQuery, ErrorOr<List<Cat>>>
+namespace KittyStore.Application.Cats.Queries.GetAllCats
 {
-    private readonly ICatRepository _catRepository;
-
-    public GetAllCatsQueryHandler(ICatRepository catRepository)
+    public class GetAllCatsQueryHandler : IRequestHandler<GetAllCatsQuery, ErrorOr<List<Cat>>>
     {
-        _catRepository = catRepository;
-    }
+        private readonly ICatRepository _catRepository;
 
-    public async Task<ErrorOr<List<Cat>>> Handle(GetAllCatsQuery query, CancellationToken cancellationToken)
-    {
-        return await _catRepository.GetAllCatsAsync();
+        public GetAllCatsQueryHandler(ICatRepository catRepository)
+        {
+            _catRepository = catRepository;
+        }
+
+        public async Task<ErrorOr<List<Cat>>> Handle(GetAllCatsQuery query, CancellationToken cancellationToken)
+        {
+            return await _catRepository.GetAllCatsAsync();
+        }
     }
 }

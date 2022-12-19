@@ -1,6 +1,11 @@
-﻿namespace KittyStore.Application.Users.Commands.AddBalanceToUser;
+﻿using FluentValidation;
 
-public class AddBalanceToUserCommandValidator
+namespace KittyStore.Application.Users.Commands.AddBalanceToUser;
+
+public class AddBalanceToUserCommandValidator : AbstractValidator<AddBalanceToUserCommand>
 {
-    
+    public AddBalanceToUserCommandValidator()
+    {
+        RuleFor(b => b.Amount).GreaterThan(0);
+    }
 }

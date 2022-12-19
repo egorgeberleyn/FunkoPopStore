@@ -2,7 +2,7 @@
 using KittyStore.Tests.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace KittyStore.Tests.Cats.Commands;
+namespace KittyStore.Tests.CatsTests.Commands;
 
 public class CreateCatCommandHandlerTests : TestCommandBase
 {

@@ -4,7 +4,7 @@ using KittyStore.Domain.Common.Errors;
 using KittyStore.Tests.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace KittyStore.Tests.Cats.Commands;
+namespace KittyStore.Tests.CatsTests.Commands;
 
 public class DeleteCatCommandHandlerTests : TestCommandBase
 {
@@ -15,7 +15,7 @@ public class DeleteCatCommandHandlerTests : TestCommandBase
         var handler = new DeleteCatCommandHandler(CatRepository);
         
         //Act
-        var testCat = await handler.Handle(new DeleteCatCommand(
+         await handler.Handle(new DeleteCatCommand(
                 KittyContextFactory.CatIdForDelete), 
                 CancellationToken.None);
             

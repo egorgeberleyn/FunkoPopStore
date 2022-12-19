@@ -6,39 +6,50 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace KittyStore.Api.Controllers;
-
-[Route("orders")]
-public class OrdersController : ApiController
+namespace KittyStore.Api.Controllers
 {
-    private readonly ISender _mediator;
-    private readonly IMapper _mapper;
-
-    public OrdersController(ISender mediator, IMapper mapper)
+    [Route("orders")]
+    public class OrdersController : ApiController
     {
-        _mediator = mediator;
-        _mapper = mapper;
-    }
+        private readonly ISender _mediator;
+        private readonly IMapper _mapper;
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllUserOrders(Guid userId)
-    {
-        var result = await _mediator.Send(new GetAllUserOrdersQuery(
-            new UserId(userId)));
+        public OrdersController(ISender mediator, IMapper mapper)
+        {
+            _mediator = mediator;
+            _mapper = mapper;
+        }
 
-        return result.Match(
-            orders => Ok(_mapper.Map<List<OrderResponse>>(orders)),
-            errors => Problem(errors));
-    }
+        /// <summary>
+        /// Get all of the user's orders
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetAllUserOrders(Guid userId)
+        {
+            var result = await _mediator.Send(new GetAllUserOrdersQuery(
+                new UserId(userId)));
+
+            return result.Match(
+                orders => Ok(_mapper.Map<List<OrderResponse>>(orders)),
+                errors => Problem(errors));
+        }
     
-    [HttpPost]
-    public async Task<IActionResult> CreateOrder(CreateOrderRequest request)
-    {
-        var command = _mapper.Map<CreateOrderCommand>(request);
-        var createdResult = await _mediator.Send(command);
+        /// <summary>
+        /// Create new order
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder(CreateOrderRequest request)
+        {
+            var command = _mapper.Map<CreateOrderCommand>(request);
+            var createdResult = await _mediator.Send(command);
 
-        return createdResult.Match(
-            order => Ok(_mapper.Map<OrderResponse>(order)),
-            errors => Problem(errors));
+            return createdResult.Match(
+                order => Ok(_mapper.Map<OrderResponse>(order)),
+                errors => Problem(errors));
+        }
     }
 }

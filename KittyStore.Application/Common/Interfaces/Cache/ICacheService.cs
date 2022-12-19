@@ -1,10 +1,11 @@
-﻿namespace KittyStore.Application.Common.Interfaces.Cache;
-
-public interface ICacheService
+﻿namespace KittyStore.Application.Common.Interfaces.Cache
 {
-    Task<T> GetDataAsync<T>(string key);
+    public interface ICacheService
+    {
+        Task<T> GetDataAsync<T>(string key);
     
-    Task SetDataAsync<T>(string key, T value, DateTimeOffset expirationTime);
+        Task SetDataAsync<T>(string key, T value, DateTimeOffset expirationTime);
     
-    Task<bool> RemoveDataAsync(string key);
+        Task<bool> RemoveDataAsync(string key);
+    }
 }

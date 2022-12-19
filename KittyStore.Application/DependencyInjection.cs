@@ -5,15 +5,16 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace KittyStore.Application;
-
-public static class DependencyInjection
+namespace KittyStore.Application
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static class DependencyInjection
     {
-        services.AddMediatR(typeof(DependencyInjection).Assembly);
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        return services;
+        public static IServiceCollection AddApplication(this IServiceCollection services)
+        {
+            services.AddMediatR(typeof(DependencyInjection).Assembly);
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            return services;
+        }
     }
 }

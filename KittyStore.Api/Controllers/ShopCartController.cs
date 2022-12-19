@@ -6,57 +6,57 @@ using KittyStore.Domain.ShopCartAggregate.ValueObjects;
 using KittyStore.Domain.UserAggregate.ValueObjects;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace KittyStore.Api.Controllers;
-
-[Route("/shopCart")]
-public class ShopCartController : ApiController
+namespace KittyStore.Api.Controllers
 {
-    private readonly ISender _mediator;
-    private readonly IMapper _mapper;
-
-    public ShopCartController(ISender mediator, IMapper mapper)
+    [Route("/shopCart")]
+    public class ShopCartController : ApiController
     {
-        _mediator = mediator;
-        _mapper = mapper;
-    }
+        private readonly ISender _mediator;
+        private readonly IMapper _mapper;
 
-    [HttpGet("")]
-    public async Task<IActionResult> GetShopCart(Guid userId)
-    {
-        var result = await _mediator.Send(
-            new GetShopCartQuery(new UserId(userId)));
+        public ShopCartController(ISender mediator, IMapper mapper)
+        {
+            _mediator = mediator;
+            _mapper = mapper;
+        }
 
-        return result.Match(
-            cart => Ok(_mapper.Map<ShopCartResponse>(cart)),
-            errors => Problem(errors)
-        );
-    }
+        [HttpGet("")]
+        public async Task<IActionResult> GetShopCart(Guid userId)
+        {
+            var result = await _mediator.Send(
+                new GetShopCartQuery(new UserId(userId)));
+
+            return result.Match(
+                cart => Ok(_mapper.Map<ShopCartResponse>(cart)),
+                errors => Problem(errors)
+            );
+        }
     
-    [HttpPost("items")]
-    public async Task<IActionResult> AddItem(AddShopCartItemRequest request)
-    {
-        var command = _mapper.Map<AddShopCartItemCommand>(request);
-        var result = await _mediator.Send(command);
+        [HttpPost("items")]
+        public async Task<IActionResult> AddItem(AddShopCartItemRequest request)
+        {
+            var command = _mapper.Map<AddShopCartItemCommand>(request);
+            var result = await _mediator.Send(command);
 
-        return result.Match(
-            cart => Ok(_mapper.Map<ShopCartResponse>(cart)),
-            errors => Problem(errors)
-        );
-    }
+            return result.Match(
+                cart => Ok(_mapper.Map<ShopCartResponse>(cart)),
+                errors => Problem(errors)
+            );
+        }
     
-    [HttpDelete("items/{id:guid}")]
-    public async Task<IActionResult> RemoveItem(Guid id, Guid userId)
-    {
-        var itemId = new ShopCartItemId(id);
-        var result = await _mediator.Send(
-            new RemoveItemCommand(itemId, new UserId(userId)));
+        [HttpDelete("items/{id:guid}")]
+        public async Task<IActionResult> RemoveItem(Guid id, Guid userId)
+        {
+            var itemId = new ShopCartItemId(id);
+            var result = await _mediator.Send(
+                new RemoveItemCommand(itemId, new UserId(userId)));
 
-        return result.Match(
-            cart => Ok(_mapper.Map<ShopCartResponse>(cart)),
-            errors => Problem(errors)
-        );
+            return result.Match(
+                cart => Ok(_mapper.Map<ShopCartResponse>(cart)),
+                errors => Problem(errors)
+            );
+        }
     }
 }

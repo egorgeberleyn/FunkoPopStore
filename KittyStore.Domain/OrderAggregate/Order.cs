@@ -3,37 +3,33 @@ using KittyStore.Domain.OrderAggregate.Entities;
 using KittyStore.Domain.OrderAggregate.ValueObjects;
 using KittyStore.Domain.UserAggregate.ValueObjects;
 
-namespace KittyStore.Domain.OrderAggregate;
-
-public sealed class Order : AggregateRoot<OrderId>
+namespace KittyStore.Domain.OrderAggregate
 {
-    private readonly List<OrderItem> _items = new();
-    
-    public Address Address { get; private set; }
-    
-    public UserId UserId { get; private set;}
-    
-    public DateTime Created { get; private set;}
-
-    public decimal TotalPrice { get; private set; }
-
-    public IReadOnlyList<OrderItem> OrderItems => _items;
-
-    private Order(OrderId id, Address address, UserId userId, DateTime created) : base(id)
+    public sealed class Order : AggregateRoot<OrderId>
     {
-        Address = address;
-        UserId = userId;
-        Created = created;
-    }
+        private readonly List<OrderItem> _items = new();
+    
+        public Address Address { get; private set; }
+    
+        public UserId UserId { get; private set;}
+    
+        public DateTime Created { get; private set;}
 
-    public static Order Create(Address address, UserId userId) =>
-        new(OrderId.CreateUnique(), address, userId, DateTime.UtcNow);
+        public decimal TotalPrice { get; private set; }
 
-    public void AddItems(List<OrderItem> items) => _items.AddRange(items);
+        public IReadOnlyList<OrderItem> OrderItems => _items;
 
-    public decimal CalculateTotalPrice()
-    {
-        TotalPrice = _items.Sum(ord => ord.Price);
-        return TotalPrice;
+        public Order(OrderId id, Address address, UserId userId, decimal totalPrice, DateTime created) : base(id)
+        {
+            Address = address;
+            UserId = userId;
+            Created = created;
+            TotalPrice = totalPrice;
+        }
+
+        public static Order Create(Address address, decimal totalPrice, UserId userId) =>
+            new(OrderId.CreateUnique(), address, userId, totalPrice, DateTime.UtcNow);
+
+        public void AddItems(List<OrderItem> items) => _items.AddRange(items);
     }
 }

@@ -4,25 +4,26 @@ using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.UserAggregate;
 using MediatR;
 
-namespace KittyStore.Application.Users.AddBalanceToUser;
-
-public class AddBalanceToUserCommandHandler : IRequestHandler<AddBalanceToUserCommand, ErrorOr<User>>
+namespace KittyStore.Application.Users.Commands.AddBalanceToUser
 {
-    private readonly IUserRepository _userRepository;
-
-    public AddBalanceToUserCommandHandler(IUserRepository userRepository)
+    public class AddBalanceToUserCommandHandler : IRequestHandler<AddBalanceToUserCommand, ErrorOr<User>>
     {
-        _userRepository = userRepository;
-    }
+        private readonly IUserRepository _userRepository;
 
-    public async Task<ErrorOr<User>> Handle(AddBalanceToUserCommand command, CancellationToken cancellationToken)
-    {
-        if (await _userRepository.GetUserByIdAsync(command.UserId) is not {} user)
-            return Errors.User.NotFound;
+        public AddBalanceToUserCommandHandler(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
 
-        user.Balance.Replenishment(command.Amount);
-        await _userRepository.UpdateUserAsync(user);
+        public async Task<ErrorOr<User>> Handle(AddBalanceToUserCommand command, CancellationToken cancellationToken)
+        {
+            if (await _userRepository.GetUserByIdAsync(command.UserId) is not {} user)
+                return Errors.User.NotFound;
 
-        return user;
+            user.Balance.Replenishment(command.Amount);
+            await _userRepository.UpdateUserAsync(user);
+
+            return user;
+        }
     }
 }

@@ -1,6 +1,7 @@
-﻿namespace KittyStore.Api.Common.Http;
-
-public static class HttpContextItemKeys
+﻿namespace KittyStore.Api.Common.Http
 {
-    public const string Errors = "errors";
+    public static class HttpContextItemKeys
+    {
+        public const string Errors = "errors";
+    }
 }

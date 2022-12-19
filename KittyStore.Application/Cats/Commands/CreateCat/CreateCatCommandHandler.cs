@@ -4,24 +4,25 @@ using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.CatAggregate;
 using KittyStore.Domain.CatAggregate.Enums;
 
-namespace KittyStore.Application.Cats.Commands.CreateCat;
-
-public class CreateCatCommandHandler : IRequestHandler<CreateCatCommand, ErrorOr<Cat>>
+namespace KittyStore.Application.Cats.Commands.CreateCat
 {
-    private readonly ICatRepository _catRepository;
-
-    public CreateCatCommandHandler(ICatRepository catRepository)
+    public class CreateCatCommandHandler : IRequestHandler<CreateCatCommand, ErrorOr<Cat>>
     {
-        _catRepository = catRepository;
-    }
+        private readonly ICatRepository _catRepository;
 
-    public async Task<ErrorOr<Cat>> Handle(CreateCatCommand command, CancellationToken cancellationToken)
-    {
-        var cat = Cat.Create(command.Name, command.Age, command.Color, 
-            command.Breed, command.Price, (CatGender)Enum.Parse(typeof(CatGender) ,command.Gender, true));
+        public CreateCatCommandHandler(ICatRepository catRepository)
+        {
+            _catRepository = catRepository;
+        }
 
-        await _catRepository.CreateCatAsync(cat);
+        public async Task<ErrorOr<Cat>> Handle(CreateCatCommand command, CancellationToken cancellationToken)
+        {
+            var cat = Cat.Create(command.Name, command.Age, command.Color, 
+                command.Breed, command.Price, (CatGender)Enum.Parse(typeof(CatGender) ,command.Gender, true));
 
-        return cat;
+            await _catRepository.CreateCatAsync(cat);
+
+            return cat;
+        }
     }
 }

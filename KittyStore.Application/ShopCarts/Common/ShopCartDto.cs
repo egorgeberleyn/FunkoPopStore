@@ -1,13 +1,15 @@
-﻿namespace KittyStore.Application.ShopCarts.Common;
+﻿namespace KittyStore.Application.ShopCarts.Common
+{
+    public record ShopCartDto(
+        Guid Id,
+        Guid UserId,
+        List<ShopCartItemDto> ShopCartItems,
+        int ItemQuantity,
+        decimal TotalPrice);
 
-public record ShopCartDto(
-    Guid Id,
-    Guid UserId,
-    List<ShopCartItemDto> ShopCartItems,
-    int ItemQuantity);
-
-public record ShopCartItemDto(
-    Guid Id,
-    decimal Price,
-    Guid CatId,
-    Guid ShopCartId);
+    public record ShopCartItemDto(
+        Guid Id,
+        decimal Price,
+        Guid CatId,
+        Guid ShopCartId);
+}

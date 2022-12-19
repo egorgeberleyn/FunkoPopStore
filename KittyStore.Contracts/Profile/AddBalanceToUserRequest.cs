@@ -1,5 +1,6 @@
-﻿namespace KittyStore.Contracts.Profile;
-
-public record AddBalanceRequest(
-    Guid UserId,
-    decimal Amount);
+﻿namespace KittyStore.Contracts.Profile
+{
+    public record AddBalanceToUserRequest(
+        Guid UserId,
+        decimal Amount);
+}

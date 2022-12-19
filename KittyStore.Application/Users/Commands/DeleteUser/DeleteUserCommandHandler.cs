@@ -1,26 +1,27 @@
-﻿using MediatR;
-using ErrorOr;
+﻿using ErrorOr;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.Common.Errors;
+using MediatR;
 
-namespace KittyStore.Application.Users.DeleteUser;
-
-public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, ErrorOr<Unit>>
+namespace KittyStore.Application.Users.Commands.DeleteUser
 {
-    private readonly IUserRepository _userRepository;
-
-    public DeleteUserCommandHandler(IUserRepository userRepository)
+    public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, ErrorOr<Unit>>
     {
-        _userRepository = userRepository;
-    }
+        private readonly IUserRepository _userRepository;
 
-    public async Task<ErrorOr<Unit>> Handle(DeleteUserCommand command, CancellationToken cancellationToken)
-    {
-        if (await _userRepository.GetUserByIdAsync(command.Id) is not {} user)
-            return Errors.User.NotFound;
+        public DeleteUserCommandHandler(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
 
-        await _userRepository.DeleteUserAsync(user);
+        public async Task<ErrorOr<Unit>> Handle(DeleteUserCommand command, CancellationToken cancellationToken)
+        {
+            if (await _userRepository.GetUserByIdAsync(command.Id) is not {} user)
+                return Errors.User.NotFound;
+
+            await _userRepository.DeleteUserAsync(user);
         
-        return Unit.Value;
+            return Unit.Value;
+        }
     }
 }

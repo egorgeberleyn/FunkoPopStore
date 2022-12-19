@@ -1,3 +1,7 @@
-﻿namespace KittyStore.Application.Users.Queries.GetAllUsers;
+﻿using ErrorOr;
+using KittyStore.Domain.UserAggregate;
+using MediatR;
 
-public record GetAllUsersQuery();
+namespace KittyStore.Application.Users.Queries.GetAllUsers;
+
+public record GetAllUsersQuery() : IRequest<ErrorOr<List<User>>>;

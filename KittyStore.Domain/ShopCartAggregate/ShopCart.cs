@@ -1,48 +1,60 @@
-﻿using System.Text.Json.Serialization;
-using KittyStore.Domain.CatAggregate.ValueObjects;
+﻿using KittyStore.Domain.CatAggregate.ValueObjects;
 using KittyStore.Domain.Common.Models;
 using KittyStore.Domain.ShopCartAggregate.Entities;
 using KittyStore.Domain.ShopCartAggregate.ValueObjects;
 using KittyStore.Domain.UserAggregate.ValueObjects;
+using Newtonsoft.Json;
 
-namespace KittyStore.Domain.ShopCartAggregate;
-
-public sealed class ShopCart : AggregateRoot<ShopCartId>
+namespace KittyStore.Domain.ShopCartAggregate
 {
-    private readonly List<ShopCartItem> _items = new();
-    
-    public UserId UserId { get; private set; }
-
-    public IReadOnlyList<ShopCartItem> ShopCartItems => _items;
-
-    public int ItemQuantity
+    public sealed class ShopCart : AggregateRoot<ShopCartId>
     {
-        get => _items.Count;
-        init { if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value)); }
-    }
+        private readonly List<ShopCartItem> _items = new();
+    
+        public UserId UserId { get; private set; }
 
-    public ShopCart(ShopCartId id, UserId userId) : base(id)
-    {
-        UserId = userId;
-    }
+        public IReadOnlyList<ShopCartItem> ShopCartItems => _items;
 
-    [JsonConstructor]
-    public ShopCart(ShopCartId id, UserId userId, int itemQuantity, List<ShopCartItem> shopCartItems) : base(id)
-    {
-        UserId = userId;
-        ItemQuantity = itemQuantity;
-        _items = shopCartItems;
-    }
+        public int ItemQuantity
+        {
+            get => _items.Count;
+            init { if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value)); }
+        }
     
-    public static ShopCart Create(UserId userId) => 
-        new (ShopCartId.CreateUnique(), userId);
+        public decimal TotalPrice
+        {
+            get => CalculateTotalPrice();
+            init { if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value)); }
+        }
+
+        public ShopCart(ShopCartId id, UserId userId) : base(id)
+        {
+            UserId = userId;
+        }
+
+        [JsonConstructor]
+        public ShopCart(ShopCartId id, UserId userId, int itemQuantity, List<ShopCartItem> shopCartItems,
+            decimal totalPrice) : base(id)
+        {
+            UserId = userId;
+            ItemQuantity = itemQuantity;
+            _items = shopCartItems;
+            TotalPrice = totalPrice;
+        }
     
-    public void AddItem(decimal unitPrice, CatId catId) =>
-        _items.Add(ShopCartItem.Create(unitPrice, catId, Id));
+        public static ShopCart Create(UserId userId) => 
+            new (ShopCartId.CreateUnique(), userId);
     
-    public void RemoveItem(ShopCartItemId shopCartItemId)
-    {
-        var shopItem = _items.FirstOrDefault(item => item.Id == shopCartItemId);
-        if (shopItem is not null) _items.Remove(shopItem);
+        public void AddItem(decimal price, CatId catId) =>
+            _items.Add(ShopCartItem.Create(price, catId, Id));
+    
+        public void RemoveItem(ShopCartItemId shopCartItemId)
+        {
+            var shopItem = _items.FirstOrDefault(item => item.Id == shopCartItemId);
+            if (shopItem is not null) _items.Remove(shopItem);
+        }
+
+        private decimal CalculateTotalPrice() => _items.Sum(ord => ord.Price);
+   
     }
 }

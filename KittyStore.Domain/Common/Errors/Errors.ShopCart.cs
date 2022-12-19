@@ -1,17 +1,18 @@
 ﻿using ErrorOr;
 
-namespace KittyStore.Domain.Common.Errors;
-
-public partial class Errors
+namespace KittyStore.Domain.Common.Errors
 {
-    public static class ShopCart
+    public partial class Errors
     {
-        public static Error NotFoundItem => Error.NotFound(
-            code: "ShopCartItem.NotFound",
-            description: "Item not found in shopping cart.");
+        public static class ShopCart
+        {
+            public static Error NotFoundItem => Error.NotFound(
+                code: "ShopCartItem.NotFound",
+                description: "Item not found in shopping cart.");
         
-        public static Error ShopCartEmpty => Error.Conflict(
-            code: "ShopCart.Empty",
-            description: "Shopping cart is empty.");
+            public static Error ShopCartEmpty => Error.Conflict(
+                code: "ShopCart.Empty",
+                description: "Shopping cart is empty.");
+        }
     }
 }

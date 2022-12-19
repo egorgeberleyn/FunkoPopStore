@@ -1,20 +1,23 @@
 ﻿using KittyStore.Domain.Common.Models;
 
-namespace KittyStore.Domain.ShopCartAggregate.ValueObjects;
-
-public class ShopCartItemId : ValueObject
+namespace KittyStore.Domain.ShopCartAggregate.ValueObjects
 {
-    public Guid Value { get; }
-
-    public ShopCartItemId(Guid value)
+    public class ShopCartItemId : ValueObject
     {
-        Value = value;
-    }
+        public Guid Value { get; }
 
-    public static ShopCartItemId CreateUnique() => new(Guid.NewGuid());
+        public ShopCartItemId(Guid value)
+        {
+            Value = value;
+        }
+
+        public static ShopCartItemId CreateUnique() => new(Guid.NewGuid());
     
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Value;
+        }
+    
+        public override string ToString() => Value.ToString();
     }
 }

@@ -1,8 +1,9 @@
-﻿namespace KittyStore.Domain.CatAggregate.Enums;
-
-public enum CatGender
+﻿namespace KittyStore.Domain.CatAggregate.Enums
 {
-    Male = 0,
-    Female = 1,
-    Genderqueer = 2
+    public enum CatGender
+    {
+        Male = 0,
+        Female = 1,
+        Genderqueer = 2
+    }
 }

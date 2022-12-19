@@ -7,33 +7,30 @@ using KittyStore.Domain.ShopCartAggregate;
 using MapsterMapper;
 using MediatR;
 
-namespace KittyStore.Application.ShopCarts.Queries.GetShopCart;
-
-public class GetShopCartQueryHandler : IRequestHandler<GetShopCartQuery, ErrorOr<ShopCart>>
+namespace KittyStore.Application.ShopCarts.Queries.GetShopCart
 {
-    private readonly ICacheService _cacheService;
-    private readonly IUserRepository _userRepository;
-    private readonly IMapper _mapper;
-
-    public GetShopCartQueryHandler(ICacheService cacheService, IUserRepository userRepository, IMapper mapper)
+    public class GetShopCartQueryHandler : IRequestHandler<GetShopCartQuery, ErrorOr<ShopCart>>
     {
-        _cacheService = cacheService;
-        _userRepository = userRepository;
-        _mapper = mapper;
-    }
+        private readonly ICacheService _cacheService;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-    public async Task<ErrorOr<ShopCart>> Handle(GetShopCartQuery query, CancellationToken cancellationToken)
-    {
-        if (await _userRepository.GetUserByIdAsync(query.UserId) is not { } user)
-            return Errors.User.NotFound;
+        public GetShopCartQueryHandler(ICacheService cacheService, IUserRepository userRepository, IMapper mapper)
+        {
+            _cacheService = cacheService;
+            _userRepository = userRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<ErrorOr<ShopCart>> Handle(GetShopCartQuery query, CancellationToken cancellationToken)
+        {
+            if (await _userRepository.GetUserByIdAsync(query.UserId) is not { } user)
+                return Errors.User.NotFound;
         
-        var cart = await _cacheService.GetDataAsync<ShopCartDto>(user.Id.Value.ToString()!);
-        if (cart is not null) return _mapper.Map<ShopCart>(cart);
-        
-        var newCart = ShopCart.Create(user.Id);
-        await _cacheService.SetDataAsync(user.Id.Value.ToString()!, _mapper.Map<ShopCartDto>(newCart), 
-            DateTimeOffset.Now.AddDays(10));
+            if(await _cacheService.GetDataAsync<ShopCartDto>(user.Id.ToString()) is not { } cart)
+                return Errors.ShopCart.ShopCartEmpty;
             
-        return newCart;
+            return _mapper.Map<ShopCart>(cart);
+        }
     }
 }

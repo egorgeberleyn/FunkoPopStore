@@ -4,26 +4,27 @@ using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.OrderAggregate;
 using MediatR;
 
-namespace KittyStore.Application.Orders.Queries.GetAllUserOrders;
-
-public class GetAllUserOrdersQueryHandler : IRequestHandler<GetAllUserOrdersQuery, ErrorOr<List<Order>>>
+namespace KittyStore.Application.Orders.Queries.GetAllUserOrders
 {
-    private readonly IOrderRepository _orderRepository;
-    private readonly IUserRepository _userRepository;
-
-    public GetAllUserOrdersQueryHandler(IOrderRepository orderRepository, IUserRepository userRepository)
+    public class GetAllUserOrdersQueryHandler : IRequestHandler<GetAllUserOrdersQuery, ErrorOr<List<Order>>>
     {
-        _orderRepository = orderRepository;
-        _userRepository = userRepository;
-    }
+        private readonly IOrderRepository _orderRepository;
+        private readonly IUserRepository _userRepository;
 
-    public async Task<ErrorOr<List<Order>>> Handle(GetAllUserOrdersQuery query, CancellationToken cancellationToken)
-    {
-        if (await _userRepository.GetUserByIdAsync(query.UserId) is not {} user)
-            return Errors.User.NotFound;
+        public GetAllUserOrdersQueryHandler(IOrderRepository orderRepository, IUserRepository userRepository)
+        {
+            _orderRepository = orderRepository;
+            _userRepository = userRepository;
+        }
+
+        public async Task<ErrorOr<List<Order>>> Handle(GetAllUserOrdersQuery query, CancellationToken cancellationToken)
+        {
+            if (await _userRepository.GetUserByIdAsync(query.UserId) is not {} user)
+                return Errors.User.NotFound;
         
-        var orders = await _orderRepository.GetUserOrdersAsync(user.Id);
+            var orders = await _orderRepository.GetUserOrdersAsync(user.Id);
 
-        return orders;
+            return orders;
+        }
     }
 }

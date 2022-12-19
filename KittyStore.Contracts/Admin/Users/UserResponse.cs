@@ -1,8 +1,14 @@
-﻿namespace KittyStore.Contracts.Users;
+﻿namespace KittyStore.Contracts.Admin.Users
+{
+    public record UserResponse(
+        Guid Id,
+        string FirstName,
+        string LastName,
+        string Email,
+        Balance Balance,
+        string Role);
 
-public record UserResponse(
-    Guid Id,
-    string FirstName,
-    string LastName,
-    string Email,
-    decimal Balance);
+    public record Balance(
+        string Currency,
+        decimal Amount);
+}

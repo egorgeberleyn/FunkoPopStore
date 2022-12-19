@@ -1,35 +1,36 @@
 ﻿using System.Text.Json.Serialization;
 using KittyStore.Domain.Common.Models;
 
-namespace KittyStore.Domain.OrderAggregate.ValueObjects;
-
-public class Address : ValueObject
+namespace KittyStore.Domain.OrderAggregate.ValueObjects
 {
-    public string Country { get; private set;}
-    public string City { get; private set;}
-    public string Street { get; private set;}
-    public string HouseNumber { get; private set;}
-
-    [JsonConstructor]
-    public Address(string country, string city, string street, string houseNumber)
+    public class Address : ValueObject
     {
-        Country = country;
-        City = city;
-        Street = street;
-        HouseNumber = houseNumber;
-    }
+        public string Country { get; private set;}
+        public string City { get; private set;}
+        public string Street { get; private set;}
+        public string HouseNumber { get; private set;}
 
-    public static Address Create(string country, string city, string street, string houseNumber) => 
-        new(country, city,  street, houseNumber);
+        [JsonConstructor]
+        public Address(string country, string city, string street, string houseNumber)
+        {
+            Country = country;
+            City = city;
+            Street = street;
+            HouseNumber = houseNumber;
+        }
+
+        public static Address Create(string country, string city, string street, string houseNumber) => 
+            new(country, city,  street, houseNumber);
     
-    public override string ToString()
-        => $"{HouseNumber} {Street}, {City}, {Country}";
+        public override string ToString()
+            => $"{HouseNumber} {Street}, {City}, {Country}";
     
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Country;
-        yield return City;
-        yield return Street;
-        yield return HouseNumber;
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Country;
+            yield return City;
+            yield return Street;
+            yield return HouseNumber;
+        }
     }
 }

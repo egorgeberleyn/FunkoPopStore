@@ -1,18 +1,26 @@
-﻿using KittyStore.Application.Users.UpdateUser;
-using KittyStore.Contracts.Users;
+﻿using KittyStore.Application.Users.Commands.AddBalanceToUser;
+using KittyStore.Application.Users.Commands.UpdateUser;
+using KittyStore.Contracts.Admin.Users;
+using KittyStore.Contracts.Profile;
 using KittyStore.Domain.UserAggregate;
 using Mapster;
 
-namespace KittyStore.Api.Common.Mapping;
-
-public class UserMappingConfig : IRegister
+namespace KittyStore.Api.Common.Mapping
 {
-    public void Register(TypeAdapterConfig config)
+    public class UserMappingConfig : IRegister
     {
-        config.NewConfig<UpdateUserRequest, UpdateUserCommand>()
-            .Map(dist => dist.Id.Value, src => src.Id);
-        
-        config.NewConfig<User, UserResponse>()
-            .Map(dist => dist.Id, src => src.Id.Value);
+        public void Register(TypeAdapterConfig config)
+        {
+            config.NewConfig<UpdateUserRequest, UpdateUserCommand>()
+                .Map(dist => dist.Balance, src => src.Balance);
+
+            config.NewConfig<AddBalanceToUserRequest, AddBalanceToUserCommand>()
+                .Map(dist => dist.UserId.Value, src => src.UserId);
+
+            config.NewConfig<User, UserResponse>()
+                .Map(dist => dist.Id, src => src.Id.Value)
+                .Map(dist => dist.Role, src => src.Role.ToString())
+                .Map(dist => dist.Balance, src => src.Balance);
+        }
     }
 }

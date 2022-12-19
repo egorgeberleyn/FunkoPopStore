@@ -2,17 +2,18 @@
 using Mapster;
 using MapsterMapper;
 
-namespace KittyStore.Api.Common.Mapping;
-
-public static class DependencyInjection
+namespace KittyStore.Api.Common.Mapping
 {
-    public static IServiceCollection AddMappings(this IServiceCollection services)
+    public static class DependencyInjection
     {
-        var config = TypeAdapterConfig.GlobalSettings;
-        config.Scan(Assembly.GetExecutingAssembly());
+        public static IServiceCollection AddMappings(this IServiceCollection services)
+        {
+            var config = TypeAdapterConfig.GlobalSettings;
+            config.Scan(Assembly.GetExecutingAssembly());
 
-        services.AddSingleton(config);
-        services.AddScoped<IMapper, ServiceMapper>();
-        return services;
+            services.AddSingleton(config);
+            services.AddScoped<IMapper, ServiceMapper>();
+            return services;
+        }
     }
 }

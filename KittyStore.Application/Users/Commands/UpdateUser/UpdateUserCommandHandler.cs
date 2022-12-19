@@ -1,34 +1,34 @@
-﻿using MediatR;
-using ErrorOr;
+﻿using ErrorOr;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.UserAggregate;
 using KittyStore.Domain.UserAggregate.Enums;
 using KittyStore.Domain.UserAggregate.ValueObjects;
+using MediatR;
 
-namespace KittyStore.Application.Users.UpdateUser;
-
-public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, ErrorOr<User>>
+namespace KittyStore.Application.Users.Commands.UpdateUser
 {
-    private readonly IUserRepository _userRepository;
-
-    public UpdateUserCommandHandler(IUserRepository userRepository)
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, ErrorOr<User>>
     {
-        _userRepository = userRepository;
-    }
+        private readonly IUserRepository _userRepository;
 
-    public async Task<ErrorOr<User>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
-    {
-        if (await _userRepository.GetUserByIdAsync(command.Id) is not {} user)
-            return Errors.User.NotFound;
+        public UpdateUserCommandHandler(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
+        public async Task<ErrorOr<User>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
+        {
+            if (await _userRepository.GetUserByIdAsync(command.Id) is not {} user)
+                return Errors.User.NotFound;
         
-        var updateUser = user.Update(command.FirstName, command.LastName, command.Email, 
-            Balance.Create(Currency.Dollar, command.Balance));
+            var updateUser = user.Update(command.FirstName, command.LastName, command.Email, 
+                Balance.Create((Currency)Enum.Parse(typeof(Currency), command.Balance.Currency), 
+                    command.Balance.Amount));
         
-        await _userRepository.UpdateUserAsync(updateUser);
+            await _userRepository.UpdateUserAsync(updateUser);
         
-        return updateUser;
+            return updateUser;
+        }
     }
-    
-    
 }

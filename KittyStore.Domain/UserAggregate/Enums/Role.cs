@@ -1,8 +1,9 @@
-﻿namespace KittyStore.Domain.UserAggregate.Enums;
-
-public enum Role
+﻿namespace KittyStore.Domain.UserAggregate.Enums
 {
-    None = 0,
-    Admin = 1,
-    Customer = 2
+    public enum Role
+    {
+        None = 0,
+        Admin = 1,
+        Customer = 2
+    }
 }

@@ -7,42 +7,43 @@ using KittyStore.Domain.UserAggregate;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace KittyStore.Infrastructure.Authentication;
-
-public class JwtTokenGenerator : IJwtTokenGenerator
+namespace KittyStore.Infrastructure.Authentication
 {
-    private readonly JwtSettings _jwtSettings;
-    private readonly IDateTimeProvider _dateTimeProvider;
-
-    public JwtTokenGenerator(IOptions<JwtSettings> jwtSettings, IDateTimeProvider dateTimeProvider)
+    public class JwtTokenGenerator : IJwtTokenGenerator
     {
-        _jwtSettings = jwtSettings.Value;
-        _dateTimeProvider = dateTimeProvider;
-    }
+        private readonly JwtSettings _jwtSettings;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-    public string GenerateToken(User user)
-    {
-        var signingCredentials = new SigningCredentials(
-            new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
-            SecurityAlgorithms.HmacSha256);
-        
-        var claims = new[]
+        public JwtTokenGenerator(IOptions<JwtSettings> jwtSettings, IDateTimeProvider dateTimeProvider)
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
-            new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
-            new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Role, user.Role.ToString()),
-        };
+            _jwtSettings = jwtSettings.Value;
+            _dateTimeProvider = dateTimeProvider;
+        }
 
-        var securityToken = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
-            expires: _dateTimeProvider.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
-            claims: claims, 
-            signingCredentials: signingCredentials);
+        public string GenerateToken(User user)
+        {
+            var signingCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
+                SecurityAlgorithms.HmacSha256);
+        
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
+                new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, user.Role.ToString()),
+            };
 
-        return new JwtSecurityTokenHandler().WriteToken(securityToken);
+            var securityToken = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                expires: _dateTimeProvider.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
+                claims: claims, 
+                signingCredentials: signingCredentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(securityToken);
+        }
     }
 }
