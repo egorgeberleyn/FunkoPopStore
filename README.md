@@ -12,10 +12,11 @@ CQRS, Repository,Mediator
 Email: ***admin123@gmail.com***<br>
 Password: ***secret123***
 
-#### How Launch
-1. Install or enable WSL2 (to install Redis on Windows, you'll first need to enable Windows Subsystem for Linux)
-2. Download Redis zip archive (https://github.com/microsoftarchive/redis/releases)
-   Unzip to a needed folder and run the redis-server.exe file
+#### How to Launch
+1.  Install and launch Redis docker image 
+'''bash
+docker run -p 6379:6379 --name redis-master -e REDIS_REPLICATION_MODE=master -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest
+' ' '
 3. Change the database connection string in the appsettings.json file of the project
 4. Start the project
 5. Done!
