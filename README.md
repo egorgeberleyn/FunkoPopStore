@@ -14,10 +14,9 @@ Password: ***secret123***
 
 #### How to Launch
 1.  Install and launch Redis docker image 
-'''bash
+```bash
 docker run -p 6379:6379 --name redis-master -e REDIS_REPLICATION_MODE=master -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest
-' ' '
+```
 3. Change the database connection string in the appsettings.json file of the project
 4. Start the project
 5. Done!
-
