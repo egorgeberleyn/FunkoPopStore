@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KittyStore.Api.Controllers
 {
-    [Route("orders")]
+    [Route("/orders")]
     public class OrdersController : ApiController
     {
         private readonly ISender _mediator;

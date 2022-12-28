@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KittyStore.Api.Controllers
 {
-    [Route("profile")]
+    [Route("/profile")]
     public class ProfileController : ApiController
     {
         private readonly ISender _mediator;
