@@ -16,12 +16,12 @@ public class DeleteCatCommandHandlerTests : TestCommandBase
         
         //Act
          await handler.Handle(new DeleteCatCommand(
-                KittyContextFactory.CatIdForDelete), 
+                AppDbContextFactory.CatIdForDelete), 
                 CancellationToken.None);
             
         //Assert
         Assert.Null(await Context.Cats.SingleOrDefaultAsync(cat => 
-            cat.Id == KittyContextFactory.CatIdForDelete));
+            cat.Id == AppDbContextFactory.CatIdForDelete));
     }
 
     [Fact]

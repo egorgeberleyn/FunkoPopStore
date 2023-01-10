@@ -14,7 +14,7 @@ public class GetCatQueryHandlerTests : TestCommandBase
         var handler = new GetCatQueryHandler(CatRepository);
         
         //Act
-        var result = await handler.Handle(new GetCatQuery(KittyContextFactory.CatIdForUpdate), 
+        var result = await handler.Handle(new GetCatQuery(AppDbContextFactory.CatIdForUpdate), 
             CancellationToken.None);
         
         //Assert

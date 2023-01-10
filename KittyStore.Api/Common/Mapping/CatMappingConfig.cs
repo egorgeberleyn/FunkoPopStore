@@ -10,8 +10,6 @@ namespace KittyStore.Api.Common.Mapping
     {
         public void Register(TypeAdapterConfig config)
         {
-            //config.NewConfig<List<Cat>, List<CatResponse>>();
-        
             config.NewConfig<CreateCatRequest, CreateCatCommand>();
 
             config.NewConfig<UpdateCatRequest, UpdateCatCommand>();

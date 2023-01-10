@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.Common.Errors;
+using KittyStore.Domain.UserAggregate.Enums;
 using MediatR;
 
 namespace KittyStore.Application.Users.Commands.DeleteUser
@@ -18,6 +19,9 @@ namespace KittyStore.Application.Users.Commands.DeleteUser
         {
             if (await _userRepository.GetUserByIdAsync(command.Id) is not {} user)
                 return Errors.User.NotFound;
+
+            if (user.Role is Role.Admin)
+                return Errors.User.AdminCannotBeDeleted;
 
             await _userRepository.DeleteUserAsync(user);
         

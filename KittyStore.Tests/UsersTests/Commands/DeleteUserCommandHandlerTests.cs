@@ -16,12 +16,12 @@ public class DeleteUserCommandHandlerTests : TestCommandBase
         
         //Act
         await handler.Handle(new DeleteUserCommand(
-                KittyContextFactory.UserBId), 
+                AppDbContextFactory.UserBId), 
             CancellationToken.None);
             
         //Assert
         Assert.Null(await Context.Users.SingleOrDefaultAsync(user => 
-            user.Id == KittyContextFactory.UserBId));
+            user.Id == AppDbContextFactory.UserBId));
     }
 
     [Fact]

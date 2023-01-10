@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KittyStore.Tests.Common;
 
-public static class KittyContextFactory
+public static class AppDbContextFactory
 {
     public static readonly UserId UserAId = UserId.CreateUnique();
     public static readonly UserId UserBId = UserId.CreateUnique();

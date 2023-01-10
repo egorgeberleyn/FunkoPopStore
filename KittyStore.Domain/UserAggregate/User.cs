@@ -12,15 +12,15 @@ namespace KittyStore.Domain.UserAggregate
 
         public string Email { get; private set;}
 
-        public byte[] PasswordHash { get; private set;}
+        public byte[] PasswordHash { get;}
     
-        public byte[] PasswordSalt { get; private set;}
+        public byte[] PasswordSalt { get;}
     
         public Balance Balance { get; private set; }
     
-        public Role Role { get; private set; }
+        public Role Role { get; private set;}
 
-        public DateTime CreatedDateTime { get; private set;}
+        public DateTime CreatedDateTime { get;}
     
         public DateTime UpdatedDateTime { get; private set;}
 

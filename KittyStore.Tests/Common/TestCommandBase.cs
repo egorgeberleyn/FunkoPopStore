@@ -9,15 +9,15 @@ public class TestCommandBase : IDisposable
     protected readonly CatRepository CatRepository;
     protected readonly UserRepository UserRepository;
 
-    public TestCommandBase()
+    protected TestCommandBase()
     {
-        Context = KittyContextFactory.Create();
+        Context = AppDbContextFactory.Create();
         CatRepository = new CatRepository(Context);
         UserRepository = new UserRepository(Context);
     }
 
     public void Dispose()
     {
-        KittyContextFactory.Destroy(Context);
+        AppDbContextFactory.Destroy(Context);
     }
 }

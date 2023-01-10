@@ -14,7 +14,7 @@ public class GetUserQueryHandlerTests : TestCommandBase
         var handler = new GetUserByIdQueryHandler(UserRepository);
         
         //Act
-        var result = await handler.Handle(new GetUserByIdQuery(KittyContextFactory.UserAId), 
+        var result = await handler.Handle(new GetUserByIdQuery(AppDbContextFactory.UserAId), 
             CancellationToken.None);
         
         //Assert

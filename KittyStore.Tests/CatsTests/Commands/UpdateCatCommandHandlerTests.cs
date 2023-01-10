@@ -22,7 +22,7 @@ public class UpdateCatCommandHandlerTests : TestCommandBase
         //Act
         var result = await handler.Handle(new UpdateCatCommand
             {
-                Id = KittyContextFactory.CatIdForUpdate,
+                Id = AppDbContextFactory.CatIdForUpdate,
                 Age = testCat.Age,
                 Breed = testCat.Breed,
                 Color = testCat.Color,
@@ -33,7 +33,7 @@ public class UpdateCatCommandHandlerTests : TestCommandBase
             
         //Assert
         Assert.NotNull(await Context.Cats.SingleOrDefaultAsync(cat => 
-            cat.Id == KittyContextFactory.CatIdForUpdate &&
+            cat.Id == AppDbContextFactory.CatIdForUpdate &&
             cat.Price == updatePrice &&
             cat.Name == updateName &&
             cat.Gender.ToString() == updateGender));
