@@ -6,7 +6,7 @@ namespace KittyStore.Domain.OrderAggregate.Entities
 {
     public sealed class OrderItem : Entity<OrderItemId>
     {
-        public OrderId OrderId { get; set; }
+        public OrderId OrderId { get; private set; }
     
         public decimal Price { get; private set;}
     
@@ -23,5 +23,9 @@ namespace KittyStore.Domain.OrderAggregate.Entities
 
         public static OrderItem Create(decimal price, OrderId orderId, CatId catId) =>
             new(OrderItemId.CreateUnique(), orderId, price, catId);
+        
+        #pragma warning disable CS8618
+            private OrderItem() { }
+        #pragma warning disable CS8618
     }
 }

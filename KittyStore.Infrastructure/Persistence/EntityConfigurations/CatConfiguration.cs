@@ -8,38 +8,36 @@ namespace KittyStore.Infrastructure.Persistence.EntityConfigurations
 {
     public class CatConfiguration : IEntityTypeConfiguration<Cat>
     {
-        private readonly List<Cat> _cats = new()
-        {
-            //Test set of cats
-            Cat.Create("Lia", 5, "black", "britain", 70, CatGender.Female),
-            Cat.Create("Gail", 11, "white", "maine coon", 50, CatGender.Male),
-            Cat.Create("Neegus", 3, "ginger", "egypt", 20, CatGender.Male),
-            Cat.Create("Sunny", 6, "gray", "german", 88, CatGender.Female),
-        };
-        
         public void Configure(EntityTypeBuilder<Cat> builder)
         {
             builder.ToTable("cats");
+
+            builder.HasKey(cat => cat.Id);
         
             builder.Property(cat => cat.Id)
+                .ValueGeneratedNever()
                 .HasConversion(
                     id => id.Value,
-                    value => new CatId(value))
+                    value => CatId.Create(value))
                 .IsRequired();
+            
+            builder.Property(cat => cat.Age).IsRequired();
+            
+            builder.Property(cat => cat.Breed).IsRequired().HasMaxLength(30);
+            
+            builder.Property(cat => cat.Color).IsRequired().HasMaxLength(30);
+            
+            builder.Property(cat => cat.Name).IsRequired().HasMaxLength(30);
+            
+            builder.Property(cat => cat.Price).IsRequired();
             
             builder.Property(e => e.Gender)
                 .HasConversion(
                     v => v.ToString(),
-                    v => (CatGender)Enum.Parse(typeof(CatGender), v));
+                    v => (CatGender)Enum.Parse(typeof(CatGender), v))
+                .IsRequired();
 
-            builder.Property(c => c.Age).IsRequired();
-            builder.Property(c => c.Breed).IsRequired();
-            builder.Property(c => c.Color).IsRequired();
-            builder.Property(c => c.Name).IsRequired();
-            builder.Property(c => c.Price).IsRequired();
-            builder.Property(c => c.Gender).IsRequired();
-
-            builder.HasData(_cats);
+            builder.HasData(SeedData.Cats);
         }
     }
 }

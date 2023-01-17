@@ -35,7 +35,7 @@ namespace KittyStore.Api.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetCat(Guid id)
         {
-            var catId = new CatId(id);
+            var catId = CatId.Create(id);
             var result = await _mediator.Send(new GetCatQuery(catId));
         
             return result.Match(

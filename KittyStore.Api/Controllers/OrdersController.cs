@@ -29,7 +29,7 @@ namespace KittyStore.Api.Controllers
         public async Task<IActionResult> GetAllUserOrders(Guid userId)
         {
             var result = await _mediator.Send(new GetAllUserOrdersQuery(
-                new UserId(userId)));
+                UserId.Create(userId)));
 
             return result.Match(
                 orders => Ok(_mapper.Map<List<OrderResponse>>(orders)),

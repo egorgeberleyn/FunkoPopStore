@@ -24,5 +24,9 @@
     
         public static bool operator !=(Entity<TId> left, Entity<TId>? right) =>
             !Equals(left, right);
+        
+        #pragma warning disable CS8618
+            protected Entity() { }
+        #pragma warning restore CS8618
     }
 }

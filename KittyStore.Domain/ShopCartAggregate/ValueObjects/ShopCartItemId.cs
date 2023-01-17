@@ -4,14 +4,16 @@ namespace KittyStore.Domain.ShopCartAggregate.ValueObjects
 {
     public class ShopCartItemId : ValueObject
     {
-        public Guid Value { get; }
+        public Guid Value {get;}
 
-        public ShopCartItemId(Guid value)
+        private ShopCartItemId(Guid value)
         {
             Value = value;
         }
 
         public static ShopCartItemId CreateUnique() => new(Guid.NewGuid());
+        
+        public static ShopCartItemId Create(Guid value) => new(value);
     
         protected override IEnumerable<object> GetEqualityComponents()
         {

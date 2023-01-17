@@ -26,7 +26,7 @@ namespace KittyStore.Api.Controllers
         public async Task<IActionResult> GetShopCart(Guid userId)
         {
             var result = await _mediator.Send(
-                new GetShopCartQuery(new UserId(userId)));
+                new GetShopCartQuery(UserId.Create(userId)));
 
             return result.Match(
                 cart => Ok(_mapper.Map<ShopCartResponse>(cart)),
@@ -49,9 +49,9 @@ namespace KittyStore.Api.Controllers
         [HttpDelete("items/{id:guid}")]
         public async Task<IActionResult> RemoveItem(Guid id, Guid userId)
         {
-            var itemId = new ShopCartItemId(id);
+            var itemId = ShopCartItemId.Create(id);
             var result = await _mediator.Send(
-                new RemoveItemCommand(itemId, new UserId(userId)));
+                new RemoveItemCommand(itemId, UserId.Create(userId)));
 
             return result.Match(
                 cart => Ok(_mapper.Map<ShopCartResponse>(cart)),

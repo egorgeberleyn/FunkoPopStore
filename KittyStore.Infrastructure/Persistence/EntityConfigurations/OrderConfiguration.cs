@@ -3,7 +3,6 @@ using KittyStore.Domain.OrderAggregate.ValueObjects;
 using KittyStore.Domain.UserAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Newtonsoft.Json;
 
 namespace KittyStore.Infrastructure.Persistence.EntityConfigurations
 {
@@ -12,25 +11,25 @@ namespace KittyStore.Infrastructure.Persistence.EntityConfigurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.ToTable("orders");
+            
+            builder.HasKey(order => order.Id);
 
             builder.Property(ord => ord.Created).IsRequired();
             builder.Property(ord => ord.TotalPrice).IsRequired();
-        
-            builder.Property(e => e.Address)
-                .HasConversion(
-                    v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<Address>(v));
-        
+
+            builder.OwnsOne(e => e.Address);
+            
             builder.Property(order => order.Id)
+                .ValueGeneratedNever()
                 .HasConversion(
                     id => id.Value,
-                    value => new OrderId(value))
+                    value => OrderId.Create(value))
                 .IsRequired();
         
             builder.Property(order => order.UserId)
                 .HasConversion(
                     id => id.Value,
-                    value => new UserId(value))
+                    value => UserId.Create(value))
                 .IsRequired();
         
             builder.HasMany(x => x.OrderItems)

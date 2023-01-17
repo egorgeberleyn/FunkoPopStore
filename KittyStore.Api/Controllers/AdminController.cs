@@ -44,7 +44,7 @@ namespace KittyStore.Api.Controllers
         public async Task<IActionResult> UpdateCat(Guid id, UpdateCatRequest request)
         {
             var command = _mapper.Map<UpdateCatCommand>(request);
-            command.Id = new CatId(id);
+            command.Id = CatId.Create(id);
             var updatedResult = await _mediator.Send(command);
         
             return updatedResult.Match(
@@ -55,7 +55,7 @@ namespace KittyStore.Api.Controllers
         [HttpDelete("cats/{id:guid}")]
         public async Task<IActionResult> DeleteCat(Guid id)
         {
-            var catId = new CatId(id);
+            var catId = CatId.Create(id);
             var deletedResult = await _mediator.Send(new DeleteCatCommand(catId));
         
             return deletedResult.Match(
@@ -77,7 +77,7 @@ namespace KittyStore.Api.Controllers
         public async Task<IActionResult> GetUser(Guid id)
         {
             var result = await _mediator.Send(
-                new GetUserByIdQuery(new UserId(id)));
+                new GetUserByIdQuery(UserId.Create(id)));
 
             return result.Match(
                 user => Ok(_mapper.Map<UserResponse>(user)),
@@ -88,7 +88,7 @@ namespace KittyStore.Api.Controllers
         public async Task<IActionResult> UpdateUser(Guid id, UpdateUserRequest request)
         {
             var command = _mapper.Map<UpdateUserCommand>(request);
-            command.Id = new UserId(id);
+            command.Id = UserId.Create(id);
             var updatedResult = await _mediator.Send(command);
 
             return updatedResult.Match(
@@ -99,7 +99,7 @@ namespace KittyStore.Api.Controllers
         [HttpDelete("users/{id:guid}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
-            var userId = new UserId(id);
+            var userId = UserId.Create(id);
             var deletedResult = await _mediator.Send(new DeleteUserCommand(userId));
         
             return deletedResult.Match(

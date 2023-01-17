@@ -6,12 +6,14 @@ namespace KittyStore.Domain.OrderAggregate.ValueObjects
     {
         public Guid Value { get;}
 
-        public OrderId(Guid value)
+        private OrderId(Guid value)
         {
             Value = value;
         }
 
         public static OrderId CreateUnique() => new(Guid.NewGuid());
+        
+        public static OrderId Create(Guid value) => new(value);
     
         protected override IEnumerable<object> GetEqualityComponents()
         {

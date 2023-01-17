@@ -19,7 +19,7 @@ namespace KittyStore.Domain.OrderAggregate
 
         public IReadOnlyList<OrderItem> OrderItems => _items;
 
-        public Order(OrderId id, Address address, UserId userId, decimal totalPrice, DateTime created) : base(id)
+        private Order(OrderId id, Address address, UserId userId, decimal totalPrice, DateTime created) : base(id)
         {
             Address = address;
             UserId = userId;
@@ -31,5 +31,9 @@ namespace KittyStore.Domain.OrderAggregate
             new(OrderId.CreateUnique(), address, userId, totalPrice, DateTime.UtcNow);
 
         public void AddItems(List<OrderItem> items) => _items.AddRange(items);
+        
+        #pragma warning disable CS8618
+            private Order() { }
+        #pragma warning disable CS8618
     }
 }

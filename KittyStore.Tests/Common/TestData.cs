@@ -23,7 +23,7 @@ public static class TestData
     //Test set of users
     public static readonly List<User> Users = new()
     {
-        new User(AppDbContextFactory.UserAId, "Pit", "Pot", "yuppi@gmail.com",
+        new User(UserId.Create(AppDbContextFactory.UserAId.Value), "Pit", "Pot", "yuppi@gmail.com",
             new byte[] { 1, 2, 3 }, new byte[] { 4, 5, 6 },
             Balance.Create(Currency.Euro, 228), Role.Customer,
             DateTime.UtcNow, DateTime.UtcNow), // Test1
