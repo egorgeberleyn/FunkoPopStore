@@ -1,5 +1,7 @@
 ﻿using ErrorOr;
 using KittyStore.Api.Common.Http;
+using MapsterMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -10,6 +12,15 @@ namespace KittyStore.Api.Controllers
     [Authorize]
     public class ApiController : ControllerBase
     {
+        protected readonly ISender _mediator;
+        protected readonly IMapper _mapper;
+
+        protected ApiController(ISender mediator, IMapper mapper)
+        {
+            _mediator = mediator;
+            _mapper = mapper;
+        }
+
         protected IActionResult Problem(List<Error> errors)
         {
             if (errors.Count == 0)

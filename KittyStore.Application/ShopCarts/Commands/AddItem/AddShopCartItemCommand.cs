@@ -7,7 +7,6 @@ using MediatR;
 namespace KittyStore.Application.ShopCarts.Commands.AddItem
 {
     public record AddShopCartItemCommand(
-        UserId UserId,
         decimal Price,
         CatId CatId) : IRequest<ErrorOr<ShopCart>>;
 }

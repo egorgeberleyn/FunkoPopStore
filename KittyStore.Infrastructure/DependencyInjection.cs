@@ -28,7 +28,9 @@ namespace KittyStore.Infrastructure
                 .AddPersistence(configuration)
                 .AddCache(configuration);
         
+            services.AddHttpContextAccessor();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             return services;
         }
 

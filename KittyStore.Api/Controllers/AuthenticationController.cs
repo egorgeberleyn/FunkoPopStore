@@ -12,14 +12,7 @@ namespace KittyStore.Api.Controllers
     [AllowAnonymous]
     public class AuthenticationController : ApiController
     {
-        private readonly ISender _mediator;
-        private readonly IMapper _mapper;
-
-        public AuthenticationController(ISender mediator, IMapper mapper)
-        {
-            _mediator = mediator;
-            _mapper = mapper;
-        }
+        public AuthenticationController(ISender mediator, IMapper mapper): base(mediator, mapper) { }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromForm]RegisterRequest request)
