@@ -16,19 +16,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KittyStore.Api.Controllers
 {
-    [Route("/admin")]
+    [Route("/adminPanel")]
     [Authorize(Roles = "Admin")]
     public class AdminController : ApiController
     {
-        private readonly ISender _mediator;
-        private readonly IMapper _mapper;
-
-        public AdminController(ISender mediator, IMapper mapper)
-        {
-            _mediator = mediator;
-            _mapper = mapper;
-        }
-    
+        public AdminController(ISender mediator, IMapper mapper) : base(mediator, mapper) { }
+            
         [HttpPost("cats")]
         public async Task<IActionResult> CreateCat(CreateCatRequest request)
         {

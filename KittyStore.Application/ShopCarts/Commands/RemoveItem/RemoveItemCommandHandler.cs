@@ -4,6 +4,7 @@ using MapsterMapper;
 using MediatR;
 using ErrorOr;
 using KittyStore.Application.Common.Interfaces.Persistence;
+using KittyStore.Application.Common.Interfaces.Services;
 using KittyStore.Application.ShopCarts.Common;
 using KittyStore.Domain.Common.Errors;
 
@@ -13,22 +14,22 @@ namespace KittyStore.Application.ShopCarts.Commands.RemoveItem
     {
         private readonly ICacheService _cacheService;
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
+        private readonly ICurrentUserService _currentUserService;
 
-        public RemoveItemCommandHandler(ICacheService cacheService, IMapper mapper, IUserRepository userRepository)
+        public RemoveItemCommandHandler(ICacheService cacheService, IMapper mapper, ICurrentUserService currentUserService)
         {
             _cacheService = cacheService;
             _mapper = mapper;
-            _userRepository = userRepository;
+            _currentUserService = currentUserService;
         }
 
         public async Task<ErrorOr<ShopCart>> Handle(RemoveItemCommand command, CancellationToken cancellationToken)
         {
-            if (await _userRepository.GetUserByIdAsync(command.UserId) is not { } user)
+            if (_currentUserService.TryGetUserId(out var userId))
                 return Errors.User.NotFound;
         
             var cart = _mapper.Map<ShopCart>(
-                await _cacheService.GetDataAsync<ShopCartDto>(user.Id.ToString()));
+                await _cacheService.GetDataAsync<ShopCartDto>(userId.ToString()));
 
             if (cart is null || cart.ShopCartItems.Count == 0)
                 return Errors.ShopCart.ShopCartEmpty;
@@ -37,7 +38,7 @@ namespace KittyStore.Application.ShopCarts.Commands.RemoveItem
                 return Errors.ShopCart.NotFoundItem;
             
             cart.RemoveItem(command.Id);
-            await _cacheService.SetDataAsync(user.Id.ToString(), _mapper.Map<ShopCartDto>(cart),
+            await _cacheService.SetDataAsync(userId.ToString(), _mapper.Map<ShopCartDto>(cart),
                 DateTimeOffset.Now.AddDays(10));
         
             return cart;

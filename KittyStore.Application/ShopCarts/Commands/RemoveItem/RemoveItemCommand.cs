@@ -7,6 +7,5 @@ using MediatR;
 namespace KittyStore.Application.ShopCarts.Commands.RemoveItem
 {
     public record RemoveItemCommand(
-        ShopCartItemId Id,
-        UserId UserId) : IRequest<ErrorOr<ShopCart>>;
+        ShopCartItemId Id) : IRequest<ErrorOr<ShopCart>>;
 }

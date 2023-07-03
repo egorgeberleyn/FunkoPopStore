@@ -17,9 +17,9 @@ namespace KittyStore.Infrastructure.Cache
         public async Task<T> GetDataAsync<T> (string key)
         {
             var value = await _redisDatabase.StringGetAsync(key);
-            return ((value.IsNullOrEmpty)
+            return value.IsNullOrEmpty
                 ? default
-                : JsonConvert.DeserializeObject<T>(value))!;
+                : JsonConvert.DeserializeObject<T>(value);
         }
     
         public async Task SetDataAsync<T> (string? key, T value, DateTimeOffset expirationTime) 
@@ -28,7 +28,7 @@ namespace KittyStore.Infrastructure.Cache
             var isSuccess = await _redisDatabase.StringSetAsync(key, 
                 JsonConvert.SerializeObject(value), expiryTime);
             if(!isSuccess) 
-                throw new StringSetException("string installation error");
+                throw new StringSetException("String installation error");
         }
     
         public async Task<bool> RemoveDataAsync(string key) 

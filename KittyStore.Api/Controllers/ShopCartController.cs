@@ -13,14 +13,7 @@ namespace KittyStore.Api.Controllers
     [Route("/shopCart")]
     public class ShopCartController : ApiController
     {
-        private readonly ISender _mediator;
-        private readonly IMapper _mapper;
-
-        public ShopCartController(ISender mediator, IMapper mapper)
-        {
-            _mediator = mediator;
-            _mapper = mapper;
-        }
+        public ShopCartController(ISender mediator, IMapper mapper) : base(mediator, mapper) { }
 
         [HttpGet("")]
         public async Task<IActionResult> GetShopCart(Guid userId)
@@ -47,11 +40,10 @@ namespace KittyStore.Api.Controllers
         }
     
         [HttpDelete("items/{id:guid}")]
-        public async Task<IActionResult> RemoveItem(Guid id, Guid userId)
+        public async Task<IActionResult> RemoveItem(Guid id)
         {
             var itemId = ShopCartItemId.Create(id);
-            var result = await _mediator.Send(
-                new RemoveItemCommand(itemId, UserId.Create(userId)));
+            var result = await _mediator.Send(new RemoveItemCommand(itemId));
 
             return result.Match(
                 cart => Ok(_mapper.Map<ShopCartResponse>(cart)),

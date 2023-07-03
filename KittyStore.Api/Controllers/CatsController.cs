@@ -13,14 +13,7 @@ namespace KittyStore.Api.Controllers
     [AllowAnonymous]
     public class CatsController : ApiController
     {
-        private readonly ISender _mediator;
-        private readonly IMapper _mapper;
-
-        public CatsController(ISender mediator, IMapper mapper)
-        {
-            _mediator = mediator;
-            _mapper = mapper;
-        }
+        public CatsController(ISender mediator, IMapper mapper) : base(mediator, mapper) { }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCats()

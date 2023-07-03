@@ -10,14 +10,7 @@ namespace KittyStore.Api.Controllers
     [Route("/profile")]
     public class ProfileController : ApiController
     {
-        private readonly ISender _mediator;
-        private readonly IMapper _mapper;
-
-        public ProfileController(ISender mediator, IMapper mapper)
-        {
-            _mediator = mediator;
-            _mapper = mapper;
-        }
+        public ProfileController(ISender mediator, IMapper mapper) : base(mediator, mapper) { }
 
         /// <summary>
         /// Add balance to user

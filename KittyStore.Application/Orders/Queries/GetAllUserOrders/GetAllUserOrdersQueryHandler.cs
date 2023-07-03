@@ -1,7 +1,9 @@
 ﻿using ErrorOr;
 using KittyStore.Application.Common.Interfaces.Persistence;
+using KittyStore.Application.Common.Interfaces.Services;
 using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.OrderAggregate;
+using KittyStore.Domain.UserAggregate.ValueObjects;
 using MediatR;
 
 namespace KittyStore.Application.Orders.Queries.GetAllUserOrders
@@ -9,20 +11,20 @@ namespace KittyStore.Application.Orders.Queries.GetAllUserOrders
     public class GetAllUserOrdersQueryHandler : IRequestHandler<GetAllUserOrdersQuery, ErrorOr<List<Order>>>
     {
         private readonly IOrderRepository _orderRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly ICurrentUserService _currentUserService;
 
-        public GetAllUserOrdersQueryHandler(IOrderRepository orderRepository, IUserRepository userRepository)
+        public GetAllUserOrdersQueryHandler(IOrderRepository orderRepository, ICurrentUserService currentUserService)
         {
             _orderRepository = orderRepository;
-            _userRepository = userRepository;
+            _currentUserService = currentUserService;
         }
 
         public async Task<ErrorOr<List<Order>>> Handle(GetAllUserOrdersQuery query, CancellationToken cancellationToken)
         {
-            if (await _userRepository.GetUserByIdAsync(query.UserId) is not {} user)
+            if (_currentUserService.TryGetUserId(out var userId))
                 return Errors.User.NotFound;
         
-            var orders = await _orderRepository.GetUserOrdersAsync(user.Id);
+            var orders = await _orderRepository.GetUserOrdersAsync(UserId.Create(userId));
 
             return orders;
         }

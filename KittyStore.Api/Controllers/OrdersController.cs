@@ -11,25 +11,16 @@ namespace KittyStore.Api.Controllers
     [Route("/orders")]
     public class OrdersController : ApiController
     {
-        private readonly ISender _mediator;
-        private readonly IMapper _mapper;
-
-        public OrdersController(ISender mediator, IMapper mapper)
-        {
-            _mediator = mediator;
-            _mapper = mapper;
-        }
+        public OrdersController(ISender mediator, IMapper mapper) : base(mediator, mapper) { }
 
         /// <summary>
         /// Get all of the user's orders
         /// </summary>
-        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllUserOrders(Guid userId)
+        public async Task<IActionResult> GetAllUserOrders()
         {
-            var result = await _mediator.Send(new GetAllUserOrdersQuery(
-                UserId.Create(userId)));
+            var result = await _mediator.Send(new GetAllUserOrdersQuery());
 
             return result.Match(
                 orders => Ok(_mapper.Map<List<OrderResponse>>(orders)),
