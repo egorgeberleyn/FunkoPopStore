@@ -76,7 +76,8 @@ namespace KittyStore.Infrastructure
             IConfiguration configuration)
         {
             services.AddSingleton<IConnectionMultiplexer>
-                (ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")));
+                (ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection") 
+                                               ?? throw new InvalidOperationException("No access to redis configuration")));
             services.AddScoped<ICacheService, CacheService>();
         
             return services;

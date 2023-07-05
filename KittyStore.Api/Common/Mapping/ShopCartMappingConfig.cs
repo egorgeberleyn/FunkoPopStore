@@ -19,12 +19,10 @@ namespace KittyStore.Api.Common.Mapping
                 .Map(dist => dist.Id, src => src.Id.Value)
                 .Map(dist => dist.CatId, src => src.CatId.Value)
                 .Map(dist => dist.ShopCartId, src => src.ShopCartId.Value);
-        
-            config.NewConfig<AddShopCartItemRequest, AddShopCartItemCommand>()
-                .Map(dist => dist.CatId.Value, src => src.CatId)
-                .Map(dist => dist.UserId.Value, src => src.UserId);
 
-        
+            config.NewConfig<AddShopCartItemRequest, AddShopCartItemCommand>()
+                .Map(dist => dist.CatId.Value, src => src.CatId);
+            
             //dto <-> domain root
             config.NewConfig<ShopCart, ShopCartDto>()
                 .Map(dist => dist.UserId, src => src.UserId.Value)
