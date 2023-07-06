@@ -2,12 +2,12 @@
 using KittyStore.Application.Common.Interfaces.Authentication;
 using KittyStore.Application.Common.Interfaces.Cache;
 using KittyStore.Application.Common.Interfaces.Persistence;
-using KittyStore.Application.Common.Interfaces.Services;
+using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Infrastructure.Authentication;
 using KittyStore.Infrastructure.Cache;
 using KittyStore.Infrastructure.Persistence;
 using KittyStore.Infrastructure.Persistence.Repositories;
-using KittyStore.Infrastructure.Services;
+using KittyStore.Infrastructure.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +31,7 @@ namespace KittyStore.Infrastructure
             services.AddHttpContextAccessor();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IPasswordService, PasswordService>();
             return services;
         }
 

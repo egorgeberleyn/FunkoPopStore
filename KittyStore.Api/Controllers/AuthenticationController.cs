@@ -15,7 +15,7 @@ namespace KittyStore.Api.Controllers
         public AuthenticationController(ISender mediator, IMapper mapper): base(mediator, mapper) { }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromForm]RegisterRequest request)
+        public async Task<IActionResult> Register(RegisterRequest request)
         {
             var command = _mapper.Map<RegisterCommand>(request);
             var registerResult = await _mediator.Send(command);
@@ -26,7 +26,7 @@ namespace KittyStore.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromForm]LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
             var command = _mapper.Map<LoginQuery>(request);
             var loginResult = await _mediator.Send(command);

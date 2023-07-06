@@ -3,8 +3,7 @@ using KittyStore.Domain.ShopCartAggregate;
 using MapsterMapper;
 using MediatR;
 using ErrorOr;
-using KittyStore.Application.Common.Interfaces.Persistence;
-using KittyStore.Application.Common.Interfaces.Services;
+using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Application.ShopCarts.Common;
 using KittyStore.Domain.Common.Errors;
 

@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
 using KittyStore.Application.Common.Interfaces.Persistence;
-using KittyStore.Application.Common.Interfaces.Services;
+using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.OrderAggregate;
 using KittyStore.Domain.UserAggregate.ValueObjects;

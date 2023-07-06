@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using KittyStore.Application.Common.Interfaces.Authentication;
-using KittyStore.Application.Common.Interfaces.Services;
+using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Domain.UserAggregate;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

@@ -1,7 +1,6 @@
 ﻿using KittyStore.Application.Orders.Commands.CreateOrder;
 using KittyStore.Application.Orders.Queries.GetAllUserOrders;
 using KittyStore.Contracts.Orders;
-using KittyStore.Domain.UserAggregate.ValueObjects;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

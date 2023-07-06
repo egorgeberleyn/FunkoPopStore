@@ -1,4 +1,4 @@
-﻿namespace KittyStore.Application.Common.Interfaces.Services
+﻿namespace KittyStore.Application.Common.Interfaces.Utils
 {
     public interface IDateTimeProvider
     {

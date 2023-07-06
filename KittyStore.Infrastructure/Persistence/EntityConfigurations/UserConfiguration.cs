@@ -41,7 +41,8 @@ namespace KittyStore.Infrastructure.Persistence.EntityConfigurations
             builder.Property(u => u.CreatedDateTime).IsRequired();
             builder.Property(u => u.UpdatedDateTime).IsRequired();
 
-            builder.HasData(SeedData.Users);
+            builder.HasData(
+               SeedData.CreateAdmin("Jorge", "Admin", "secret123", "admin123@gmail.com"));
         }
     }
 }

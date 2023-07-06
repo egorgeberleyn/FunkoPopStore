@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
-using KittyStore.Application.Common.Interfaces.Services;
+using KittyStore.Application.Common.Interfaces.Utils;
 using Microsoft.AspNetCore.Http;
 
-namespace KittyStore.Infrastructure.Services;
+namespace KittyStore.Infrastructure.Utils;
 
 public class CurrentUserService : ICurrentUserService
 {

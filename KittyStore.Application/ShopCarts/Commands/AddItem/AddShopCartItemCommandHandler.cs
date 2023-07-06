@@ -2,7 +2,7 @@
 using ErrorOr;
 using KittyStore.Application.Common.Interfaces.Cache;
 using KittyStore.Application.Common.Interfaces.Persistence;
-using KittyStore.Application.Common.Interfaces.Services;
+using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Application.ShopCarts.Common;
 using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.ShopCartAggregate;
