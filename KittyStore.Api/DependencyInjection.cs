@@ -12,6 +12,15 @@ namespace KittyStore.Api
         public static IServiceCollection AddPresentation(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
+            services.AddSwagger();
+            services.AddMappings();
+            services.AddControllers();
+            services.AddSingleton<ProblemDetailsFactory, KittyStoreProblemDetailsFactory>();
+            return services;
+        }
+
+        private static void AddSwagger(this IServiceCollection services)
+        {
             services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -29,10 +38,6 @@ namespace KittyStore.Api
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
             });
-            services.AddMappings();
-            services.AddControllers();
-            services.AddSingleton<ProblemDetailsFactory, KittyStoreProblemDetailsFactory>();
-            return services;
         }
     }
 }

@@ -17,9 +17,6 @@ namespace KittyStore.Infrastructure.Persistence.EntityConfigurations
         
             builder.Property(user => user.Id)
                 .ValueGeneratedNever()
-                .HasConversion(
-                    id => id.Value,
-                    value => UserId.Create(value))
                 .IsRequired();
 
             builder.Property(e => e.Balance)

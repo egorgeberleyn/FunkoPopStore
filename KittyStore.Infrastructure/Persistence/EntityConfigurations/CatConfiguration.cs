@@ -1,6 +1,5 @@
 ﻿using KittyStore.Domain.CatAggregate;
 using KittyStore.Domain.CatAggregate.Enums;
-using KittyStore.Domain.CatAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,9 +15,6 @@ namespace KittyStore.Infrastructure.Persistence.EntityConfigurations
         
             builder.Property(cat => cat.Id)
                 .ValueGeneratedNever()
-                .HasConversion(
-                    id => id.Value,
-                    value => CatId.Create(value))
                 .IsRequired();
             
             builder.Property(cat => cat.Age).IsRequired();

@@ -1,9 +1,8 @@
 ﻿namespace KittyStore.Domain.Common.Models
 {
-    public class AggregateRoot<TId> : Entity<TId>
-        where TId : notnull
+    public class AggregateRoot : Entity
     {
-        protected AggregateRoot(TId id) : base(id) {}
+        protected AggregateRoot(Guid id) : base(id) {}
 
         protected AggregateRoot() { }
     }

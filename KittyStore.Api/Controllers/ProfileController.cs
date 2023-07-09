@@ -20,11 +20,11 @@ namespace KittyStore.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> AddBalanceToUser(AddBalanceToUserRequest request)
         {
-            var command = _mapper.Map<AddBalanceToUserCommand>(request);
-            var result = await _mediator.Send(command);
+            var command = Mapper.Map<AddBalanceToUserCommand>(request);
+            var result = await Mediator.Send(command);
         
             return result.Match(
-                user => Ok(_mapper.Map<UserResponse>(user)),
+                user => Ok(Mapper.Map<UserResponse>(user)),
                 errors => Problem(errors));
         }
     }

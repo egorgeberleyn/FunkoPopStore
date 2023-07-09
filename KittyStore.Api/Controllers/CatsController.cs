@@ -1,7 +1,6 @@
 ﻿using KittyStore.Application.Cats.Queries.GetAllCats;
 using KittyStore.Application.Cats.Queries.GetCat;
 using KittyStore.Contracts.Admin.Cats;
-using KittyStore.Domain.CatAggregate.ValueObjects;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,21 +17,20 @@ namespace KittyStore.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCats()
         {
-            var result = await _mediator.Send(new GetAllCatsQuery());
+            var result = await Mediator.Send(new GetAllCatsQuery());
 
             return result.Match(
-                cats => Ok(_mapper.Map<List<CatResponse>>(cats)),
+                cats => Ok(Mapper.Map<List<CatResponse>>(cats)),
                 errors => Problem(errors));
         }
     
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetCat(Guid id)
         {
-            var catId = CatId.Create(id);
-            var result = await _mediator.Send(new GetCatQuery(catId));
+            var result = await Mediator.Send(new GetCatQuery(id));
         
             return result.Match(
-                cat => Ok(_mapper.Map<CatResponse>(cat)),
+                cat => Ok(Mapper.Map<CatResponse>(cat)),
                 errors => Problem(errors));
         }
     }

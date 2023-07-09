@@ -1,10 +1,9 @@
 ﻿using KittyStore.Domain.CatAggregate.Enums;
-using KittyStore.Domain.CatAggregate.ValueObjects;
 using KittyStore.Domain.Common.Models;
 
 namespace KittyStore.Domain.CatAggregate
 {
-    public sealed class Cat : AggregateRoot<CatId>
+    public sealed class Cat : AggregateRoot
     {
         public string Name { get; private set; }
     
@@ -18,7 +17,8 @@ namespace KittyStore.Domain.CatAggregate
     
         public decimal Price { get; private set; }
     
-        public Cat(CatId id, string name, int age, string color, string breed, decimal price, CatGender gender) : base(id)
+        public Cat(Guid id, string name, int age, string color, string breed, decimal price, CatGender gender) 
+            : base(id)
         {
             Name = name;
             Age = age;
@@ -29,7 +29,7 @@ namespace KittyStore.Domain.CatAggregate
         }
 
         public static Cat Create(string name, int age, string color, string breed, decimal price, CatGender gender) =>
-            new(CatId.CreateUnique(), name, age, color, breed, price, gender);
+            new(Guid.NewGuid(), name, age, color, breed, price, gender);
 
         public Cat Update(string name, int age, string color, string breed, decimal price, CatGender gender)
         {

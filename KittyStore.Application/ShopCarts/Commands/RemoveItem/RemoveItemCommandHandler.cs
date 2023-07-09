@@ -4,7 +4,6 @@ using MapsterMapper;
 using MediatR;
 using ErrorOr;
 using KittyStore.Application.Common.Interfaces.Utils;
-using KittyStore.Application.ShopCarts.Common;
 using KittyStore.Domain.Common.Errors;
 
 namespace KittyStore.Application.ShopCarts.Commands.RemoveItem
@@ -24,20 +23,19 @@ namespace KittyStore.Application.ShopCarts.Commands.RemoveItem
 
         public async Task<ErrorOr<ShopCart>> Handle(RemoveItemCommand command, CancellationToken cancellationToken)
         {
-            if (_currentUserService.TryGetUserId(out var userId))
+            if (!_currentUserService.TryGetUserId(out var userId))
                 return Errors.User.NotFound;
-        
-            var cart = _mapper.Map<ShopCart>(
-                await _cacheService.GetDataAsync<ShopCartDto>(userId.ToString()));
-
-            if (cart is null || cart.ShopCartItems.Count == 0)
+            
+            //Get cart cache from redis
+            var cart = await _cacheService.GetDataAsync<ShopCart>(userId.ToString());
+            if(cart is null || cart.ShopCartItems.Count == 0)
                 return Errors.ShopCart.ShopCartEmpty;
-        
+            
             if(cart.ShopCartItems.FirstOrDefault(item => item.Id == command.Id) is null)
                 return Errors.ShopCart.NotFoundItem;
             
             cart.RemoveItem(command.Id);
-            await _cacheService.SetDataAsync(userId.ToString(), _mapper.Map<ShopCartDto>(cart),
+            await _cacheService.SetDataAsync(userId.ToString(), cart,
                 DateTimeOffset.Now.AddDays(10));
         
             return cart;

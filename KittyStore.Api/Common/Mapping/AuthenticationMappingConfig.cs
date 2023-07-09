@@ -15,7 +15,6 @@ namespace KittyStore.Api.Common.Mapping
             config.NewConfig<LoginRequest, LoginQuery>();
         
             config.NewConfig<AuthenticationResult, AuthenticationResponse>()
-                .Map(dest => dest.Id, src => src.User.Id.Value)
                 .Map(dest => dest.Role, src => src.User.Role.ToString())
                 .Map(dest => dest, src => src.User);
         }

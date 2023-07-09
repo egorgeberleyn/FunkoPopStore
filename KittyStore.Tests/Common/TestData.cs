@@ -1,6 +1,5 @@
 ﻿using KittyStore.Domain.CatAggregate;
 using KittyStore.Domain.CatAggregate.Enums;
-using KittyStore.Domain.CatAggregate.ValueObjects;
 using KittyStore.Domain.UserAggregate;
 using KittyStore.Domain.UserAggregate.Enums;
 using KittyStore.Domain.UserAggregate.ValueObjects;
@@ -16,14 +15,14 @@ public static class TestData
             "Lia", 5, "black", "britain", 70, CatGender.Female),
         new Cat(AppDbContextFactory.CatIdForUpdate,
             "Gail", 11, "white", "maine coon", 50, CatGender.Male),
-        new Cat(CatId.CreateUnique(),
+        new Cat(Guid.NewGuid(), 
             "God", 111, "rainbow", "king", 777, CatGender.Genderqueer),
     };
 
     //Test set of users
     public static readonly List<User> Users = new()
     {
-        new User(UserId.Create(AppDbContextFactory.UserAId.Value), "Pit", "Pot", "yuppi@gmail.com",
+        new User(AppDbContextFactory.UserAId, "Pit", "Pot", "yuppi@gmail.com",
             new byte[] { 1, 2, 3 }, new byte[] { 4, 5, 6 },
             Balance.Create(Currency.Euro, 228), Role.Customer,
             DateTime.UtcNow, DateTime.UtcNow), // Test1

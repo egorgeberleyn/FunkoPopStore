@@ -1,6 +1,4 @@
-﻿using KittyStore.Domain.CatAggregate.ValueObjects;
-using KittyStore.Domain.OrderAggregate.Entities;
-using KittyStore.Domain.OrderAggregate.ValueObjects;
+﻿using KittyStore.Domain.OrderAggregate.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,15 +16,9 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
 
         builder.Property(item => item.Id)
             .ValueGeneratedNever()
-            .HasConversion(
-                id => id.Value,
-                value => OrderItemId.Create(value))
             .IsRequired();
 
         builder.Property(item => item.CatId)
-            .HasConversion(
-                id => id.Value,
-                value => CatId.Create(value))
             .IsRequired();
     }
 }

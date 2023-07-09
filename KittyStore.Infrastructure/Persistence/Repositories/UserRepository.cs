@@ -1,6 +1,5 @@
 ﻿using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.UserAggregate;
-using KittyStore.Domain.UserAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace KittyStore.Infrastructure.Persistence.Repositories
@@ -17,7 +16,7 @@ namespace KittyStore.Infrastructure.Persistence.Repositories
         public async Task<List<User>> GetAllUsers() =>
             await _context.Users.ToListAsync();
         
-        public async Task<User?> GetUserByIdAsync(UserId id) =>
+        public async Task<User?> GetUserByIdAsync(Guid id) =>
             await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
     
         public async Task<User?> GetUserByEmailAsync(string email) =>

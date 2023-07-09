@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Domain.CatAggregate;
 using KittyStore.Domain.CatAggregate.Enums;
 using KittyStore.Domain.UserAggregate;

@@ -1,6 +1,5 @@
 ﻿using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.OrderAggregate;
-using KittyStore.Domain.UserAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace KittyStore.Infrastructure.Persistence.Repositories
@@ -14,7 +13,7 @@ namespace KittyStore.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<List<Order>> GetUserOrdersAsync(UserId id) =>
+        public async Task<List<Order>> GetUserOrdersAsync(Guid id) =>
             await _context.Orders.Include(order => order.OrderItems)
                 .Where(ord => ord.UserId == id).ToListAsync();
     

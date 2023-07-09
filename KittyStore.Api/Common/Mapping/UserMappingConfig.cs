@@ -14,11 +14,9 @@ namespace KittyStore.Api.Common.Mapping
             config.NewConfig<UpdateUserRequest, UpdateUserCommand>()
                 .Map(dist => dist.Balance, src => src.Balance);
 
-            config.NewConfig<AddBalanceToUserRequest, AddBalanceToUserCommand>()
-                .Map(dist => dist.UserId.Value, src => src.UserId);
+            config.NewConfig<AddBalanceToUserRequest, AddBalanceToUserCommand>();
 
             config.NewConfig<User, UserResponse>()
-                .Map(dist => dist.Id, src => src.Id.Value)
                 .Map(dist => dist.Role, src => src.Role.ToString())
                 .Map(dist => dist.Balance, src => src.Balance);
         }
