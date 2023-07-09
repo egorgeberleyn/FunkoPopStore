@@ -4,7 +4,7 @@
         Guid Id,
         Guid UserId,
         List<ShopCartItemResponse> ShopCartItems,
-        int ItemQuantity,
+        int ItemsQuantity,
         decimal TotalPrice);
 
     public record ShopCartItemResponse(

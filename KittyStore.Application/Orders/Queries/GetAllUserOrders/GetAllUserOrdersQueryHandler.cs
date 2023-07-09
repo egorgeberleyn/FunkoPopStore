@@ -1,9 +1,8 @@
 ﻿using ErrorOr;
 using KittyStore.Application.Common.Interfaces.Persistence;
-using KittyStore.Application.Common.Interfaces.Services;
+using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.OrderAggregate;
-using KittyStore.Domain.UserAggregate.ValueObjects;
 using MediatR;
 
 namespace KittyStore.Application.Orders.Queries.GetAllUserOrders
@@ -21,10 +20,10 @@ namespace KittyStore.Application.Orders.Queries.GetAllUserOrders
 
         public async Task<ErrorOr<List<Order>>> Handle(GetAllUserOrdersQuery query, CancellationToken cancellationToken)
         {
-            if (_currentUserService.TryGetUserId(out var userId))
+            if (!_currentUserService.TryGetUserId(out var userId))
                 return Errors.User.NotFound;
         
-            var orders = await _orderRepository.GetUserOrdersAsync(UserId.Create(userId));
+            var orders = await _orderRepository.GetUserOrdersAsync(userId);
 
             return orders;
         }

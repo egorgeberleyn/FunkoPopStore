@@ -1,17 +1,15 @@
-﻿using KittyStore.Domain.CatAggregate.ValueObjects;
-using KittyStore.Domain.UserAggregate.ValueObjects;
-using KittyStore.Infrastructure.Persistence;
+﻿using KittyStore.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace KittyStore.Tests.Common;
 
 public static class AppDbContextFactory
 {
-    public static readonly UserId UserAId = UserId.CreateUnique();
-    public static readonly UserId UserBId = UserId.CreateUnique();
+    public static readonly Guid UserAId = Guid.NewGuid();
+    public static readonly Guid UserBId = Guid.NewGuid();
 
-    public static readonly CatId CatIdForDelete = CatId.CreateUnique();
-    public static readonly CatId CatIdForUpdate = CatId.CreateUnique();
+    public static readonly Guid CatIdForDelete = Guid.NewGuid();
+    public static readonly Guid CatIdForUpdate = Guid.NewGuid();
     
     public static AppDbContext Create()
     {

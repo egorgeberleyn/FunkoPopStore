@@ -1,5 +1,4 @@
 ﻿using KittyStore.Application.Cats.Commands.UpdateCat;
-using KittyStore.Domain.CatAggregate.ValueObjects;
 using KittyStore.Domain.Common.Errors;
 using KittyStore.Tests.Common;
 using Microsoft.EntityFrameworkCore;
@@ -53,7 +52,7 @@ public class UpdateCatCommandHandlerTests : TestCommandBase
         //Act
         var result = await handler.Handle(new UpdateCatCommand
         {
-            Id = CatId.CreateUnique(),
+            Id = Guid.NewGuid(),
             Age = testCat.Age,
             Breed = testCat.Breed,
             Color = testCat.Color,

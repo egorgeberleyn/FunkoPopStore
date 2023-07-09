@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using KittyStore.Application.Common.Interfaces.Authentication;
-using KittyStore.Application.Common.Interfaces.Services;
+using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Domain.UserAggregate;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -29,7 +29,7 @@ namespace KittyStore.Infrastructure.Authentication
         
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),

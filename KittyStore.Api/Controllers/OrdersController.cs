@@ -1,7 +1,6 @@
 ﻿using KittyStore.Application.Orders.Commands.CreateOrder;
 using KittyStore.Application.Orders.Queries.GetAllUserOrders;
 using KittyStore.Contracts.Orders;
-using KittyStore.Domain.UserAggregate.ValueObjects;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +19,10 @@ namespace KittyStore.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUserOrders()
         {
-            var result = await _mediator.Send(new GetAllUserOrdersQuery());
+            var result = await Mediator.Send(new GetAllUserOrdersQuery());
 
             return result.Match(
-                orders => Ok(_mapper.Map<List<OrderResponse>>(orders)),
+                orders => Ok(Mapper.Map<List<OrderResponse>>(orders)),
                 errors => Problem(errors));
         }
     
@@ -35,11 +34,11 @@ namespace KittyStore.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOrder(CreateOrderRequest request)
         {
-            var command = _mapper.Map<CreateOrderCommand>(request);
-            var createdResult = await _mediator.Send(command);
+            var command = Mapper.Map<CreateOrderCommand>(request);
+            var createdResult = await Mediator.Send(command);
 
             return createdResult.Match(
-                order => Ok(_mapper.Map<OrderResponse>(order)),
+                order => Ok(Mapper.Map<OrderResponse>(order)),
                 errors => Problem(errors));
         }
     }

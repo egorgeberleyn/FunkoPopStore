@@ -1,6 +1,5 @@
 ﻿using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.CatAggregate;
-using KittyStore.Domain.CatAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace KittyStore.Infrastructure.Persistence.Repositories
@@ -17,7 +16,7 @@ namespace KittyStore.Infrastructure.Persistence.Repositories
         public async Task<List<Cat>> GetAllCatsAsync() =>
             await _context.Cats.ToListAsync();
 
-        public async Task<Cat?> GetCatByIdAsync(CatId id) =>
+        public async Task<Cat?> GetCatByIdAsync(Guid id) =>
             await _context.Cats.FirstOrDefaultAsync(c => c.Id == id);
     
         public async Task CreateCatAsync(Cat newCat)

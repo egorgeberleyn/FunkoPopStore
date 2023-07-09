@@ -1,10 +1,9 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using MediatR;
+﻿using MediatR;
 using ErrorOr;
 using KittyStore.Application.Authentication.Common;
 using KittyStore.Application.Common.Interfaces.Authentication;
 using KittyStore.Application.Common.Interfaces.Persistence;
+using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.UserAggregate;
 using KittyStore.Domain.UserAggregate.Enums;
@@ -16,11 +15,14 @@ namespace KittyStore.Application.Authentication.Commands.Register
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        private readonly IPasswordService _passwordService;
 
-        public RegisterCommandHandler(IUserRepository userRepository, IJwtTokenGenerator jwtTokenGenerator)
+        public RegisterCommandHandler(IUserRepository userRepository, IJwtTokenGenerator jwtTokenGenerator, 
+            IPasswordService passwordService)
         {
             _userRepository = userRepository;
             _jwtTokenGenerator = jwtTokenGenerator;
+            _passwordService = passwordService;
         }
 
         public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
@@ -30,9 +32,9 @@ namespace KittyStore.Application.Authentication.Commands.Register
                 return Errors.User.DuplicateEmail;
         
             //Create user and add to db
-            CreatePasswordHash(command.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            var passwordInfo = _passwordService.HashPassword(command.Password);
             var user = User.Create(command.FirstName, command.LastName, command.Email, 
-                passwordHash, passwordSalt, Balance.Create(Currency.Dollar, 0), Role.Customer);
+                passwordInfo.Hash, passwordInfo.Salt, Balance.Create(Currency.Dollar, 0), Role.Customer);
             await _userRepository.AddUserAsync(user);
         
             //Jwt token generate
@@ -41,13 +43,6 @@ namespace KittyStore.Application.Authentication.Commands.Register
             return new AuthenticationResult(
                 user,
                 token);
-        }
-
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using var hmac = new HMACSHA512();
-            passwordSalt = hmac.Key;
-            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         }
     }
 }

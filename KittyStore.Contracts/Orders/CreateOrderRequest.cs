@@ -1,8 +1,7 @@
 ﻿namespace KittyStore.Contracts.Orders
 {
     public record CreateOrderRequest(
-        Address Address,
-        Guid UserId);
+        Address Address);
 
     public record Address( 
         string Country, 

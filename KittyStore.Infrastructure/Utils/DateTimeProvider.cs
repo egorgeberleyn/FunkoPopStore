@@ -1,6 +1,6 @@
-﻿using KittyStore.Application.Common.Interfaces.Services;
+﻿using KittyStore.Application.Common.Interfaces.Utils;
 
-namespace KittyStore.Infrastructure.Services
+namespace KittyStore.Infrastructure.Utils
 {
     public class DateTimeProvider : IDateTimeProvider
     {

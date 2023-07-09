@@ -1,5 +1,4 @@
 ﻿using KittyStore.Application.Cats.Commands.DeleteCat;
-using KittyStore.Domain.CatAggregate.ValueObjects;
 using KittyStore.Domain.Common.Errors;
 using KittyStore.Tests.Common;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +31,7 @@ public class DeleteCatCommandHandlerTests : TestCommandBase
         
         //Act
         var testCat = await handler.Handle(new DeleteCatCommand(
-                CatId.CreateUnique()), 
+                Guid.NewGuid()), 
             CancellationToken.None);
             
         //Assert

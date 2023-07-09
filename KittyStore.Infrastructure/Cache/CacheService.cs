@@ -14,12 +14,12 @@ namespace KittyStore.Infrastructure.Cache
             _redisDatabase = multiplexer.GetDatabase();
         }
     
-        public async Task<T> GetDataAsync<T> (string key)
+        public async Task<T?> GetDataAsync<T> (string key)
         {
             var value = await _redisDatabase.StringGetAsync(key);
-            return value.IsNullOrEmpty
-                ? default
-                : JsonConvert.DeserializeObject<T>(value);
+            return !string.IsNullOrEmpty(value) 
+                ? JsonConvert.DeserializeObject<T>(value) 
+                : default;
         }
     
         public async Task SetDataAsync<T> (string? key, T value, DateTimeOffset expirationTime) 

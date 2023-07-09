@@ -1,28 +1,26 @@
-﻿using KittyStore.Domain.CatAggregate.ValueObjects;
-using KittyStore.Domain.Common.Models;
-using KittyStore.Domain.OrderAggregate.ValueObjects;
+﻿using KittyStore.Domain.Common.Models;
 
 namespace KittyStore.Domain.OrderAggregate.Entities
 {
-    public sealed class OrderItem : Entity<OrderItemId>
+    public sealed class OrderItem : Entity
     {
-        public OrderId OrderId { get; private set; }
+        public Guid OrderId { get; private set; }
     
         public decimal Price { get; private set;}
     
-        public CatId CatId { get; private set;}
+        public Guid CatId { get; private set;}
 
         public Order? Order { get; set; }
 
-        private OrderItem(OrderItemId id, OrderId orderId, decimal price, CatId catId) : base(id)
+        private OrderItem(Guid id, Guid orderId, decimal price, Guid catId) : base(id)
         {
             OrderId = orderId;
             Price = price;
             CatId = catId;
         }
 
-        public static OrderItem Create(decimal price, OrderId orderId, CatId catId) =>
-            new(OrderItemId.CreateUnique(), orderId, price, catId);
+        public static OrderItem Create(decimal price, Guid orderId, Guid catId) =>
+            new(Guid.NewGuid(), orderId, price, catId);
         
         #pragma warning disable CS8618
             private OrderItem() { }

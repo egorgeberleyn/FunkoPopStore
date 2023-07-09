@@ -1,6 +1,5 @@
 ﻿using KittyStore.Application.Users.Commands.UpdateUser;
 using KittyStore.Domain.Common.Errors;
-using KittyStore.Domain.UserAggregate.ValueObjects;
 using KittyStore.Tests.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,7 +44,7 @@ public class UpdateUserCommandHandlerTests : TestCommandBase
         var result = await handler.Handle(
             new UpdateUserCommand
             {
-                Id = UserId.CreateUnique(),
+                Id = Guid.NewGuid(),
                 Balance = new BalanceCommand(testUser.Balance.Currency.ToString(), testUser.Balance.Amount),
                 Email = testUser.Email,
                 FirstName = updateFirstName,

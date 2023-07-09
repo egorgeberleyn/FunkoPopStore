@@ -12,13 +12,13 @@ namespace KittyStore.Api.Controllers
     [Authorize]
     public class ApiController : ControllerBase
     {
-        protected readonly ISender _mediator;
-        protected readonly IMapper _mapper;
+        protected readonly ISender Mediator;
+        protected readonly IMapper Mapper;
 
         protected ApiController(ISender mediator, IMapper mapper)
         {
-            _mediator = mediator;
-            _mapper = mapper;
+            Mediator = mediator;
+            Mapper = mapper;
         }
 
         protected IActionResult Problem(List<Error> errors)

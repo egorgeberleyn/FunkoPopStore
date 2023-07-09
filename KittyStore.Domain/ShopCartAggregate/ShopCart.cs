@@ -1,39 +1,31 @@
-﻿using KittyStore.Domain.CatAggregate.ValueObjects;
-using KittyStore.Domain.Common.Models;
+﻿using KittyStore.Domain.Common.Models;
 using KittyStore.Domain.ShopCartAggregate.Entities;
-using KittyStore.Domain.ShopCartAggregate.ValueObjects;
-using KittyStore.Domain.UserAggregate.ValueObjects;
 using Newtonsoft.Json;
 
 namespace KittyStore.Domain.ShopCartAggregate
 {
-    public sealed class ShopCart : AggregateRoot<ShopCartId>
+    public sealed class ShopCart : AggregateRoot
     {
         private readonly List<ShopCartItem> _items = new();
     
-        public UserId UserId { get; private set; }
+        public Guid UserId { get; private set; }
 
         public IReadOnlyList<ShopCartItem> ShopCartItems => _items;
 
         public int ItemsQuantity
         {
             get => _items.Count;
-            init { if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value)); }
+            private set { if (value < 0) throw new ArgumentOutOfRangeException(nameof(value)); }
         }
     
         public decimal TotalPrice
         {
             get => CalculateTotalPrice();
-            init { if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value)); }
-        }
-
-        public ShopCart(ShopCartId id, UserId userId) : base(id)
-        {
-            UserId = userId;
+            private set { if (value < 0) throw new ArgumentOutOfRangeException(nameof(value)); }
         }
 
         [JsonConstructor]
-        public ShopCart(ShopCartId id, UserId userId, int itemsQuantity, List<ShopCartItem> shopCartItems,
+        private ShopCart(Guid id, Guid userId, int itemsQuantity, List<ShopCartItem> shopCartItems,
             decimal totalPrice) : base(id)
         {
             UserId = userId;
@@ -41,14 +33,19 @@ namespace KittyStore.Domain.ShopCartAggregate
             _items = shopCartItems;
             TotalPrice = totalPrice;
         }
+
+        private ShopCart(Guid id, Guid userId) : base(id)
+        {
+            UserId = userId;
+        }
+        
+        public static ShopCart Create(Guid userId) => 
+            new (Guid.NewGuid(), userId);
     
-        public static ShopCart Create(UserId userId) => 
-            new (ShopCartId.CreateUnique(), userId);
-    
-        public void AddItem(decimal price, CatId catId) =>
+        public void AddItem(decimal price, Guid catId) =>
             _items.Add(ShopCartItem.Create(price, catId, Id));
     
-        public void RemoveItem(ShopCartItemId shopCartItemId)
+        public void RemoveItem(Guid shopCartItemId)
         {
             var shopItem = _items.FirstOrDefault(item => item.Id == shopCartItemId);
             if (shopItem is not null) _items.Remove(shopItem);

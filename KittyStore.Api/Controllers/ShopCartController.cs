@@ -2,8 +2,6 @@
 using KittyStore.Application.ShopCarts.Commands.RemoveItem;
 using KittyStore.Application.ShopCarts.Queries.GetShopCart;
 using KittyStore.Contracts.ShopCart;
-using KittyStore.Domain.ShopCartAggregate.ValueObjects;
-using KittyStore.Domain.UserAggregate.ValueObjects;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +14,13 @@ namespace KittyStore.Api.Controllers
         public ShopCartController(ISender mediator, IMapper mapper) : base(mediator, mapper) { }
 
         [HttpGet("")]
-        public async Task<IActionResult> GetShopCart(Guid userId)
+        public async Task<IActionResult> GetShopCart()
         {
-            var result = await _mediator.Send(
-                new GetShopCartQuery(UserId.Create(userId)));
+            var result = await Mediator.Send(
+                new GetShopCartQuery());
 
             return result.Match(
-                cart => Ok(_mapper.Map<ShopCartResponse>(cart)),
+                cart => Ok(Mapper.Map<ShopCartResponse>(cart)),
                 errors => Problem(errors)
             );
         }
@@ -30,11 +28,11 @@ namespace KittyStore.Api.Controllers
         [HttpPost("items")]
         public async Task<IActionResult> AddItem(AddShopCartItemRequest request)
         {
-            var command = _mapper.Map<AddShopCartItemCommand>(request);
-            var result = await _mediator.Send(command);
+            var command = Mapper.Map<AddShopCartItemCommand>(request);
+            var result = await Mediator.Send(command);
 
             return result.Match(
-                cart => Ok(_mapper.Map<ShopCartResponse>(cart)),
+                cart => Ok(Mapper.Map<ShopCartResponse>(cart)),
                 errors => Problem(errors)
             );
         }
@@ -42,11 +40,10 @@ namespace KittyStore.Api.Controllers
         [HttpDelete("items/{id:guid}")]
         public async Task<IActionResult> RemoveItem(Guid id)
         {
-            var itemId = ShopCartItemId.Create(id);
-            var result = await _mediator.Send(new RemoveItemCommand(itemId));
+            var result = await Mediator.Send(new RemoveItemCommand(id));
 
             return result.Match(
-                cart => Ok(_mapper.Map<ShopCartResponse>(cart)),
+                cart => Ok(Mapper.Map<ShopCartResponse>(cart)),
                 errors => Problem(errors)
             );
         }

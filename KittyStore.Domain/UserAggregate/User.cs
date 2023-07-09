@@ -4,7 +4,7 @@ using KittyStore.Domain.UserAggregate.ValueObjects;
 
 namespace KittyStore.Domain.UserAggregate
 {
-    public sealed class User : AggregateRoot<UserId>
+    public sealed class User : AggregateRoot
     {
         public string FirstName { get; private set; }
 
@@ -24,7 +24,7 @@ namespace KittyStore.Domain.UserAggregate
     
         public DateTime UpdatedDateTime { get; private set;}
 
-        public User(UserId id, string firstName, string lastName, string email, byte[] passwordHash, byte[] passwordSalt, 
+        public User(Guid id, string firstName, string lastName, string email, byte[] passwordHash, byte[] passwordSalt, 
             Balance balance, Role role, DateTime createdDateTime, DateTime updatedDateTime) : base(id)
         {
             FirstName = firstName;
@@ -38,9 +38,9 @@ namespace KittyStore.Domain.UserAggregate
             Role = role;
         }
     
-        public static User Create(string firstName, string lastName, string email, byte[] passwordHash, byte[] passwordSalt, 
-            Balance balance, Role role) =>
-            new(UserId.CreateUnique(), firstName, lastName, email, passwordHash, passwordSalt, balance, role,
+        public static User Create(string firstName, string lastName, string email, 
+            byte[] passwordHash, byte[] passwordSalt, Balance balance, Role role) =>
+            new(Guid.NewGuid(), firstName, lastName, email, passwordHash, passwordSalt, balance, role,
                 DateTime.UtcNow, DateTime.UtcNow);
 
         public User Update(string firstName, string lastName, string email,

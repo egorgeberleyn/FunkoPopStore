@@ -14,8 +14,7 @@ namespace KittyStore.Api.Common.Mapping
 
             config.NewConfig<UpdateCatRequest, UpdateCatCommand>();
 
-            config.NewConfig<Cat, CatResponse>()
-                .Map(dist => dist.Id, src => src.Id.Value);
+            config.NewConfig<Cat, CatResponse>();
         }
     }
 }

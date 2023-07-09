@@ -1,13 +1,12 @@
 ﻿using ErrorOr;
 using KittyStore.Application.Common.Interfaces.Cache;
 using KittyStore.Application.Common.Interfaces.Persistence;
-using KittyStore.Application.ShopCarts.Common;
+using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Domain.Common.Errors;
 using KittyStore.Domain.OrderAggregate;
 using KittyStore.Domain.OrderAggregate.Entities;
 using KittyStore.Domain.OrderAggregate.ValueObjects;
 using KittyStore.Domain.ShopCartAggregate;
-using MapsterMapper;
 using MediatR;
 
 namespace KittyStore.Application.Orders.Commands.CreateOrder
@@ -17,24 +16,25 @@ namespace KittyStore.Application.Orders.Commands.CreateOrder
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
         private readonly ICacheService _cacheService;
-        private readonly IMapper _mapper;
+        private readonly ICurrentUserService _currentUserService;
 
-        public CreateOrderCommandHandler(IOrderRepository orderRepository, ICacheService cacheService, IMapper mapper, IUserRepository userRepository)
+        public CreateOrderCommandHandler(IOrderRepository orderRepository, ICacheService cacheService, 
+            IUserRepository userRepository, ICurrentUserService currentUserService)
         {
             _orderRepository = orderRepository;
             _cacheService = cacheService;
-            _mapper = mapper;
             _userRepository = userRepository;
+            _currentUserService = currentUserService;
         }
 
         public async Task<ErrorOr<Order>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
         {
-            if (await _userRepository.GetUserByIdAsync(command.UserId) is not { } user)
+            var user = await _currentUserService.GetUserAsync();
+            if(user is null)
                 return Errors.User.NotFound;
-        
+            
             //Get shopCart
-            var cart = _mapper.Map<ShopCart>(
-                await _cacheService.GetDataAsync<ShopCartDto>(user.Id.ToString()));
+            var cart = await _cacheService.GetDataAsync<ShopCart>(user.Id.ToString());
         
             //Validate and calculate
             if (cart is null || cart.ShopCartItems.Count == 0)
@@ -48,7 +48,7 @@ namespace KittyStore.Application.Orders.Commands.CreateOrder
                 Address.Create(command.AddressCommand.Country, command.AddressCommand.City, command.AddressCommand.Street, 
                     command.AddressCommand.HouseNumber),
                 totalPrice,
-                command.UserId);
+                user.Id);
             var items = cart.ShopCartItems.Select(item => 
                 OrderItem.Create(item.Price, order.Id, item.CatId)).ToList();
             order.AddItems(items);

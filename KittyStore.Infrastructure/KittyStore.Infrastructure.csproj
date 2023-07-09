@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -11,13 +11,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.11" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.11" />
-      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
-      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.7" />
-      <PackageReference Include="StackExchange.Redis" Version="2.6.80" />
-      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.8" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.8" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
+      <PackageReference Include="StackExchange.Redis" Version="2.6.116" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.31.0" />
     </ItemGroup>
 
 </Project>

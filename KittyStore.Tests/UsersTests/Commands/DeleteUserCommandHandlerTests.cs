@@ -1,6 +1,5 @@
 ﻿using KittyStore.Application.Users.Commands.DeleteUser;
 using KittyStore.Domain.Common.Errors;
-using KittyStore.Domain.UserAggregate.ValueObjects;
 using KittyStore.Tests.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +31,7 @@ public class DeleteUserCommandHandlerTests : TestCommandBase
         
         //Act
         var result = await handler.Handle(new DeleteUserCommand(
-                UserId.CreateUnique()), 
+                Guid.NewGuid()), 
             CancellationToken.None);
             
         //Assert
