@@ -264,3 +264,4 @@ FakesAssemblies/
 
 # User dirs and files
 .idea/
+.idea
