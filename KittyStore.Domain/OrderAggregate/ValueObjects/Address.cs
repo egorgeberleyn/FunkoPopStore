@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using KittyStore.Domain.Common.Models;
+﻿using KittyStore.Domain.Common.Models;
 
 namespace KittyStore.Domain.OrderAggregate.ValueObjects
 {
@@ -9,8 +8,7 @@ namespace KittyStore.Domain.OrderAggregate.ValueObjects
         public string City { get; private set;}
         public string Street { get; private set;}
         public string HouseNumber { get; private set;}
-
-        [JsonConstructor]
+        
         public Address(string country, string city, string street, string houseNumber)
         {
             Country = country;

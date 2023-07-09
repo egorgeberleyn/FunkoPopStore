@@ -16,7 +16,7 @@ namespace KittyStore.Domain.UserAggregate
     
         public byte[] PasswordSalt { get; private set; }
     
-        public Balance Balance { get; private set; }
+        public Balance? Balance { get; private set; }
     
         public Role Role { get; private set;}
 
@@ -25,7 +25,7 @@ namespace KittyStore.Domain.UserAggregate
         public DateTime UpdatedDateTime { get; private set;}
 
         public User(Guid id, string firstName, string lastName, string email, byte[] passwordHash, byte[] passwordSalt, 
-            Balance balance, Role role, DateTime createdDateTime, DateTime updatedDateTime) : base(id)
+            Role role, DateTime createdDateTime, DateTime updatedDateTime, Balance? balance = null) : base(id)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -39,9 +39,9 @@ namespace KittyStore.Domain.UserAggregate
         }
     
         public static User Create(string firstName, string lastName, string email, 
-            byte[] passwordHash, byte[] passwordSalt, Balance balance, Role role) =>
-            new(Guid.NewGuid(), firstName, lastName, email, passwordHash, passwordSalt, balance, role,
-                DateTime.UtcNow, DateTime.UtcNow);
+            byte[] passwordHash, byte[] passwordSalt, Role role, Balance? balance = null) =>
+            new(Guid.NewGuid(), firstName, lastName, email, passwordHash, passwordSalt, role,
+                DateTime.UtcNow, DateTime.UtcNow, balance);
 
         public User Update(string firstName, string lastName, string email,
             Balance balance)

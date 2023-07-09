@@ -34,7 +34,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
         //Create user and add to db
         var passwordInfo = _passwordService.HashPassword(command.Password);
         var user = User.Create(command.FirstName, command.LastName, command.Email, 
-            passwordInfo.Hash, passwordInfo.Salt, Balance.Create(Currency.Dollar, 0), Role.Customer);
+            passwordInfo.Hash, passwordInfo.Salt, Role.Customer, Balance.Create(Currency.Dollar, 0));
         await _userRepository.AddUserAsync(user);
         
         //Jwt token generate

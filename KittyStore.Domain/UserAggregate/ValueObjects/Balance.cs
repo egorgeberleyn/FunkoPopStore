@@ -11,8 +11,7 @@ namespace KittyStore.Domain.UserAggregate.ValueObjects
         public Currency Currency { get; private set; }
     
         public decimal Amount { get; private set; }
-
-        [JsonConstructor]
+        
         public Balance(Currency currency, decimal amount)
         {
             Currency = currency;

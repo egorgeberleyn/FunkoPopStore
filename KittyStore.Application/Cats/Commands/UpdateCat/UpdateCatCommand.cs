@@ -5,14 +5,14 @@ using KittyStore.Application.Common.SaveChangesPostProcessor;
 
 namespace KittyStore.Application.Cats.Commands.UpdateCat
 {
-    public record UpdateCatCommand : IRequest<ErrorOr<Cat>>, ICommand
+    public record UpdateCatCommand() : IRequest<ErrorOr<Cat>>, ICommand
     {
         public Guid Id { get; set; }
-        public string Name { get; init; } = default!;
+        public string? Name { get; init; }
         public int Age { get; init; }
-        public string Color { get; init; } = default!;
-        public string Breed { get; init; } = default!;
-        public string Gender { get; init; } = default!;
+        public string? Color { get; init; }
+        public string? Breed { get; init; }
+        public string? Gender { get; init; }
         public decimal Price { get; init; } 
     }
 }

@@ -1,14 +1,14 @@
 ﻿using KittyStore.Domain.UserAggregate;
 using KittyStore.Domain.UserAggregate.Enums;
-using KittyStore.Domain.UserAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Newtonsoft.Json;
 
 namespace KittyStore.Infrastructure.Persistence.EntityConfigurations
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
+        private readonly User _admin = SeedData.CreateAdmin("Jorge", "Admin", "secret123", "admin123@gmail.com");
+        
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("users");
@@ -19,12 +19,18 @@ namespace KittyStore.Infrastructure.Persistence.EntityConfigurations
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(e => e.Balance)
-                .HasConversion(
-                    v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<Balance>(v)!);
+            builder.OwnsOne(user => user.Balance, b =>
+            {
+                b.Property(balance => balance.Currency).HasConversion(
+                    v => v.ToString(),
+                    v => (Currency)Enum.Parse(typeof(Currency), v));
+                b.Property(balance => balance.Amount);
+            });
             
-            builder.Property(e => e.Role)
+            builder.OwnsOne(user => user.Balance).HasData(
+                new { UserId = _admin.Id, Currency = Currency.Dollar, Amount = 1000m});
+            
+            builder.Property(user => user.Role)
                 .HasConversion(
                     v => v.ToString(),
                     v => (Role)Enum.Parse(typeof(Role), v));
@@ -38,8 +44,7 @@ namespace KittyStore.Infrastructure.Persistence.EntityConfigurations
             builder.Property(u => u.CreatedDateTime).IsRequired();
             builder.Property(u => u.UpdatedDateTime).IsRequired();
 
-            builder.HasData(
-               SeedData.CreateAdmin("Jorge", "Admin", "secret123", "admin123@gmail.com"));
+            builder.HasData(_admin);
         }
     }
 }

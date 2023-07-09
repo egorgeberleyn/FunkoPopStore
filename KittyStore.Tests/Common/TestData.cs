@@ -23,13 +23,11 @@ public static class TestData
     public static readonly List<User> Users = new()
     {
         new User(AppDbContextFactory.UserAId, "Pit", "Pot", "yuppi@gmail.com",
-            new byte[] { 1, 2, 3 }, new byte[] { 4, 5, 6 },
-            Balance.Create(Currency.Euro, 228), Role.Customer,
-            DateTime.UtcNow, DateTime.UtcNow), // Test1
+            new byte[] { 1, 2, 3 }, new byte[] { 4, 5, 6 }, Role.Customer,
+            DateTime.UtcNow, DateTime.UtcNow, Balance.Create(Currency.Euro, 228)), // Test1
 
         new User(AppDbContextFactory.UserBId, "Crock", "Tester", "ggwp@yandex.ru",
             new byte[] { 1, 2, 3 }, new byte[] { 4, 5, 6 },
-            Balance.Create(Currency.Dollar, 1337), Role.Customer,
-            DateTime.UtcNow, DateTime.UtcNow), // Test2
+            Role.Customer, DateTime.UtcNow, DateTime.UtcNow, Balance.Create(Currency.Dollar, 1337)), // Test2
     };
 }
