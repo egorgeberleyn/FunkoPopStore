@@ -20,7 +20,6 @@ namespace KittyStore.Infrastructure.Persistence.Repositories
         public async Task CreateOrderAsync(Order newOrder)
         {
             await _context.AddAsync(newOrder);
-            await _context.SaveChangesAsync();
         }
     }
 }

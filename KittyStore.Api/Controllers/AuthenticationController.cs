@@ -1,4 +1,5 @@
-﻿using KittyStore.Application.Authentication.Commands.Register;
+﻿using KittyStore.Application.Authentication.Commands;
+using KittyStore.Application.Authentication.Commands.Register;
 using KittyStore.Application.Authentication.Queries.Login;
 using KittyStore.Contracts.Authentication;
 using MapsterMapper;

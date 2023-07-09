@@ -9,7 +9,7 @@ namespace KittyStore.Application.Common.Interfaces.Persistence
         Task<User?> GetUserByEmailAsync(string email);
     
         Task AddUserAsync(User newUser);
-        Task UpdateUserAsync(User user);
-        Task DeleteUserAsync(User user);
+        void UpdateUser(User user);
+        void DeleteUser(User user);
     }
 }

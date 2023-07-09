@@ -25,19 +25,12 @@ namespace KittyStore.Infrastructure.Persistence.Repositories
         public async Task AddUserAsync(User newUser)
         {
             await _context.AddAsync(newUser);
-            await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateUserAsync(User user)
-        {
+        public void UpdateUser(User user) =>
             _context.Update(user);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteUserAsync(User user)
-        {
+        
+        public void DeleteUser(User user) =>
             _context.Remove(user);
-            await _context.SaveChangesAsync();
-        }
     }
 }

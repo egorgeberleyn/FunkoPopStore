@@ -42,6 +42,7 @@ namespace KittyStore.Infrastructure
             services.AddScoped<ICatRepository, CatRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
 
+            services.AddScoped<IAppDbContext>(factory => factory.GetRequiredService<AppDbContext>());
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DbConnection")));
         

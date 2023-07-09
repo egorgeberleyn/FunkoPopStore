@@ -1,4 +1,5 @@
-﻿using KittyStore.Domain.CatAggregate;
+﻿using KittyStore.Application.Common.Interfaces.Persistence;
+using KittyStore.Domain.CatAggregate;
 using KittyStore.Domain.OrderAggregate;
 using KittyStore.Domain.OrderAggregate.Entities;
 using KittyStore.Domain.UserAggregate;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KittyStore.Infrastructure.Persistence
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : DbContext, IAppDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

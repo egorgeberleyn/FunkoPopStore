@@ -23,8 +23,7 @@ namespace KittyStore.Application.Cats.Commands.UpdateCat
 
             var updateCat = cat.Update(command.Name, command.Age, command.Color, command.Breed, 
                 command.Price, (CatGender)Enum.Parse(typeof(CatGender) ,command.Gender, true));
-            await _catRepository.UpdateCatAsync(updateCat);
-
+            _catRepository.UpdateCat(updateCat);
             return cat;
         }
     }

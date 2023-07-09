@@ -23,8 +23,7 @@ namespace KittyStore.Application.Users.Commands.DeleteUser
             if (user.Role is Role.Admin)
                 return Errors.User.AdminCannotBeDeleted;
 
-            await _userRepository.DeleteUserAsync(user);
-        
+            _userRepository.DeleteUser(user);
             return Unit.Value;
         }
     }

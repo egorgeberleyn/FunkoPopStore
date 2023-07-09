@@ -52,10 +52,9 @@ namespace KittyStore.Application.Orders.Commands.CreateOrder
             var items = cart.ShopCartItems.Select(item => 
                 OrderItem.Create(item.Price, order.Id, item.CatId)).ToList();
             order.AddItems(items);
-        
-            //Save
+            
             await _orderRepository.CreateOrderAsync(order);
-            await _userRepository.UpdateUserAsync(user);
+            _userRepository.UpdateUser(user);
         
             await _cacheService.RemoveDataAsync(user.Id.ToString());
             return order;

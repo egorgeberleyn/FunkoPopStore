@@ -1,12 +1,13 @@
 ﻿using ErrorOr;
+using KittyStore.Application.Common.SaveChangesPostProcessor;
 using KittyStore.Domain.UserAggregate;
 using MediatR;
 
 namespace KittyStore.Application.Users.Commands.UpdateUser
 {
-    public record UpdateUserCommand : IRequest<ErrorOr<User>>
+    public record UpdateUserCommand : IRequest<ErrorOr<User>>, ICommand
     {
-        public Guid Id { get; set; } = default!;
+        public Guid Id { get; set; }
         public string FirstName { get; init; } = default!;
         public string LastName { get; init; } = default!;
         public string Email { get; init; } = default!;

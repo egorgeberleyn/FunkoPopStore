@@ -26,8 +26,7 @@ namespace KittyStore.Application.Users.Commands.AddBalanceToUser
                 return Errors.User.NotFound;
 
             user.Balance.Replenishment(command.Amount);
-            await _userRepository.UpdateUserAsync(user);
-
+            _userRepository.UpdateUser(user);
             return user;
         }
     }

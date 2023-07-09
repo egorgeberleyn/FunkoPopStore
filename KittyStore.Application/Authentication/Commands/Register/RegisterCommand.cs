@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using KittyStore.Application.Authentication.Common;
+using KittyStore.Application.Common.SaveChangesPostProcessor;
 using MediatR;
 
 namespace KittyStore.Application.Authentication.Commands.Register
@@ -8,5 +9,5 @@ namespace KittyStore.Application.Authentication.Commands.Register
         string FirstName,
         string LastName,
         string Email,
-        string Password) : IRequest<ErrorOr<AuthenticationResult>>;
+        string Password) : IRequest<ErrorOr<AuthenticationResult>>, ICommand;
 }

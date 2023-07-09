@@ -7,8 +7,8 @@ namespace KittyStore.Application.Common.Interfaces.Persistence
         Task<List<Cat>> GetAllCatsAsync();
         Task<Cat?> GetCatByIdAsync(Guid id);
         Task CreateCatAsync(Cat newCat);
-        Task UpdateCatAsync(Cat cat);
-        Task DeleteCatAsync(Cat cat);
+        void UpdateCat(Cat cat);
+        void DeleteCat(Cat cat);
     
     }
 }

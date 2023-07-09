@@ -19,22 +19,13 @@ namespace KittyStore.Infrastructure.Persistence.Repositories
         public async Task<Cat?> GetCatByIdAsync(Guid id) =>
             await _context.Cats.FirstOrDefaultAsync(c => c.Id == id);
     
-        public async Task CreateCatAsync(Cat newCat)
-        {
+        public async Task CreateCatAsync(Cat newCat) =>
             await _context.AddAsync(newCat);
-            await _context.SaveChangesAsync();
-        }
 
-        public async Task UpdateCatAsync(Cat cat)
-        {
+        public void UpdateCat(Cat cat) =>
             _context.Update(cat);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteCatAsync(Cat cat)
-        {
+        
+        public void DeleteCat(Cat cat) =>
             _context.Remove(cat);
-            await _context.SaveChangesAsync();
-        }
     }
 }

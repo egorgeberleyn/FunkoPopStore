@@ -19,8 +19,7 @@ namespace KittyStore.Application.Cats.Commands.DeleteCat
             if (await _catRepository.GetCatByIdAsync(command.Id) is not {} cat)
                 return Errors.Cat.NotFound;
         
-            await _catRepository.DeleteCatAsync(cat);
-
+            _catRepository.DeleteCat(cat);
             return Unit.Value;
         }
     }

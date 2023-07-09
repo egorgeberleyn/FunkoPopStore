@@ -26,8 +26,7 @@ namespace KittyStore.Application.Users.Commands.UpdateUser
                 Balance.Create((Currency)Enum.Parse(typeof(Currency), command.Balance.Currency), 
                     command.Balance.Amount));
         
-            await _userRepository.UpdateUserAsync(updateUser);
-        
+            _userRepository.UpdateUser(updateUser);
             return updateUser;
         }
     }

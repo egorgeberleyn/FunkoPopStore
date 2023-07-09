@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using ErrorOr;
 using KittyStore.Application.Authentication.Common;
 using KittyStore.Application.Common.Interfaces.Authentication;
