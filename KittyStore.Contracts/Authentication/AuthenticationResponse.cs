@@ -6,5 +6,6 @@
         string LastName,
         string Email,
         string Role,
-        string Token);
+        string Token,
+        string RefreshToken);
 }

@@ -33,11 +33,12 @@ namespace KittyStore.Application.Authentication.Queries.Login
                 return new[] { Errors.Authentication.InvalidCredentials };
 
             //Generate token
-            var token = _jwtTokenGenerator.GenerateToken(user);
+            var tokenPair = await _jwtTokenGenerator.GenerateTokenPairAsync(user);
 
             return new AuthenticationResult(
                 user,
-                token);
+                tokenPair.accessToken,
+                tokenPair.refreshToken);
         }
     }
 }

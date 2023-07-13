@@ -1,4 +1,5 @@
-﻿using KittyStore.Application.Common.Interfaces.Persistence;
+﻿using KittyStore.Application.Authentication.Common;
+using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.CatAggregate;
 using KittyStore.Domain.OrderAggregate;
 using KittyStore.Domain.OrderAggregate.Entities;
@@ -17,6 +18,7 @@ namespace KittyStore.Infrastructure.Persistence
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<OrderItem> OrdersItems { get; set; } = null!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

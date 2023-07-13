@@ -1,4 +1,5 @@
-﻿using KittyStore.Application.Authentication.Commands.Register;
+﻿using KittyStore.Application.Authentication.Commands.RefreshToken;
+using KittyStore.Application.Authentication.Commands.Register;
 using KittyStore.Application.Authentication.Queries.Login;
 using KittyStore.Contracts.Authentication;
 using MapsterMapper;
@@ -33,6 +34,17 @@ namespace KittyStore.Api.Controllers
 
             return loginResult.Match(
                 authResult => Ok(Mapper.Map<AuthenticationResponse>(authResult)),
+                errors => Problem(errors));
+        }
+
+        [HttpPost("refreshToken")]
+        public async Task<IActionResult> RefreshToken(TokenRequest request)
+        {
+            var command = Mapper.Map<RefreshTokenCommand>(request);
+            var result = await Mediator.Send(command);
+            
+            return result.Match(
+                authResult => Ok(authResult),
                 errors => Problem(errors));
         }
     }

@@ -38,10 +38,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
         await _userRepository.AddUserAsync(user);
         
         //Jwt token generate
-        var token = _jwtTokenGenerator.GenerateToken(user);
+        var tokenPair = await _jwtTokenGenerator.GenerateTokenPairAsync(user);
         
         return new AuthenticationResult(
             user,
-            token);
+            tokenPair.accessToken,
+            tokenPair.refreshToken);
     }
 }
