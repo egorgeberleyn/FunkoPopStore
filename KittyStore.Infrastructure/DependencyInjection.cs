@@ -6,6 +6,7 @@ using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Infrastructure.Authentication;
 using KittyStore.Infrastructure.Cache;
 using KittyStore.Infrastructure.Persistence;
+using KittyStore.Infrastructure.Persistence.Interceptors;
 using KittyStore.Infrastructure.Persistence.Repositories;
 using KittyStore.Infrastructure.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -46,6 +47,8 @@ namespace KittyStore.Infrastructure
             services.AddScoped<IAppDbContext>(factory => factory.GetRequiredService<AppDbContext>());
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DbConnection")));
+            
+            services.AddScoped<PublishDomainEventsInterceptor>();
         
             return services;
         }

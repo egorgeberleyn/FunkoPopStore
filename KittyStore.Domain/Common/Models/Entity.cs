@@ -1,9 +1,14 @@
 ﻿namespace KittyStore.Domain.Common.Models
 {
-    public abstract class Entity : IEquatable<Entity>
+    public abstract class Entity : IEquatable<Entity>, IHasDomainEvents
     {
+        private readonly List<IDomainEvent> _domainEvents = new();
+        
+        
         public Guid Id { get;}
 
+        public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+        
         protected Entity(Guid id)
         {
             Id = id;
@@ -23,6 +28,12 @@
     
         public static bool operator !=(Entity left, Entity? right) =>
             !Equals(left, right);
+
+        protected void AddDomainEvent(IDomainEvent @event) => 
+            _domainEvents.Add(@event);
+
+        public void ClearDomainEvents() =>
+            _domainEvents.Clear();
         
         #pragma warning disable CS8618
             protected Entity() { }

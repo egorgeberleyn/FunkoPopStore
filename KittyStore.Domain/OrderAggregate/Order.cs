@@ -1,6 +1,7 @@
 ﻿using KittyStore.Domain.Common.Models;
 using KittyStore.Domain.OrderAggregate.Entities;
 using KittyStore.Domain.OrderAggregate.ValueObjects;
+using KittyStore.Domain.OrderAggregate.Events;
 
 namespace KittyStore.Domain.OrderAggregate
 {
@@ -26,9 +27,13 @@ namespace KittyStore.Domain.OrderAggregate
             TotalPrice = totalPrice;
         }
 
-        public static Order Create(Address address, decimal totalPrice, Guid userId) =>
-            new(Guid.NewGuid(), address, userId, totalPrice, DateTime.UtcNow);
-
+        public static Order Create(Address address, decimal totalPrice, Guid userId)
+        {
+            var order = new Order(Guid.NewGuid(), address, userId, totalPrice, DateTime.UtcNow);
+            order.AddDomainEvent(new OrderIsProcessed(order));
+            return order;
+        }
+        
         public void AddItems(IEnumerable<OrderItem> items) => _items.AddRange(items);
         
         #pragma warning disable CS8618

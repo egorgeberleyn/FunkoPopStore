@@ -1,17 +1,23 @@
 ﻿using KittyStore.Application.Authentication.Common;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.CatAggregate;
+using KittyStore.Domain.Common.Models;
 using KittyStore.Domain.OrderAggregate;
 using KittyStore.Domain.OrderAggregate.Entities;
 using KittyStore.Domain.UserAggregate;
+using KittyStore.Infrastructure.Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 namespace KittyStore.Infrastructure.Persistence
 {
     public class AppDbContext : DbContext, IAppDbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        private readonly PublishDomainEventsInterceptor? _domainEventsInterceptor;
+        
+        public AppDbContext(DbContextOptions<AppDbContext> options, 
+            PublishDomainEventsInterceptor? domainEventsInterceptor = null) : base(options)
         {
+            _domainEventsInterceptor = domainEventsInterceptor;
         }
         
         public DbSet<Cat> Cats { get; set; } = null!;
@@ -22,8 +28,18 @@ namespace KittyStore.Infrastructure.Persistence
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+            modelBuilder
+                .Ignore<List<IDomainEvent>>()
+                .ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+            
             base.OnModelCreating(modelBuilder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (_domainEventsInterceptor != null) 
+                optionsBuilder.AddInterceptors(_domainEventsInterceptor);
+            base.OnConfiguring(optionsBuilder);
         }
     }
 }
