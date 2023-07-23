@@ -1,6 +1,4 @@
-﻿
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using KittyStore.Application.Cats.Commands.CreateCat;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Application.UnitTests.Cats.TestUtils;
@@ -25,8 +23,9 @@ public class CreateCatCommandHandlerTests
     // T2: Scenario - what we're testing
     // T3: Expected outcome - what we expect the logical component to do
     [Theory]
-    [MemberData(nameof(ValidCreateMenuCommands))]
-    public async Task HandleCreateCatCommand_WhenCatIsValid_ShouldCreateAndReturnCat(CreateCatCommand createCatCommand)
+    [MemberData(nameof(ValidCreateCatCommands))]
+    public async Task HandleCreateCatCommand_WhenCatIsValid_ShouldCreateAndReturnCat(
+        CreateCatCommand createCatCommand)
     {
         // Act
         var result = await _handler.Handle(createCatCommand, default);
@@ -36,10 +35,10 @@ public class CreateCatCommandHandlerTests
         result.IsError.Should().BeFalse();
         result.Value.ValidateCreatedFrom(createCatCommand);
         // 2. Cat added to repository
-        _mockCatRepository.Verify(m => m.CreateCatAsync(result.Value));
+        _mockCatRepository.Verify(m => m.CreateCatAsync(result.Value), Times.Once);
     }
-
-    public static IEnumerable<object[]> ValidCreateMenuCommands()
+  
+    public static IEnumerable<object[]> ValidCreateCatCommands()
     {
         yield return new object[] { CreateCatCommandUtils.CreateCommand() };
         yield return new object[] { CreateCatCommandUtils.CreateCommand(

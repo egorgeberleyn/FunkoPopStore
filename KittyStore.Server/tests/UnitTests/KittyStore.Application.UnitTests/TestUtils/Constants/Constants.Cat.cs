@@ -4,6 +4,7 @@ public static partial class Constants
 {
     public static class Cat
     {
+        public static readonly Guid Id = Guid.Parse("ffffffff-ffff-ffff-ffff-ffffffffffff");
         public const string Name = "Bars";
         public const string Color = "blue";
         public const int Age = 12;
