@@ -31,16 +31,8 @@ public class UpdateCatCommandHandlerTests
         
         _mockCatRepository.Setup(x => x.GetCatByIdAsync(cat.Id))
             .ReturnsAsync(cat);
-        var updateCatCommand = new UpdateCatCommand()
-        {
-            Name = "Willy Jr",
-            Price = 240,
-            Color = cat.Color,
-            Age = cat.Age,
-            Breed = cat.Breed,
-            Gender = cat.Gender.ToString(),
-            Id = cat.Id
-        };
+        var updateCatCommand = new UpdateCatCommand(cat.Id, "Willy Jr", cat.Age, cat.Color, cat.Breed,
+            cat.Gender.ToString(), 240);
 
         // Act
         var result = await _handler.Handle(updateCatCommand, default);
@@ -62,16 +54,8 @@ public class UpdateCatCommandHandlerTests
         
         _mockCatRepository.Setup(x => x.GetCatByIdAsync(incorrectId))
             .ReturnsAsync((Cat?)null);
-        var updateCatCommand = new UpdateCatCommand()
-        {
-            Name = "Willy Jr",
-            Price = 240,
-            Color = cat.Color,
-            Age = cat.Age,
-            Breed = cat.Breed,
-            Gender = cat.Gender.ToString(),
-            Id = incorrectId
-        };
+        var updateCatCommand = new UpdateCatCommand(incorrectId, "Willy Jr", cat.Age, cat.Color, cat.Breed,
+            cat.Gender.ToString(), 240);
 
         // Act
         var result = await _handler.Handle(updateCatCommand, default);
