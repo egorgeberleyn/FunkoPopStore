@@ -1,4 +1,4 @@
-﻿namespace KittyStore.Application.Common.Interfaces.Utils;
+﻿namespace KittyStore.Application.Common.Interfaces.Authentication;
 
 public interface IPasswordService
 {

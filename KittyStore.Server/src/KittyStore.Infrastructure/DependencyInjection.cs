@@ -1,10 +1,12 @@
 ﻿using System.Text;
 using KittyStore.Application.Common.Interfaces.Authentication;
 using KittyStore.Application.Common.Interfaces.Cache;
+using KittyStore.Application.Common.Interfaces.Email;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Infrastructure.Authentication;
 using KittyStore.Infrastructure.Cache;
+using KittyStore.Infrastructure.Email;
 using KittyStore.Infrastructure.Persistence;
 using KittyStore.Infrastructure.Persistence.Interceptors;
 using KittyStore.Infrastructure.Persistence.Repositories;
@@ -33,6 +35,10 @@ namespace KittyStore.Infrastructure
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IPasswordService, PasswordService>();
+            
+            services.AddScoped<IEmailService, EmailService>();
+            services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
+            
             return services;
         }
 

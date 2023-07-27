@@ -1,10 +1,10 @@
 ﻿using System.Security.Claims;
-using KittyStore.Application.Common.Interfaces.Utils;
+using KittyStore.Application.Common.Interfaces.Authentication;
+using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
-using KittyStore.Application.Common.Interfaces.Persistence;
 
-namespace KittyStore.Infrastructure.Utils;
+namespace KittyStore.Infrastructure.Authentication;
 
 public class CurrentUserService : ICurrentUserService
 {

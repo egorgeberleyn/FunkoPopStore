@@ -1,6 +1,6 @@
 ﻿using KittyStore.Domain.UserAggregate;
 
-namespace KittyStore.Application.Common.Interfaces.Utils;
+namespace KittyStore.Application.Common.Interfaces.Authentication;
 
 public interface ICurrentUserService
 {

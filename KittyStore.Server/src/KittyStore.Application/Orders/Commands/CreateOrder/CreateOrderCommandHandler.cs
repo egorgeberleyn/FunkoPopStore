@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using KittyStore.Application.Common.Interfaces.Authentication;
 using KittyStore.Application.Common.Interfaces.Cache;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Application.Common.Interfaces.Utils;
@@ -40,8 +41,8 @@ namespace KittyStore.Application.Orders.Commands.CreateOrder
             if (cart is null || cart.ShopCartItems.Count == 0)
                 return Errors.ShopCart.ShopCartEmpty;
             var totalPrice = cart.TotalPrice;
-            if (totalPrice > user.Balance.Amount) return Errors.User.NotEnoughBalance;
-            user.Balance.Debit(totalPrice);
+            if (totalPrice > user.Balance?.Amount) return Errors.User.NotEnoughBalance;
+            user.Balance?.Debit(totalPrice);
         
             //Create order
             var order = Order.Create(

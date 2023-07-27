@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using KittyStore.Application.Common.Interfaces.Authentication;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Domain.Common.Errors;

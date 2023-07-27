@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using KittyStore.Application.Common.Interfaces.Utils;
+using KittyStore.Application.Common.Interfaces.Authentication;
 
-namespace KittyStore.Infrastructure.Utils;
+namespace KittyStore.Infrastructure.Authentication;
 
 public class PasswordService : IPasswordService
 {
