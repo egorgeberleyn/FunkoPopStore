@@ -50,12 +50,11 @@ public class UpdateCatCommandHandlerTests
         var cat = Cat.Create(
             Constants.Cat.Name, Constants.Cat.Age, Constants.Cat.Color, 
             Constants.Cat.Breed, Constants.Cat.Price, CatGender.Male);
-        var incorrectId = Guid.NewGuid();
         
-        _mockCatRepository.Setup(x => x.GetCatByIdAsync(incorrectId))
+        _mockCatRepository.Setup(x => x.GetCatByIdAsync(Constants.Cat.IncorrectId))
             .ReturnsAsync((Cat?)null);
-        var updateCatCommand = new UpdateCatCommand(incorrectId, "Willy Jr", cat.Age, cat.Color, cat.Breed,
-            cat.Gender.ToString(), 240);
+        var updateCatCommand = new UpdateCatCommand(Constants.Cat.IncorrectId, "Willy Jr", cat.Age, cat.Color,
+            cat.Breed, cat.Gender.ToString(), 240);
 
         // Act
         var result = await _handler.Handle(updateCatCommand, default);

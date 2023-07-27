@@ -11,8 +11,8 @@ namespace KittyStore.Domain.UserAggregate.ValueObjects
         public Currency Currency { get; private set; }
     
         public decimal Amount { get; private set; }
-        
-        public Balance(Currency currency, decimal amount)
+
+        private Balance(Currency currency, decimal amount)
         {
             Currency = currency;
             Amount = amount;

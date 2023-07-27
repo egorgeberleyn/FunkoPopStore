@@ -11,5 +11,7 @@ public static partial class Constants
         public const string Breed = "kun'lun";
         public const string Gender = "Male";
         public const decimal Price = 50;
+        
+        public static readonly Guid IncorrectId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
     }
 }

@@ -24,7 +24,7 @@ namespace KittyStore.Domain.UserAggregate
     
         public DateTime UpdatedDateTime { get; private set;}
 
-        public User(Guid id, string firstName, string lastName, string email, byte[] passwordHash, byte[] passwordSalt, 
+        private User(Guid id, string firstName, string lastName, string email, byte[] passwordHash, byte[] passwordSalt, 
             Role role, DateTime createdDateTime, DateTime updatedDateTime, Balance? balance = null) : base(id)
         {
             FirstName = firstName;

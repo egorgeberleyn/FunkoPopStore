@@ -17,7 +17,7 @@ namespace KittyStore.Domain.CatAggregate
     
         public decimal Price { get; private set; }
     
-        public Cat(Guid id, string name, int age, string color, string breed, decimal price, CatGender gender) 
+        private Cat(Guid id, string name, int age, string color, string breed, decimal price, CatGender gender) 
             : base(id)
         {
             Name = name;

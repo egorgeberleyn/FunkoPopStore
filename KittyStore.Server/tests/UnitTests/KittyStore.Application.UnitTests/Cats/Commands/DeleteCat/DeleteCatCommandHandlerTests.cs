@@ -44,11 +44,9 @@ public class DeleteCatCommandHandlerTests
     public async Task HandleDeleteCatCommand_WhenCatIsNotFound_ShouldReturnNotFoundError()
     {
         // Arrange
-        var incorrectId = Guid.NewGuid();
-
-        _mockCatRepository.Setup(x => x.GetCatByIdAsync(incorrectId))
+        _mockCatRepository.Setup(x => x.GetCatByIdAsync(Constants.Cat.IncorrectId))
             .ReturnsAsync((Cat?)null);
-        var deleteCatCommand = new DeleteCatCommand(incorrectId);
+        var deleteCatCommand = new DeleteCatCommand(Constants.Cat.IncorrectId);
         
         // Act
         var result = await _handler.Handle(deleteCatCommand, default);
