@@ -1,4 +1,4 @@
-﻿using KittyStore.Domain.Common.Models;
+﻿using KittyStore.Domain.Common.Primitives;
 
 namespace KittyStore.Domain.OrderAggregate.ValueObjects
 {

@@ -1,5 +1,5 @@
 ﻿using KittyStore.Domain.CatAggregate.Enums;
-using KittyStore.Domain.Common.Models;
+using KittyStore.Domain.Common.Primitives;
 
 namespace KittyStore.Domain.CatAggregate
 {

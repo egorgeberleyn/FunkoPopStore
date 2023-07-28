@@ -5,21 +5,21 @@ using MediatR;
 
 namespace KittyStore.Application.Orders.Events;
 
-public class OrderIsProcessedEventHandler : INotificationHandler<OrderIsProcessed>
+public class OrderPlacedEventHandler : INotificationHandler<OrderPlaced>
 {
     private readonly IEmailService _emailService;
     private readonly ICurrentUserService _currentUserService;
 
-    public OrderIsProcessedEventHandler(IEmailService emailService, ICurrentUserService currentUserService)
+    public OrderPlacedEventHandler(IEmailService emailService, ICurrentUserService currentUserService)
     {
         _emailService = emailService;
         _currentUserService = currentUserService;
     }
 
-    public async Task Handle(OrderIsProcessed notification, CancellationToken cancellationToken)
+    public async Task Handle(OrderPlaced notification, CancellationToken cancellationToken)
     {
         var user = await _currentUserService.GetUserAsync();
         if(user is null) return;
-        await _emailService.SendAsync(user.Email, "", $"Заказ №{notification.Order.Id} оформлен");
+        await _emailService.SendAsync(user.Email, "", $"Order №{notification.Order.OrderNumber} has been placed");
     }
 }

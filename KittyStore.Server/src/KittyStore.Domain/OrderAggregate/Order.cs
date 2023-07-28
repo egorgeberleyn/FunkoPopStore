@@ -1,4 +1,4 @@
-﻿using KittyStore.Domain.Common.Models;
+﻿using KittyStore.Domain.Common.Primitives;
 using KittyStore.Domain.OrderAggregate.Entities;
 using KittyStore.Domain.OrderAggregate.ValueObjects;
 using KittyStore.Domain.OrderAggregate.Events;
@@ -10,6 +10,8 @@ namespace KittyStore.Domain.OrderAggregate
         private readonly List<OrderItem> _items = new();
     
         public Address Address { get; private set; }
+        
+        public string OrderNumber { get; private set; }
     
         public Guid UserId { get; private set;}
     
@@ -19,18 +21,23 @@ namespace KittyStore.Domain.OrderAggregate
 
         public IReadOnlyList<OrderItem> OrderItems => _items;
 
-        private Order(Guid id, Address address, Guid userId, decimal totalPrice, DateTime created) : base(id)
+        private Order(Guid id, string orderNumber, Address address, Guid userId, decimal totalPrice, DateTime created) : base(id)
         {
             Address = address;
             UserId = userId;
+            OrderNumber = orderNumber;
             Created = created;
             TotalPrice = totalPrice;
         }
 
         public static Order Create(Address address, decimal totalPrice, Guid userId)
         {
-            var order = new Order(Guid.NewGuid(), address, userId, totalPrice, DateTime.UtcNow);
-            order.AddDomainEvent(new OrderIsProcessed(order));
+            var orderNumber = new Random()
+                .Next(100000, 999999)
+                .ToString();
+            
+            var order = new Order(Guid.NewGuid(), orderNumber, address, userId, totalPrice, DateTime.UtcNow);
+            order.AddDomainEvent(new OrderPlaced(order));
             return order;
         }
         

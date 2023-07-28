@@ -1,4 +1,4 @@
-﻿namespace KittyStore.Domain.Common.Models
+﻿namespace KittyStore.Domain.Common.Primitives
 {
     public abstract class ValueObject : IEquatable<ValueObject>
     {

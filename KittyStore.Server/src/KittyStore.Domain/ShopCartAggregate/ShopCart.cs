@@ -1,4 +1,4 @@
-﻿using KittyStore.Domain.Common.Models;
+﻿using KittyStore.Domain.Common.Primitives;
 using KittyStore.Domain.ShopCartAggregate.Entities;
 using Newtonsoft.Json;
 

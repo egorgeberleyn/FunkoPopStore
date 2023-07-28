@@ -1,4 +1,4 @@
-using KittyStore.Domain.Common.Models;
+using KittyStore.Domain.Common.Primitives;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

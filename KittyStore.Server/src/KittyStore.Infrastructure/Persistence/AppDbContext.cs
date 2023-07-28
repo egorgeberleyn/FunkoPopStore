@@ -1,7 +1,7 @@
 ﻿using KittyStore.Application.Authentication.Common;
 using KittyStore.Application.Common.Interfaces.Persistence;
 using KittyStore.Domain.CatAggregate;
-using KittyStore.Domain.Common.Models;
+using KittyStore.Domain.Common.Primitives;
 using KittyStore.Domain.OrderAggregate;
 using KittyStore.Domain.OrderAggregate.Entities;
 using KittyStore.Domain.UserAggregate;

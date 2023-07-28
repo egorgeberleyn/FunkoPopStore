@@ -37,12 +37,14 @@ namespace KittyStore.Application.Orders.Commands.CreateOrder
             //Get shopCart
             var cart = await _cacheService.GetDataAsync<ShopCart>(user.Id.ToString());
         
-            //Validate and calculate
+            //Order calculation
             if (cart is null || cart.ShopCartItems.Count == 0)
                 return Errors.ShopCart.ShopCartEmpty;
             var totalPrice = cart.TotalPrice;
-            if (totalPrice > user.Balance?.Amount) return Errors.User.NotEnoughBalance;
+            if (totalPrice > user.Balance?.Amount) 
+                return Errors.User.NotEnoughBalance;
             user.Balance?.Debit(totalPrice);
+            _userRepository.UpdateUser(user);
         
             //Create order
             var order = Order.Create(
@@ -53,10 +55,8 @@ namespace KittyStore.Application.Orders.Commands.CreateOrder
             var items = cart.ShopCartItems.Select(item => 
                 OrderItem.Create(item.Price, order.Id, item.CatId)).ToList();
             order.AddItems(items);
-            
             await _orderRepository.CreateOrderAsync(order);
-            _userRepository.UpdateUser(user);
-        
+            
             await _cacheService.RemoveDataAsync(user.Id.ToString());
             return order;
         }
