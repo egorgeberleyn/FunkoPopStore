@@ -5,12 +5,12 @@ namespace KittyStore.Domain.ShopCartAggregate.Entities
 {
     public sealed class ShopCartItem : Entity
     {
-        public decimal Price { get; private set;}
-    
-        public Guid CatId { get; private set;}
-    
-        public Guid ShopCartId { get; private set;}
-        
+        public decimal Price { get; private set; }
+
+        public Guid CatId { get; private set; }
+
+        public Guid ShopCartId { get; private set; }
+
         [JsonConstructor]
         private ShopCartItem(Guid id, decimal price, Guid catId, Guid shopCartId) : base(id)
         {

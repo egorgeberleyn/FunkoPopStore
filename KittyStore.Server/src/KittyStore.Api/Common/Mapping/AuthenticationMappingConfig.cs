@@ -11,9 +11,9 @@ namespace KittyStore.Api.Common.Mapping
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<RegisterRequest, RegisterCommand>();
-        
+
             config.NewConfig<LoginRequest, LoginQuery>();
-        
+
             config.NewConfig<AuthenticationResult, AuthenticationResponse>()
                 .Map(dest => dest.Role, src => src.User.Role.ToString())
                 .Map(dest => dest, src => src.User);

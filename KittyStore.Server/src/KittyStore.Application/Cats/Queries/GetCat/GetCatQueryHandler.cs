@@ -21,7 +21,7 @@ namespace KittyStore.Application.Cats.Queries.GetCat
 
             if (cat is null)
                 return Errors.Cat.NotFound;
-        
+
             return cat;
         }
     }

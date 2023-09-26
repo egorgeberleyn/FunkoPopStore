@@ -26,23 +26,23 @@ public class DeleteUserHandlerTests
     {
         //Arrange
         _mockUserRepository.Setup(x => x.GetUserByIdAsync(Constants.User.IncorrectId)).ReturnsAsync((User?)null);
-        
+
         //Act
         var result = await _handler.Handle(new DeleteUserCommand(Constants.User.IncorrectId), default);
 
         //Assert
         result.IsError.Should().BeTrue();
         result.FirstError.Should().Be(Errors.User.NotFound);
-        _mockUserRepository.Verify(x => x.DeleteUser(default!), Times.Never);
+        _mockUserRepository.Verify(x => x.DeleteUser(It.IsAny<User>()), Times.Never);
     }
-    
+
     [Theory]
     [MemberData(nameof(NotAdminUsers))]
     public async Task HandleDeleteCommand_WhenUserNotAdmin_ReturnAdminCannotBeDeletedError(User user)
     {
         //Arrange
         _mockUserRepository.Setup(x => x.GetUserByIdAsync(user.Id)).ReturnsAsync(user);
-        
+
         //Act
         var result = await _handler.Handle(new DeleteUserCommand(user.Id), default);
 
@@ -51,7 +51,7 @@ public class DeleteUserHandlerTests
         result.FirstError.Should().Be(Errors.User.AdminCannotBeDeleted);
         _mockUserRepository.Verify(x => x.DeleteUser(user), Times.Never);
     }
-    
+
     public static IEnumerable<object[]> NotAdminUsers()
     {
         yield return new object[] { CreateUserUtils.CreateTestUser(role: Role.Admin) };

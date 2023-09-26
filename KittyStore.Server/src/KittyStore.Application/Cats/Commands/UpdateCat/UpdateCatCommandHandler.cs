@@ -18,11 +18,11 @@ namespace KittyStore.Application.Cats.Commands.UpdateCat
 
         public async Task<ErrorOr<Cat>> Handle(UpdateCatCommand command, CancellationToken cancellationToken)
         {
-            if (await _catRepository.GetCatByIdAsync(command.Id) is not {} cat)
+            if (await _catRepository.GetCatByIdAsync(command.Id) is not { } cat)
                 return Errors.Cat.NotFound;
 
-            var updateCat = cat.Update(command.Name, command.Age, command.Color, command.Breed, 
-                command.Price, (CatGender)Enum.Parse(typeof(CatGender) ,command.Gender, true));
+            var updateCat = cat.Update(command.Name, command.Age, command.Color, command.Breed,
+                command.Price, (CatGender)Enum.Parse(typeof(CatGender), command.Gender, true));
             _catRepository.UpdateCat(updateCat);
             return cat;
         }

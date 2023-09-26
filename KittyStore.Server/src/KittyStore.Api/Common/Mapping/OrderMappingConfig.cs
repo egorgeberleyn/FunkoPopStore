@@ -15,7 +15,7 @@ namespace KittyStore.Api.Common.Mapping
 
             config.NewConfig<Order, OrderResponse>()
                 .Map(dist => dist.Address, src => src.Address);
-        
+
             config.NewConfig<OrderItem, OrderItemResponse>();
         }
     }

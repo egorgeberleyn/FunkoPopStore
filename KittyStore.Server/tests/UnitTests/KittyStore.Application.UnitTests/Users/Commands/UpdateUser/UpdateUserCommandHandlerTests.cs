@@ -28,32 +28,32 @@ public class UpdateUserCommandHandlerTests
         //Arrange
         _mockUserRepository.Setup(x => x.GetUserByIdAsync(Constants.User.IncorrectId)).ReturnsAsync((User?)null);
         var updateUserCommand = new UpdateUserCommand(Constants.User.IncorrectId, Constants.User.FirstName,
-            Constants.User.LastName, Constants.User.Email, 
+            Constants.User.LastName, Constants.User.Email,
             new BalanceCommand(Constants.User.Balance.Currency.ToString(), Constants.User.Balance.Amount));
-        
+
         //Act
         var result = await _handler.Handle(updateUserCommand, default);
 
         //Assert
         result.IsError.Should().BeTrue();
         result.FirstError.Should().Be(Errors.User.NotFound);
-        _mockUserRepository.Verify(x => x.UpdateUser(default!), Times.Never);
+        _mockUserRepository.Verify(x => x.UpdateUser(It.IsAny<User>()), Times.Never);
     }
-    
+
     [Theory]
     [MemberData(nameof(ValidUsers))]
     public async Task Handle_UpdateUserCommand_WhenUserIsValid_UpdateAndReturnUpdatedUser(User user)
     {
         //Arrange
         _mockUserRepository.Setup(x => x.GetUserByIdAsync(user.Id)).ReturnsAsync(user);
-        
+
         const string updatedFirstName = "Pit";
         const string updatedLastName = "Bronson";
         var updatedBalance = Balance.Create(Currency.Dollar, 300);
-        
-        var updateUserCommand = new UpdateUserCommand(user.Id, updatedFirstName, updatedLastName, user.Email, 
+
+        var updateUserCommand = new UpdateUserCommand(user.Id, updatedFirstName, updatedLastName, user.Email,
             new BalanceCommand(updatedBalance.Currency.ToString(), updatedBalance.Amount));
-        
+
         //Act
         var result = await _handler.Handle(updateUserCommand, default);
 
@@ -64,7 +64,7 @@ public class UpdateUserCommandHandlerTests
         result.Value.Balance.Should().Be(updatedBalance);
         _mockUserRepository.Verify(x => x.UpdateUser(user), Times.Once);
     }
-    
+
     public static IEnumerable<object[]> ValidUsers()
     {
         yield return new object[] { CreateUserUtils.CreateTestUser(role: Role.Admin) };

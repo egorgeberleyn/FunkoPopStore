@@ -11,7 +11,7 @@ namespace KittyStore.Api.Common.Mapping
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<ShopCart, ShopCartResponse>();
-        
+
             config.NewConfig<ShopCartItem, ShopCartItemResponse>();
 
             config.NewConfig<AddShopCartItemRequest, AddShopCartItemCommand>();

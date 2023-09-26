@@ -13,7 +13,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, E
     private readonly IUserRepository _userRepository;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-    public RefreshTokenCommandHandler(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository, 
+    public RefreshTokenCommandHandler(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository,
         IRefreshTokenRepository refreshTokenRepository)
     {
         _jwtTokenGenerator = jwtTokenGenerator;
@@ -21,7 +21,8 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, E
         _refreshTokenRepository = refreshTokenRepository;
     }
 
-    public async Task<ErrorOr<AuthenticationResult>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<AuthenticationResult>> Handle(RefreshTokenCommand request,
+        CancellationToken cancellationToken)
     {
         var tokenInVerification = _jwtTokenGenerator.ValidateAccessToken(request.Token);
         if (tokenInVerification.IsError)
@@ -33,16 +34,15 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, E
         var result = _jwtTokenGenerator.ValidateRefreshToken(tokenInVerification.Value, ref storedToken);
         if (result.IsError)
             return tokenInVerification.FirstError;
-        
+
         storedToken.IsUsed = true;
         _refreshTokenRepository.UpdateToken(storedToken);
-        
+
         var user = await _userRepository.GetUserByIdAsync(storedToken.UserId);
         if (user is null)
             return Errors.User.NotFound;
 
         var tokenPair = await _jwtTokenGenerator.GenerateTokenPairAsync(user);
         return new AuthenticationResult(user, tokenPair.accessToken, tokenPair.refreshToken);
-
     }
 }

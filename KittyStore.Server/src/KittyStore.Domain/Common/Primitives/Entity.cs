@@ -3,17 +3,17 @@
     public abstract class Entity : IEquatable<Entity>, IHasDomainEvents
     {
         private readonly List<IDomainEvent> _domainEvents = new();
-        
-        
-        public Guid Id { get;}
+
+
+        public Guid Id { get; }
 
         public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
-        
+
         protected Entity(Guid id)
         {
             Id = id;
         }
-    
+
         public bool Equals(Entity? other) =>
             Equals((object?)other);
 
@@ -25,18 +25,20 @@
 
         public static bool operator ==(Entity left, Entity right) =>
             Equals(left, right);
-    
+
         public static bool operator !=(Entity left, Entity? right) =>
             !Equals(left, right);
 
-        protected void AddDomainEvent(IDomainEvent @event) => 
+        protected void AddDomainEvent(IDomainEvent @event) =>
             _domainEvents.Add(@event);
 
         public void ClearDomainEvents() =>
             _domainEvents.Clear();
-        
-        #pragma warning disable CS8618
-            protected Entity() { }
-        #pragma warning restore CS8618
+
+#pragma warning disable CS8618
+        protected Entity()
+        {
+        }
+#pragma warning restore CS8618
     }
 }

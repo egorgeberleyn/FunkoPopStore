@@ -15,7 +15,7 @@ namespace KittyStore.Application.Common.Behaviors
             _validator = validator;
         }
 
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, 
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
             CancellationToken cancellationToken)
         {
             if (_validator is null)

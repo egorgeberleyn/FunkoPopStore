@@ -7,7 +7,7 @@ namespace KittyStore.Domain.ShopCartAggregate
     public sealed class ShopCart : AggregateRoot
     {
         private readonly List<ShopCartItem> _items = new();
-    
+
         public Guid UserId { get; private set; }
 
         public IReadOnlyList<ShopCartItem> ShopCartItems => _items;
@@ -15,13 +15,19 @@ namespace KittyStore.Domain.ShopCartAggregate
         public int ItemsQuantity
         {
             get => _items.Count;
-            private set { if (value < 0) throw new ArgumentOutOfRangeException(nameof(value)); }
+            private set
+            {
+                if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
+            }
         }
-    
+
         public decimal TotalPrice
         {
             get => CalculateTotalPrice();
-            private set { if (value < 0) throw new ArgumentOutOfRangeException(nameof(value)); }
+            private set
+            {
+                if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
+            }
         }
 
         [JsonConstructor]
@@ -38,13 +44,13 @@ namespace KittyStore.Domain.ShopCartAggregate
         {
             UserId = userId;
         }
-        
-        public static ShopCart Create(Guid userId) => 
-            new (Guid.NewGuid(), userId);
-    
+
+        public static ShopCart Create(Guid userId) =>
+            new(Guid.NewGuid(), userId);
+
         public void AddItem(decimal price, Guid catId) =>
             _items.Add(ShopCartItem.Create(price, catId, Id));
-    
+
         public void RemoveItem(Guid shopCartItemId)
         {
             var shopItem = _items.FirstOrDefault(item => item.Id == shopCartItemId);
@@ -52,6 +58,5 @@ namespace KittyStore.Domain.ShopCartAggregate
         }
 
         private decimal CalculateTotalPrice() => _items.Sum(cartItem => cartItem.Price);
-   
     }
 }

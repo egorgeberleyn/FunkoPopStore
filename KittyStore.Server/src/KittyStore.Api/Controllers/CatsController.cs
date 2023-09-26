@@ -12,7 +12,9 @@ namespace KittyStore.Api.Controllers
     [AllowAnonymous]
     public class CatsController : ApiController
     {
-        public CatsController(ISender mediator, IMapper mapper) : base(mediator, mapper) { }
+        public CatsController(ISender mediator, IMapper mapper) : base(mediator, mapper)
+        {
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCats()
@@ -23,12 +25,12 @@ namespace KittyStore.Api.Controllers
                 cats => Ok(Mapper.Map<List<CatResponse>>(cats)),
                 errors => Problem(errors));
         }
-    
+
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetCat(Guid id)
         {
             var result = await Mediator.Send(new GetCatQuery(id));
-        
+
             return result.Match(
                 cat => Ok(Mapper.Map<CatResponse>(cat)),
                 errors => Problem(errors));

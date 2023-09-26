@@ -88,7 +88,7 @@ namespace KittyStore.Infrastructure.Authentication
 
             if (refreshToken.ExpiryDate < DateTime.UtcNow)
                 return Errors.Authentication.ExpiredRefreshToken;
-            
+
             return new Success();
         }
 

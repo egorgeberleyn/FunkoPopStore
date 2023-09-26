@@ -20,15 +20,15 @@ public class UpdateCatCommandHandlerTests
         _mockCatRepository = new Mock<ICatRepository>();
         _handler = new UpdateCatCommandHandler(_mockCatRepository.Object);
     }
-    
+
     [Fact]
     public async Task HandleUpdateCatCommand_WhenCatIsValid_ShouldUpdateAndReturnCat()
     {
         // Arrange
         var cat = Cat.Create(
-            Constants.Cat.Name, Constants.Cat.Age, Constants.Cat.Color, 
+            Constants.Cat.Name, Constants.Cat.Age, Constants.Cat.Color,
             Constants.Cat.Breed, Constants.Cat.Price, CatGender.Male);
-        
+
         _mockCatRepository.Setup(x => x.GetCatByIdAsync(cat.Id))
             .ReturnsAsync(cat);
         var updateCatCommand = new UpdateCatCommand(cat.Id, "Willy Jr", cat.Age, cat.Color, cat.Breed,
@@ -42,15 +42,15 @@ public class UpdateCatCommandHandlerTests
         result.Value.ValidateUpdatedFrom(updateCatCommand);
         _mockCatRepository.Verify(m => m.UpdateCat(result.Value), Times.Once);
     }
-    
+
     [Fact]
     public async Task HandleUpdateCatCommand_WhenCatIsNotFound_ShouldReturnNotFoundError()
     {
         // Arrange
         var cat = Cat.Create(
-            Constants.Cat.Name, Constants.Cat.Age, Constants.Cat.Color, 
+            Constants.Cat.Name, Constants.Cat.Age, Constants.Cat.Color,
             Constants.Cat.Breed, Constants.Cat.Price, CatGender.Male);
-        
+
         _mockCatRepository.Setup(x => x.GetCatByIdAsync(Constants.Cat.IncorrectId))
             .ReturnsAsync((Cat?)null);
         var updateCatCommand = new UpdateCatCommand(Constants.Cat.IncorrectId, "Willy Jr", cat.Age, cat.Color,

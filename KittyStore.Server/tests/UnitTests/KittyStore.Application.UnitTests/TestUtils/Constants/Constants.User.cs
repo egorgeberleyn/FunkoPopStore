@@ -8,7 +8,7 @@ public static partial class Constants
     public static class User
     {
         public static readonly Guid IncorrectId = Guid.Parse("ffffffff-ffff-ffff-ffff-ffffffffffff");
-        
+
         public const string FirstName = "Test";
         public const string LastName = "Tester";
         public const string Email = "test@gmail.com";

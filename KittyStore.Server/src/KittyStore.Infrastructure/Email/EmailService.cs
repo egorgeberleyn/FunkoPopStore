@@ -26,22 +26,22 @@ public class EmailService : IEmailService
     {
         if (!IsValidEmail(email))
             return Errors.Email.EmailNotValid;
-        
+
         using var client = new SmtpClient(new ProtocolLogger(EmailOptions.SmtpLogFilePath));
         await client.ConnectAsync(_emailOptions.SmtpAddress, _emailOptions.SmtpPort, true);
         await client.AuthenticateAsync(_emailOptions.Email, _emailOptions.Password);
-        
-        var emailMessage = new MimeMessage() 
-        { 
-            Subject = subject, 
-            Body = new TextPart(TextFormat.Html) 
+
+        var emailMessage = new MimeMessage()
+        {
+            Subject = subject,
+            Body = new TextPart(TextFormat.Html)
             {
                 Text = message
             }
         };
         emailMessage.From.Add(new MailboxAddress(_emailOptions.EmailName, _emailOptions.Email));
         emailMessage.To.Add(new MailboxAddress("", email));
-        
+
         try
         {
             await client.SendAsync(emailMessage);

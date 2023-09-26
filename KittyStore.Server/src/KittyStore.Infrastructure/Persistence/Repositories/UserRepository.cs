@@ -13,23 +13,21 @@ namespace KittyStore.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<List<User>> GetAllUsers() =>
-            await _context.Users.ToListAsync();
-        
-        public async Task<User?> GetUserByIdAsync(Guid id) =>
-            await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-    
-        public async Task<User?> GetUserByEmailAsync(string email) =>
-            await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+        public Task<List<User>> GetAllUsers() =>
+             _context.Users.ToListAsync();
 
-        public async Task AddUserAsync(User newUser)
-        {
+        public Task<User?> GetUserByIdAsync(Guid id) =>
+            _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+        public Task<User?> GetUserByEmailAsync(string email) =>
+             _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+
+        public async Task AddUserAsync(User newUser) =>
             await _context.AddAsync(newUser);
-        }
 
         public void UpdateUser(User user) =>
             _context.Update(user);
-        
+
         public void DeleteUser(User user) =>
             _context.Remove(user);
     }

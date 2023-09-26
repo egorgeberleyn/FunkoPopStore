@@ -23,26 +23,26 @@ namespace KittyStore.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, 
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
             ConfigurationManager configuration)
         {
             services
                 .AddAuth(configuration)
                 .AddPersistence(configuration)
                 .AddCache(configuration);
-        
+
             services.AddHttpContextAccessor();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IPasswordService, PasswordService>();
-            
+
             services.AddScoped<IEmailService, EmailService>();
             services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
-            
+
             return services;
         }
 
-        private static IServiceCollection AddPersistence(this IServiceCollection services, 
+        private static IServiceCollection AddPersistence(this IServiceCollection services,
             IConfiguration configuration)
         {
             services.AddScoped<IUserRepository, UserRepository>();
@@ -53,18 +53,18 @@ namespace KittyStore.Infrastructure
             services.AddScoped<IAppDbContext>(factory => factory.GetRequiredService<AppDbContext>());
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DbConnection")));
-            
+
             services.AddScoped<PublishDomainEventsInterceptor>();
-        
+
             return services;
         }
-    
+
         private static IServiceCollection AddAuth(this IServiceCollection services,
             IConfiguration configuration)
         {
             var jwtSettings = new JwtSettings();
             configuration.Bind(JwtSettings.SectionName, jwtSettings);
-        
+
             services.AddSingleton(Options.Create(jwtSettings));
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
@@ -88,10 +88,10 @@ namespace KittyStore.Infrastructure
             IConfiguration configuration)
         {
             services.AddSingleton<IConnectionMultiplexer>
-                (ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection") 
-                                               ?? throw new InvalidOperationException("No access to redis configuration")));
+            (ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")
+                                           ?? throw new InvalidOperationException("No access to redis configuration")));
             services.AddScoped<ICacheService, CacheService>();
-        
+
             return services;
         }
     }

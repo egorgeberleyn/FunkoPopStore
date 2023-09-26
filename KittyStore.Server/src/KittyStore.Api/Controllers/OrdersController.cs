@@ -10,7 +10,9 @@ namespace KittyStore.Api.Controllers
     [Route("/orders")]
     public class OrdersController : ApiController
     {
-        public OrdersController(ISender mediator, IMapper mapper) : base(mediator, mapper) { }
+        public OrdersController(ISender mediator, IMapper mapper) : base(mediator, mapper)
+        {
+        }
 
         /// <summary>
         /// Get all of the user's orders
@@ -25,7 +27,7 @@ namespace KittyStore.Api.Controllers
                 orders => Ok(Mapper.Map<List<OrderResponse>>(orders)),
                 errors => Problem(errors));
         }
-    
+
         /// <summary>
         /// Create new order
         /// </summary>

@@ -19,13 +19,13 @@ namespace KittyStore.Application.Users.Commands.UpdateUser
 
         public async Task<ErrorOr<User>> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
         {
-            if (await _userRepository.GetUserByIdAsync(command.Id) is not {} user)
+            if (await _userRepository.GetUserByIdAsync(command.Id) is not { } user)
                 return Errors.User.NotFound;
-        
-            var updateUser = user.Update(command.FirstName, command.LastName, command.Email, 
-                Balance.Create((Currency)Enum.Parse(typeof(Currency), command.Balance.Currency), 
+
+            var updateUser = user.Update(command.FirstName, command.LastName, command.Email,
+                Balance.Create((Currency)Enum.Parse(typeof(Currency), command.Balance.Currency),
                     command.Balance.Amount));
-        
+
             _userRepository.UpdateUser(updateUser);
             return updateUser;
         }

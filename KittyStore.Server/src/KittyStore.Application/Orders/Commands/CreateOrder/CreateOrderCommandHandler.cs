@@ -19,7 +19,7 @@ namespace KittyStore.Application.Orders.Commands.CreateOrder
         private readonly ICacheService _cacheService;
         private readonly ICurrentUserService _currentUserService;
 
-        public CreateOrderCommandHandler(IOrderRepository orderRepository, ICacheService cacheService, 
+        public CreateOrderCommandHandler(IOrderRepository orderRepository, ICacheService cacheService,
             IUserRepository userRepository, ICurrentUserService currentUserService)
         {
             _orderRepository = orderRepository;
@@ -31,32 +31,33 @@ namespace KittyStore.Application.Orders.Commands.CreateOrder
         public async Task<ErrorOr<Order>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
         {
             var user = await _currentUserService.GetUserAsync();
-            if(user is null)
+            if (user is null)
                 return Errors.User.NotFound;
-            
+
             //Get shopCart
             var cart = await _cacheService.GetDataAsync<ShopCart>(user.Id.ToString());
-        
+
             //Order calculation
             if (cart is null || cart.ShopCartItems.Count == 0)
                 return Errors.ShopCart.ShopCartEmpty;
             var totalPrice = cart.TotalPrice;
-            if (totalPrice > user.Balance?.Amount) 
+            if (totalPrice > user.Balance?.Amount)
                 return Errors.User.NotEnoughBalance;
             user.Balance?.Debit(totalPrice);
             _userRepository.UpdateUser(user);
-        
+
             //Create order
             var order = Order.Create(
-                Address.Create(command.AddressCommand.Country, command.AddressCommand.City, command.AddressCommand.Street, 
+                Address.Create(command.AddressCommand.Country, command.AddressCommand.City,
+                    command.AddressCommand.Street,
                     command.AddressCommand.HouseNumber),
                 totalPrice,
                 user.Id);
-            var items = cart.ShopCartItems.Select(item => 
+            var items = cart.ShopCartItems.Select(item =>
                 OrderItem.Create(item.Price, order.Id, item.CatId)).ToList();
             order.AddItems(items);
             await _orderRepository.CreateOrderAsync(order);
-            
+
             await _cacheService.RemoveDataAsync(user.Id.ToString());
             return order;
         }

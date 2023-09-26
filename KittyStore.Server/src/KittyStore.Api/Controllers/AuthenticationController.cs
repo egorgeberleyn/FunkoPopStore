@@ -13,7 +13,9 @@ namespace KittyStore.Api.Controllers
     [AllowAnonymous]
     public class AuthenticationController : ApiController
     {
-        public AuthenticationController(ISender mediator, IMapper mapper): base(mediator, mapper) { }
+        public AuthenticationController(ISender mediator, IMapper mapper) : base(mediator, mapper)
+        {
+        }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequest request)
@@ -42,7 +44,7 @@ namespace KittyStore.Api.Controllers
         {
             var command = Mapper.Map<RefreshTokenCommand>(request);
             var result = await Mediator.Send(command);
-            
+
             return result.Match(
                 authResult => Ok(authResult),
                 errors => Problem(errors));

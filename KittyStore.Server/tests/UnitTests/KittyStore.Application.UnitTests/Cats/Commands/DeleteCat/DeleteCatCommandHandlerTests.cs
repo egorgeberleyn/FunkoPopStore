@@ -19,27 +19,28 @@ public class DeleteCatCommandHandlerTests
         _mockCatRepository = new Mock<ICatRepository>();
         _handler = new DeleteCatCommandHandler(_mockCatRepository.Object);
     }
-    
+
     [Fact]
     public async Task HandleDeleteCatCommand_WhenCatIsValid_ShouldDeleteCat()
     {
         // Arrange
         var cat = Cat.Create(
-            Constants.Cat.Name, Constants.Cat.Age, Constants.Cat.Color, 
+            Constants.Cat.Name, Constants.Cat.Age, Constants.Cat.Color,
             Constants.Cat.Breed, Constants.Cat.Price, CatGender.Male);
-        
+
         _mockCatRepository.Setup(x => x.GetCatByIdAsync(cat.Id))
             .ReturnsAsync(cat);
         var deleteCatCommand = new DeleteCatCommand(cat.Id);
-        
+
         // Act
         var result = await _handler.Handle(deleteCatCommand, default);
 
         // Assert
         result.IsError.Should().BeFalse();
         _mockCatRepository.Verify(m => m.DeleteCat(cat), Times.Once);
+        _mockCatRepository.VerifyNoOtherCalls();
     }
-    
+
     [Fact]
     public async Task HandleDeleteCatCommand_WhenCatIsNotFound_ShouldReturnNotFoundError()
     {
@@ -47,12 +48,13 @@ public class DeleteCatCommandHandlerTests
         _mockCatRepository.Setup(x => x.GetCatByIdAsync(Constants.Cat.IncorrectId))
             .ReturnsAsync((Cat?)null);
         var deleteCatCommand = new DeleteCatCommand(Constants.Cat.IncorrectId);
-        
+
         // Act
         var result = await _handler.Handle(deleteCatCommand, default);
 
         // Assert
         result.IsError.Should().BeTrue();
         result.FirstError.Should().Be(Errors.Cat.NotFound);
+        _mockCatRepository.Verify(x => x.DeleteCat(It.IsAny<Cat>()), Times.Never);
     }
 }

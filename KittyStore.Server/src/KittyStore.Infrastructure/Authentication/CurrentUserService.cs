@@ -21,7 +21,7 @@ public class CurrentUserService : ICurrentUserService
     {
         var stringId = _contextAccessor.HttpContext?.User
             .FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
+
         return Guid.TryParse(stringId, out result);
     }
 

@@ -17,7 +17,7 @@ public static partial class CatExtensions
         cat.Color.Should().Be(command.Color);
         cat.Price.Should().Be(command.Price);
     }
-    
+
     public static void ValidateUpdatedFrom(this Cat cat, UpdateCatCommand command)
     {
         cat.Id.Should().NotBeEmpty();

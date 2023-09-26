@@ -12,7 +12,7 @@ public class PasswordService : IPasswordService
 
     public (byte[] Hash, byte[] Salt) HashPassword(string password)
     {
-        var salt = RandomNumberGenerator.GetBytes(KeySize);;
+        var salt = RandomNumberGenerator.GetBytes(KeySize);
         var hash = Rfc2898DeriveBytes.Pbkdf2(
             Encoding.UTF8.GetBytes(password), salt, Iterations, HashAlgorithm, KeySize);
         return (hash, salt);

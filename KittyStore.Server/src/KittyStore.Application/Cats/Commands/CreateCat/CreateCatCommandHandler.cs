@@ -17,8 +17,8 @@ namespace KittyStore.Application.Cats.Commands.CreateCat
 
         public async Task<ErrorOr<Cat>> Handle(CreateCatCommand command, CancellationToken cancellationToken)
         {
-            var cat = Cat.Create(command.Name, command.Age, command.Color, 
-                command.Breed, command.Price, (CatGender)Enum.Parse(typeof(CatGender) ,command.Gender, true));
+            var cat = Cat.Create(command.Name, command.Age, command.Color,
+                command.Breed, command.Price, (CatGender)Enum.Parse(typeof(CatGender), command.Gender, true));
 
             await _catRepository.CreateCatAsync(cat);
 

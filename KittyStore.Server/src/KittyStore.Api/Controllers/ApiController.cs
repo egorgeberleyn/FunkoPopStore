@@ -32,8 +32,8 @@ namespace KittyStore.Api.Controllers
             HttpContext.Items[HttpContextItemKeys.Errors] = errors;
             return Problem(errors[0]);
         }
-    
-    
+
+
         private IActionResult Problem(Error error)
         {
             var statusCode = error.Type switch
@@ -46,7 +46,7 @@ namespace KittyStore.Api.Controllers
 
             return Problem(statusCode: statusCode, title: error.Description);
         }
-    
+
         private IActionResult ValidationProblem(List<Error> errors)
         {
             var modelStateDictionary = new ModelStateDictionary();

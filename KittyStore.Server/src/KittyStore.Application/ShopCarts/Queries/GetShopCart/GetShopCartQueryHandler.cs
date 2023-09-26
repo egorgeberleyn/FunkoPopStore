@@ -26,8 +26,8 @@ namespace KittyStore.Application.ShopCarts.Queries.GetShopCart
                 return Errors.User.NotFound;
 
             var cart = await _cacheService.GetDataAsync<ShopCart>(userId.ToString())
-                ?? ShopCart.Create(userId);
-            
+                       ?? ShopCart.Create(userId);
+
             await _cacheService.SetDataAsync(userId.ToString(), cart,
                 DateTimeOffset.Now.AddDays(10));
             return cart;

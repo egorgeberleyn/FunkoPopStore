@@ -16,7 +16,7 @@ public static class SeedData
         Cat.Create("Niggy", 3, "ginger", "egypt", 20, CatGender.Male),
         Cat.Create("Sunny", 6, "gray", "german", 88, CatGender.Female),
     };
-    
+
     public static User CreateAdmin(string firstName, string lastName, string password, string email)
     {
         var salt = RandomNumberGenerator.GetBytes(64);

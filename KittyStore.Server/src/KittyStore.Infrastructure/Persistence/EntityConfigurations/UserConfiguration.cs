@@ -8,13 +8,13 @@ namespace KittyStore.Infrastructure.Persistence.EntityConfigurations
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         private readonly User _admin = SeedData.CreateAdmin("Jorge", "Admin", "secret123", "admin123@gmail.com");
-        
+
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("users");
-            
+
             builder.HasKey(user => user.Id);
-        
+
             builder.Property(user => user.Id)
                 .ValueGeneratedNever()
                 .IsRequired();
@@ -26,10 +26,10 @@ namespace KittyStore.Infrastructure.Persistence.EntityConfigurations
                     v => (Currency)Enum.Parse(typeof(Currency), v));
                 b.Property(balance => balance.Amount);
             });
-            
+
             builder.OwnsOne(user => user.Balance).HasData(
-                new { UserId = _admin.Id, Currency = Currency.Dollar, Amount = 1000m});
-            
+                new { UserId = _admin.Id, Currency = Currency.Dollar, Amount = 1000m });
+
             builder.Property(user => user.Role)
                 .HasConversion(
                     v => v.ToString(),

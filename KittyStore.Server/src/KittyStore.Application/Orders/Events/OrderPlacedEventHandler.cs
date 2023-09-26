@@ -19,7 +19,7 @@ public class OrderPlacedEventHandler : INotificationHandler<OrderPlaced>
     public async Task Handle(OrderPlaced notification, CancellationToken cancellationToken)
     {
         var user = await _currentUserService.GetUserAsync();
-        if(user is null) return;
+        if (user is null) return;
         await _emailService.SendAsync(user.Email, "", $"Order №{notification.Order.OrderNumber} has been placed");
     }
 }

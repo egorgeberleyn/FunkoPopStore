@@ -36,12 +36,16 @@ public class CreateCatCommandHandlerTests
         result.Value.ValidateCreatedFrom(createCatCommand);
         // 2. Cat added to repository
         _mockCatRepository.Verify(m => m.CreateCatAsync(result.Value), Times.Once);
+        _mockCatRepository.VerifyNoOtherCalls();
     }
-  
+
     public static IEnumerable<object[]> ValidCreateCatCommands()
     {
         yield return new object[] { CreateCatCommandUtils.CreateCommand() };
-        yield return new object[] { CreateCatCommandUtils.CreateCommand(
-            price: 200, gender: "Female") };
+        yield return new object[]
+        {
+            CreateCatCommandUtils.CreateCommand(
+                price: 200, gender: "Female")
+        };
     }
 }

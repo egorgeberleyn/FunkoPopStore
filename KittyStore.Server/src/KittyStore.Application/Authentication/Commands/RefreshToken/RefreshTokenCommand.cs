@@ -6,5 +6,5 @@ using KittyStore.Application.Authentication.Common;
 namespace KittyStore.Application.Authentication.Commands.RefreshToken;
 
 public record RefreshTokenCommand(
-    string Token, 
+    string Token,
     string RefreshToken) : IRequest<ErrorOr<AuthenticationResult>>, ICommand;

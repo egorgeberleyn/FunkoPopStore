@@ -23,7 +23,7 @@ namespace KittyStore.Application.Orders.Queries.GetAllUserOrders
         {
             if (!_currentUserService.TryGetUserId(out var userId))
                 return Errors.User.NotFound;
-        
+
             var orders = await _orderRepository.GetUserOrdersAsync(userId);
 
             return orders;

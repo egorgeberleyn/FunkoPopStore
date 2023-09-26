@@ -1,22 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <NoWarn>$(NoWarn);1591</NoWarn>
-    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\KittyStore.Application\KittyStore.Application.csproj">
+            <PrivateAssets>all</PrivateAssets>
+        </ProjectReference>
+        <ProjectReference Include="..\KittyStore.Contracts\KittyStore.Contracts.csproj"/>
+        <ProjectReference Include="..\KittyStore.Infrastructure\KittyStore.Infrastructure.csproj">
+            <PrivateAssets>all</PrivateAssets>
+        </ProjectReference>
+    </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\KittyStore.Application\KittyStore.Application.csproj" />
-        <ProjectReference Include="..\KittyStore.Contracts\KittyStore.Contracts.csproj" />
-        <ProjectReference Include="..\KittyStore.Infrastructure\KittyStore.Infrastructure.csproj" />
-    </ItemGroup>
-    
-    <ItemGroup>
-        <PackageReference Include="Mapster" Version="7.3.0" />
-        <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
+        <PackageReference Include="Mapster" Version="7.3.0"/>
+        <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.11"/>
     </ItemGroup>
 </Project>

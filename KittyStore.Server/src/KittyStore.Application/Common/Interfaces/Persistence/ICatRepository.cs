@@ -9,6 +9,5 @@ namespace KittyStore.Application.Common.Interfaces.Persistence
         Task CreateCatAsync(Cat newCat);
         void UpdateCat(Cat cat);
         void DeleteCat(Cat cat);
-    
     }
 }

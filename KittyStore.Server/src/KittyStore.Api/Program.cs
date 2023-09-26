@@ -19,12 +19,12 @@ var app = builder.Build();
         config.RoutePrefix = string.Empty;
         config.SwaggerEndpoint("swagger/v1/swagger.json", "Kitty Store API");
     });
-    
+
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     //db.Database.EnsureDeleted();
     db.Database.EnsureCreated();
-    
+
     app.UseExceptionHandler("/error");
 
     app.UseHttpsRedirection();
@@ -33,3 +33,11 @@ var app = builder.Build();
     app.MapControllers();
     app.Run();
 }
+
+#region Test setup
+
+public partial class Program
+{
+} // so you can reference it from tests
+
+#endregion

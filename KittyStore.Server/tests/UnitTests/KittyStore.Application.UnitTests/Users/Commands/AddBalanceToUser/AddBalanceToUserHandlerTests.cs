@@ -30,32 +30,34 @@ public class AddBalanceToUserHandlerTests
     {
         //Arrange
         _mockCurrentUserService.Setup(x => x.GetUserAsync()).ReturnsAsync((User?)null);
-        
+
         //Act
         var result = await _handler.Handle(new AddBalanceToUserCommand(100), default);
-        
+
         //Accept
         result.IsError.Should().BeTrue();
         result.FirstError.Should().Be(Errors.User.NotFound);
-        _mockUserRepository.Verify(x => x.UpdateUser(default!), Times.Never);
+        _mockUserRepository.Verify(x => x.UpdateUser(It.IsAny<User>()), Times.Never);
+        _mockUserRepository.VerifyNoOtherCalls();
     }
-    
+
     [Theory]
     [MemberData(nameof(ValidUsers))]
     public async Task HandleAddBalanceToUser_WhenUserIsValid_ReturnUserWithAddedBalance(User user)
     {
         //Arrange
         _mockCurrentUserService.Setup(x => x.GetUserAsync()).ReturnsAsync(user);
-        
+
         //Act
         var result = await _handler.Handle(new AddBalanceToUserCommand(100), default);
-        
+
         //Accept
         result.IsError.Should().BeFalse();
         result.Value.Balance?.Amount.Should().BeOneOf(1500, 200);
         _mockUserRepository.Verify(x => x.UpdateUser(user), Times.Once);
+        _mockUserRepository.VerifyNoOtherCalls();
     }
-    
+
     public static IEnumerable<object[]> ValidUsers()
     {
         yield return new object[] { CreateUserUtils.CreateTestUser(balance: Balance.Create(Currency.Dollar, 1400)) };

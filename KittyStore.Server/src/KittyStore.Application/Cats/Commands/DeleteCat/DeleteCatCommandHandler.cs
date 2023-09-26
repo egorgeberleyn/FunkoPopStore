@@ -13,12 +13,12 @@ namespace KittyStore.Application.Cats.Commands.DeleteCat
         {
             _catRepository = catRepository;
         }
-    
+
         public async Task<ErrorOr<Unit>> Handle(DeleteCatCommand command, CancellationToken cancellationToken)
         {
-            if (await _catRepository.GetCatByIdAsync(command.Id) is not {} cat)
+            if (await _catRepository.GetCatByIdAsync(command.Id) is not { } cat)
                 return Errors.Cat.NotFound;
-        
+
             _catRepository.DeleteCat(cat);
             return Unit.Value;
         }

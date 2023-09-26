@@ -7,7 +7,7 @@ namespace KittyStore.Application.Common.Interfaces.Persistence
         Task<List<User>> GetAllUsers();
         Task<User?> GetUserByIdAsync(Guid id);
         Task<User?> GetUserByEmailAsync(string email);
-    
+
         Task AddUserAsync(User newUser);
         void UpdateUser(User user);
         void DeleteUser(User user);

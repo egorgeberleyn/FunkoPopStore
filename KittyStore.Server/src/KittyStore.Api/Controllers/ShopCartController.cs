@@ -11,7 +11,9 @@ namespace KittyStore.Api.Controllers
     [Route("/shopCart")]
     public class ShopCartController : ApiController
     {
-        public ShopCartController(ISender mediator, IMapper mapper) : base(mediator, mapper) { }
+        public ShopCartController(ISender mediator, IMapper mapper) : base(mediator, mapper)
+        {
+        }
 
         [HttpGet("")]
         public async Task<IActionResult> GetShopCart()
@@ -24,7 +26,7 @@ namespace KittyStore.Api.Controllers
                 errors => Problem(errors)
             );
         }
-    
+
         [HttpPost("items")]
         public async Task<IActionResult> AddItem(AddShopCartItemRequest request)
         {
@@ -36,7 +38,7 @@ namespace KittyStore.Api.Controllers
                 errors => Problem(errors)
             );
         }
-    
+
         [HttpDelete("items/{id:guid}")]
         public async Task<IActionResult> RemoveItem(Guid id)
         {

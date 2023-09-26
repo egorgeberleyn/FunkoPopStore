@@ -9,7 +9,7 @@ namespace KittyStore.Domain.UserAggregate.ValueObjects
     {
         [JsonConverter(typeof(StringEnumConverter))]
         public Currency Currency { get; private set; }
-    
+
         public decimal Amount { get; private set; }
 
         private Balance(Currency currency, decimal amount)
@@ -18,16 +18,16 @@ namespace KittyStore.Domain.UserAggregate.ValueObjects
             Amount = amount;
         }
 
-        public static Balance Create(Currency currency, decimal amount) => 
+        public static Balance Create(Currency currency, decimal amount) =>
             new(currency, amount);
-    
+
         public void Replenishment(decimal balance) => Amount += balance;
 
         public void Debit(decimal balance) => Amount -= balance;
-    
+
         public override string ToString()
             => (Currency == Currency.Dollar ? "$" : "€") + Amount;
-    
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Currency;

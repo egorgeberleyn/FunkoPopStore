@@ -13,8 +13,8 @@ public class RefreshTokenRepository : IRefreshTokenRepository
         _appDbContext = appDbContext;
     }
 
-    public async Task<RefreshToken?> GetTokenAsync(string token) =>
-        await _appDbContext.RefreshTokens.FirstOrDefaultAsync(t => t.Token == token);
+    public Task<RefreshToken?> GetTokenAsync(string token) =>
+        _appDbContext.RefreshTokens.FirstOrDefaultAsync(t => t.Token == token);
 
     public void UpdateToken(RefreshToken token) =>
         _appDbContext.RefreshTokens.Update(token);

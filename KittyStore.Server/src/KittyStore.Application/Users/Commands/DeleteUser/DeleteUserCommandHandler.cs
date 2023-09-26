@@ -17,7 +17,7 @@ namespace KittyStore.Application.Users.Commands.DeleteUser
 
         public async Task<ErrorOr<Unit>> Handle(DeleteUserCommand command, CancellationToken cancellationToken)
         {
-            if (await _userRepository.GetUserByIdAsync(command.Id) is not {} user)
+            if (await _userRepository.GetUserByIdAsync(command.Id) is not { } user)
                 return Errors.User.NotFound;
 
             if (user.Role is Role.Admin)

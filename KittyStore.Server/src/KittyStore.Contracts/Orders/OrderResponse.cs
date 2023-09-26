@@ -6,14 +6,14 @@
         Guid UserId,
         decimal TotalPrice,
         List<OrderItemResponse> OrderItems);
-    
+
     public record OrderItemResponse(
         Guid Id,
         decimal Price,
         Guid CatId);
 
     public record AddressResponse(
-        string Country, 
+        string Country,
         string City,
         string Street,
         string HouseNumber);

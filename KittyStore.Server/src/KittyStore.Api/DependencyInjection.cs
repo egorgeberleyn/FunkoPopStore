@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
+
 namespace KittyStore.Api
 {
     public static class DependencyInjection
@@ -30,7 +31,7 @@ namespace KittyStore.Api
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey
                 });
-            
+
                 options.OperationFilter<SecurityRequirementsOperationFilter>();
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Kitty Store API", Version = "v1" });
 

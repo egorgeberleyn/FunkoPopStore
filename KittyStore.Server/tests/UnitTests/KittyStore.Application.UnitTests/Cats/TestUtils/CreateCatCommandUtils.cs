@@ -5,7 +5,7 @@ namespace KittyStore.Application.UnitTests.Cats.TestUtils;
 
 public class CreateCatCommandUtils
 {
-    public static CreateCatCommand CreateCommand(string? name = null, int? age = null, string? color = null, 
+    public static CreateCatCommand CreateCommand(string? name = null, int? age = null, string? color = null,
         string? breed = null, string? gender = null, decimal? price = null) =>
         new(
             name ?? Constants.Cat.Name,

@@ -3,7 +3,7 @@
     public abstract class ValueObject : IEquatable<ValueObject>
     {
         protected abstract IEnumerable<object> GetEqualityComponents();
-    
+
         public bool Equals(ValueObject? other) =>
             Equals((object?)other);
 
@@ -24,7 +24,7 @@
 
         public static bool operator ==(ValueObject left, ValueObject right) =>
             Equals(left, right);
-    
+
         public static bool operator !=(ValueObject left, ValueObject right) =>
             !Equals(left, right);
     }
