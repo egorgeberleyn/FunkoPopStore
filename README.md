@@ -1,5 +1,5 @@
 ## API for the online pet store
-### REST, Domain-Driven-Design, Clean Architecture  
+### REST, Domain-Driven-Design, Onion Architecture  
 ###  Stack: 
 ASP NET Core Web API, PostreSQL, EF Core, MediatR, Mapster, Redis, ErrorOr, Fluent API и Validation, Swagger, xUnit  
 ### Implemented: 
