@@ -1,5 +1,6 @@
 ﻿using KittyStore.Domain.Common.Primitives;
 using KittyStore.Domain.OrderAggregate.Entities;
+using KittyStore.Domain.OrderAggregate.Enums;
 using KittyStore.Domain.OrderAggregate.ValueObjects;
 using KittyStore.Domain.OrderAggregate.Events;
 
@@ -18,6 +19,8 @@ namespace KittyStore.Domain.OrderAggregate
         public DateTime Created { get; private set; }
 
         public decimal TotalPrice { get; private set; }
+        
+        public OrderStatus Status { get; private set; }
 
         public IReadOnlyList<OrderItem> OrderItems => _items;
 
@@ -29,6 +32,7 @@ namespace KittyStore.Domain.OrderAggregate
             OrderNumber = orderNumber;
             Created = created;
             TotalPrice = totalPrice;
+            Status = OrderStatus.Created;
         }
 
         public static Order Create(Address address, decimal totalPrice, Guid userId)
@@ -42,11 +46,14 @@ namespace KittyStore.Domain.OrderAggregate
             return order;
         }
 
+        public void ChangeStatus(OrderStatus status) =>  Status = status;
+
         public void AddItems(IEnumerable<OrderItem> items) => _items.AddRange(items);
 
 #pragma warning disable CS8618
-        private Order()
+        private Order(OrderStatus status)
         {
+            Status = status;
         }
 #pragma warning disable CS8618
     }

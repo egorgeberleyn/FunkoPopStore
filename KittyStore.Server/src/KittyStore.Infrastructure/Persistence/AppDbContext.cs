@@ -13,11 +13,14 @@ namespace KittyStore.Infrastructure.Persistence
     public class AppDbContext : DbContext, IAppDbContext
     {
         private readonly PublishDomainEventsInterceptor? _domainEventsInterceptor;
+        private readonly SlowQueryInterceptor? _slowQueryInterceptor;
 
         public AppDbContext(DbContextOptions<AppDbContext> options,
-            PublishDomainEventsInterceptor? domainEventsInterceptor = null) : base(options)
+            PublishDomainEventsInterceptor? domainEventsInterceptor = null, 
+            SlowQueryInterceptor? slowQueryInterceptor = null) : base(options)
         {
             _domainEventsInterceptor = domainEventsInterceptor;
+            _slowQueryInterceptor = slowQueryInterceptor;
         }
 
         public DbSet<Cat> Cats { get; set; } = null!;
@@ -39,6 +42,8 @@ namespace KittyStore.Infrastructure.Persistence
         {
             if (_domainEventsInterceptor != null)
                 optionsBuilder.AddInterceptors(_domainEventsInterceptor);
+            if (_slowQueryInterceptor != null)
+                optionsBuilder.AddInterceptors(_slowQueryInterceptor);
             base.OnConfiguring(optionsBuilder);
         }
     }

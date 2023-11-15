@@ -17,6 +17,9 @@ namespace KittyStore.Infrastructure.Persistence.Repositories
             _context.Orders.Include(order => order.OrderItems)
                 .Where(ord => ord.UserId == id).ToListAsync();
 
+        public Task<Order?> FindOrderByIdAsync(Guid orderId) => 
+            _context.Orders.FirstOrDefaultAsync(order => order.Id == orderId);
+        
         public async Task CreateOrderAsync(Order newOrder)
         {
             await _context.AddAsync(newOrder);

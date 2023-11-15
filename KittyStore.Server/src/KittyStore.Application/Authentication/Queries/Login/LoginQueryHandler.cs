@@ -3,7 +3,6 @@ using ErrorOr;
 using KittyStore.Application.Authentication.Common;
 using KittyStore.Application.Common.Interfaces.Authentication;
 using KittyStore.Application.Common.Interfaces.Persistence;
-using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Domain.Common.Errors;
 
 namespace KittyStore.Application.Authentication.Queries.Login

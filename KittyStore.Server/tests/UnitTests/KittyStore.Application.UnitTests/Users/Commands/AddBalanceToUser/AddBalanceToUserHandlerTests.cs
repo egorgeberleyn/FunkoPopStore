@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using KittyStore.Application.Common.Interfaces.Authentication;
 using KittyStore.Application.Common.Interfaces.Persistence;
-using KittyStore.Application.Common.Interfaces.Utils;
 using KittyStore.Application.UnitTests.Users.UserUtils;
 using KittyStore.Application.Users.Commands.AddBalanceToUser;
 using KittyStore.Domain.Common.Errors;

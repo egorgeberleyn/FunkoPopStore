@@ -55,6 +55,7 @@ namespace KittyStore.Infrastructure
                 options.UseNpgsql(configuration.GetConnectionString("DbConnection")));
 
             services.AddScoped<PublishDomainEventsInterceptor>();
+            services.AddScoped<SlowQueryInterceptor>();
 
             return services;
         }
