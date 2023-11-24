@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+      <RootNamespace>FunkoPopStore.Contracts</RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+        <Folder Include="Admin"/>
+    </ItemGroup>
+
+</Project>
